@@ -1,0 +1,173 @@
+﻿<Window x:Class="BaseSystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BaseSystem"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="MainWindow" Height="536" Width="900">
+    <Window.Background>
+        <ImageBrush ImageSource="/Resources/Base Laranja.png"/>
+    </Window.Background>
+
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="0,0,0,0" Grid.Column="0">
+
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 50 0 0" >
+                <TextBox
+                x:Name="tbParcela"
+                materialDesign:HintAssist.Hint="Parcela:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="22" Margin="8,4,-4,4" CaretBrush="White" FontFamily="Century">
+                    <TextBox.Text>
+                        <Binding
+                        Path="Name"
+                        UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Border>
+
+
+
+
+
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 50 0 0" >
+                <ComboBox materialDesign:HintAssist.Hint="FormaPag:">
+                    <ComboBoxItem
+                     Content="Devendo" />
+                    <ComboBoxItem
+                  Content="Pagp" />
+                </ComboBox>
+            </Border>
+
+
+
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 50 0 0" >
+                <ComboBox materialDesign:HintAssist.Hint="Status:">
+                    <ComboBoxItem
+                     Content="Devendo" />
+                    <ComboBoxItem
+                  Content="Pagp" />
+                </ComboBox>
+            </Border>
+
+
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 50 0 0">
+                <TextBox
+                x:Name="tbValor"
+                materialDesign:HintAssist.Hint="Valor:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,-4,4" CaretBrush="#FF161515" FontFamily="Century">
+                    <TextBox.Text>
+                        <Binding
+                        Path="valor"
+                        UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Border>
+
+        </StackPanel>
+
+        <StackPanel Margin="6,0,-6,-1" Grid.Column="1" >
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="39" Width="250" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="100 50 0 0">
+                <DatePicker
+                  Width="200"
+                  materialDesign:HintAssist.Hint="Data:" FontSize="15"
+                  materialDesign:TextFieldAssist.HasClearButton="True"
+                  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            </Border>
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="39" Width="250" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="100 50 0 0">
+                <DatePicker
+                  Width="200"
+                  materialDesign:HintAssist.Hint="Vencimento:"  FontSize="15"
+                  materialDesign:TextFieldAssist.HasClearButton="True"
+                  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            </Border>
+
+
+            <Border BorderThickness="1.5" Margin="200 120 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="160" Background="#1FFFFFFF">
+
+                <Button Content="Buscar" FontSize="15"
+                 materialDesign:ButtonAssist.CornerRadius="25" Margin="0,0,-2,0">   
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="red"/>
+                            <GradientStop Color="#FFF59505" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="200 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="160" Background="#1FFFFFFF">
+
+                <Button Content="Novo" FontSize="15"
+                   materialDesign:ButtonAssist.CornerRadius="25">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="red"/>
+                            <GradientStop Color="#FFF59505" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="200 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20"  Height="34" Width="160" Background="#1FFFFFFF">
+
+                <Button Content="Cancelar" FontSize="15"
+                   materialDesign:ButtonAssist.CornerRadius="25">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="red"/>
+                            <GradientStop Color="#FFF59505" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="200 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20"  Height="34" Width="160" Background="#1FFFFFFF">
+
+                <Button Content="Salvar" FontSize="15"
+                   materialDesign:ButtonAssist.CornerRadius="25">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="red"/>
+                            <GradientStop Color="#FFF59505" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+
+            </Border>
+
+        </StackPanel>
+       
+         
+
+
+
+
+
+
+    </Grid>
+
+
+</Window>

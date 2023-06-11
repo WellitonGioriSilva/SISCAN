@@ -1,0 +1,163 @@
+﻿<Page x:Class="SISCAN.Formularios.CadastrarFornecedor"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SISCAN.Formularios"
+      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal" 
+      TextOptions.TextRenderingMode="Auto"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      d:DesignHeight="536" d:DesignWidth="900"
+      Title="CadastrarFornecedor">
+    <Page.Background>
+        <ImageBrush ImageSource="/Resources/Base Laranja.png"/>
+    </Page.Background>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="0,0,0,0" Grid.Column="0">
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="30 50 0 0" >
+                <TextBox
+                x:Name="tbRazaoSocial"
+                materialDesign:HintAssist.Hint="Razão Social:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12" Width="301">
+                    <TextBox.Text>
+                        <Binding
+                        Path="Name"
+                        UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Border>
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="30 30 0 0" >
+                <TextBox
+                x:Name="tbCnpj"
+                materialDesign:HintAssist.Hint="Cnpj:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12">
+                    <TextBox.Text>
+                        <Binding
+                        Path="Name"
+                        UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbCidade" materialDesign:HintAssist.Hint="Cidade:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
+                </ComboBox>
+            </Border>
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="30 30 0 0" >
+                <TextBox
+                x:Name="tbBairro"
+                materialDesign:HintAssist.Hint="Bairro:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12">
+                    <TextBox.Text>
+                        <Binding
+                        Path="Name"
+                        UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Border>
+
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="30 30 0 0" >
+                <TextBox
+                x:Name="tbRua"
+                materialDesign:HintAssist.Hint="Rua:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12">
+                    <TextBox.Text>
+                        <Binding
+                        Path="Name"
+                        UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Border>
+        </StackPanel>
+
+        <StackPanel Margin="170,300,0,-25" Grid.Column="1">
+            <Button
+    Height="48"
+    materialDesign:ButtonAssist.CornerRadius="25"
+    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
+      Text="Buscar" FontFamily="Century" FontSize="20" />
+            </Button>
+            <Button x:Name="tbCancelar"
+    Height="48"
+    materialDesign:ButtonAssist.CornerRadius="25"
+    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="tbCancelar_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
+      Text="Cancelar" FontFamily="Century" FontSize="20" />
+            </Button>
+            <Button x:Name="btSalvar"
+    Height="48"
+    materialDesign:ButtonAssist.CornerRadius="25"
+    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="btSalvar_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
+      Text="Salvar" FontFamily="Century" FontSize="20" />
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 50 0 0" >
+                <TextBox
+                    x:Name="tbFantasia"
+                    materialDesign:HintAssist.Hint="Nome Fantasia:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12" Width="301" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 30 0 0" >
+                <TextBox
+                    x:Name="tbTelefone"
+                    materialDesign:HintAssist.Hint="Telefone:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12" Width="301" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 30 0 0" >
+                <TextBox
+                    x:Name="tbResponsavel"
+                    materialDesign:HintAssist.Hint="Responsável:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 30 0 0" >
+                <TextBox
+                    x:Name="tbInscricaoEstadual"
+                    materialDesign:HintAssist.Hint="Inscrição Estadual:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+
+        </StackPanel>
+
+    </Grid>
+</Page>

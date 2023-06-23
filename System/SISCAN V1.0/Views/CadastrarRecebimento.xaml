@@ -26,34 +26,19 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0">
-            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 50 0 0" >
-                <TextBox
-                x:Name="tbParcela"
-                materialDesign:HintAssist.Hint="Parcela:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="White" FontFamily="Century">
-                    <TextBox.Text>
-                        <Binding
-                        Path="Name"
-                        UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-            </Border>
 
             <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 50 0 0" >
-                <ComboBox materialDesign:HintAssist.Hint="Forma de Pagamento:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
-                    <ComboBoxItem
-                     Content="À Vista" />
+                <ComboBox x:Name="cbFormaPagamento" materialDesign:HintAssist.Hint="Forma de Pagamento:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
+                </ComboBox>
+            </Border>
+            
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 50 0 0" >
+                <ComboBox x:Name="cbCaixa" materialDesign:HintAssist.Hint="Caixa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
                 </ComboBox>
             </Border>
 
-
-            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 50 0 0" >
-                <ComboBox materialDesign:HintAssist.Hint="Status:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
-                    <ComboBoxItem
-                     Content="Devendo" />
-                    <ComboBoxItem
-                     Content="Pago" />
-                </ComboBox>
+            <Border BorderThickness="1.5" Margin="20 50 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <materialDesign:TimePicker x:Name="tmHora" Margin="8,0,8,0" Height="34" materialDesign:HintAssist.Hint=" Hora de Abertura:" FontFamily="Century"/>
             </Border>
 
             <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 50 0 0">
@@ -72,17 +57,13 @@
         </StackPanel>
 
         <StackPanel Margin="0,0,0,-1" Grid.Column="1" >
-            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="39" Width="250" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="100 50 0 0">
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="250" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="100 50 0 0">
                 <DatePicker Margin="8,0,8,0" x:Name="dtpData"
                     materialDesign:HintAssist.Hint="Data:" BorderBrush="White" FontFamily="Century" Height="38"/>
             </Border>
 
-            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="39" Width="250" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="100 50 0 0">
-                <DatePicker Margin="8,0,8,0" x:Name="dtpDataVencimento"
-                    materialDesign:HintAssist.Hint="Vencimento:" BorderBrush="White" FontFamily="Century" Background="#00000000" Height="38"/>
-            </Border>
 
-            <StackPanel Grid.Column="2" Width="225" Height="196" Margin="0,120,0,0" HorizontalAlignment="Right">
+            <StackPanel Grid.Column="2" Width="231" Height="209" Margin="0,160,0,0" HorizontalAlignment="Right">
                 <Button
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
@@ -98,12 +79,12 @@
                     <TextBlock
       Text="Buscar" FontFamily="Century" FontSize="20" />
                 </Button>
-                <Button
+                <Button x:Name="btCancelar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0">
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="btCancelar_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFFF3D00"/>
@@ -113,12 +94,12 @@
                     <TextBlock
       Text="Cancelar" FontFamily="Century" FontSize="20" />
                 </Button>
-                <Button
+                <Button x:Name="btSalvar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0">
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="btSalvar_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFFF3D00"/>

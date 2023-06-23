@@ -37,6 +37,10 @@ namespace SISCAN.Models
                 {
                     MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
                 }
+                else
+                {
+                    MessageBox.Show("Dados salvos com sucesso!");
+                }
             }
             catch (Exception ex)
             {

@@ -41,7 +41,6 @@ namespace SISCAN.Formularios
                 FuncaoDAO funcaoDAO = new FuncaoDAO();
                 funcaoDAO.Insert(funcao);
 
-                MessageBox.Show("Dados salvos com sucesso!");
                 Clear();
             }
             catch (Exception ex)

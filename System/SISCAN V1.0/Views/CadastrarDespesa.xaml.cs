@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SISCAN.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,5 +26,49 @@ namespace SISCAN.Formularios
             InitializeComponent();
         }
 
+        private void btSalvar_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Setando informações na tabela cliente
+                Despesa despesa = new Despesa();
+                despesa.Nome = tbNome.Text;
+                despesa.Parcelas = Convert.ToInt32(tbParcelas.Text);
+                despesa.Valor = Convert.ToInt32(tbValor.Text);
+                despesa.Status = cbStatus.SelectionBoxItem.ToString();
+                despesa.Data = dtpData.SelectedDate;
+                despesa.Vencimento = dtpVencimento.SelectedDate;
+                //despesa.Compra.Id = 1;
+
+                //Inserindo os Dados           
+                DespesaDAO despesaDAO = new DespesaDAO();
+                despesaDAO.Insert(despesa);
+
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte");
+            }
+        }
+
+        private void btCancelar_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Deseja realmente cancelar o cadastro?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Clear();
+                MessageBox.Show("Campos limpos com sucesso!");
+            }
+        }
+
+        private void Clear()
+        {
+            tbNome.Clear();
+            tbParcelas.Clear();
+            tbValor.Clear();
+            cbStatus.SelectedIndex = -1;
+        }
     }
 }

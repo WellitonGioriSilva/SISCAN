@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SISCAN.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -92,6 +93,24 @@ namespace SISCAN.Formularios
         {
             lbTitulo.Content = "Cadastrar Funcionário";
             Frame.NavigationService.Navigate(new CadastrarFuncionario());
+        }
+
+        private void btCaixa_Click(object sender, RoutedEventArgs e)
+        {
+            lbTitulo.Content = "Cadastrar Caixa";
+            Frame.NavigationService.Navigate(new CadastrarCaixa());
+        }
+
+        private void btEstoque_Click(object sender, RoutedEventArgs e)
+        {
+            lbTitulo.Content = "Cadastrar Estoque";
+            Frame.NavigationService.Navigate(new CadastrarEstoque());
+        }
+
+        private void btPagamento_Click(object sender, RoutedEventArgs e)
+        {
+            lbTitulo.Content = "Pagar Despesa";
+            Frame.NavigationService.Navigate(new CadastrarPagamento());
         }
     }
 }

@@ -56,11 +56,11 @@
                 </TextBox>
             </Border>
             <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="0,15,0,25">
-                <ComboBox materialDesign:HintAssist.Hint="Tipo:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
-                </ComboBox>
-            </Border>
-            <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="0,15,0,25">
-                <ComboBox materialDesign:HintAssist.Hint="Status:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
+                <ComboBox x:Name="cbStatus" materialDesign:HintAssist.Hint="Status:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
+                    <ComboBoxItem
+                     Content="Aberta" />
+                    <ComboBoxItem
+                     Content="Fechada" />
                 </ComboBox>
             </Border>
             <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="0,15,0,25">
@@ -78,6 +78,11 @@
             <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="0,15,0,25">
                 <DatePicker Margin="8,0,8,0" x:Name="dtpData"
                     materialDesign:HintAssist.Hint="Data:" BorderBrush="White" FontFamily="Century" Height="38"/>
+            </Border>
+            
+            <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="0,15,0,25">
+                <DatePicker Margin="8,0,8,0" x:Name="dtpVencimento"
+                    materialDesign:HintAssist.Hint="Vencimento:" BorderBrush="White" FontFamily="Century" Height="38"/>
             </Border>
         </StackPanel>
 
@@ -97,7 +102,7 @@
                 <TextBlock
       Text="Buscar" FontFamily="Century" FontSize="20" />
             </Button>
-            <Button
+            <Button x:Name="btCancelar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
@@ -112,12 +117,12 @@
                 <TextBlock
       Text="Cancelar" FontFamily="Century" FontSize="20" />
             </Button>
-            <Button
+            <Button x:Name="btSalvar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0">
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="btSalvar_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFFF3D00"/>

@@ -1,4 +1,4 @@
-﻿<Page x:Class="SISCAN.Formularios.CadastrarProduto"
+﻿<Page x:Class="SISCAN.Formularios.CadastrarCaixa"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,62 +13,50 @@
       TextOptions.TextRenderingMode="Auto"
       FontFamily="{DynamicResource MaterialDesignFont}"
       d:DesignHeight="536" d:DesignWidth="900"
-      Title="CadastrarProduto">
+      Title="CadastrarCliente">
     <Page.Background>
         <ImageBrush ImageSource="/Resources/Base Laranja.png"/>
     </Page.Background>
 
     <Grid>
-
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="30,50,0,0" Grid.Column="0" HorizontalAlignment="Left">
-            <StackPanel Orientation="Vertical" Height="94" HorizontalAlignment="Center" Width="98">
-                <materialDesign:PackIcon Kind="Camera" Foreground="White" Width="98" Height="61" />
-                <TextBlock Text="Foto" TextAlignment="Center" FontSize="18" FontFamily="Century" Height="25"/>
-            </StackPanel>
+        <StackPanel Margin="0 0 0 0" Grid.Column="0">
 
-            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 50 0 0" >
+
+            <Border BorderThickness="1.5" Margin="30 50 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <TextBox
-                x:Name="tbNome"
-                materialDesign:HintAssist.Hint="Nome:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="White" FontFamily="Century">
-                    <TextBox.Text>
-                        <Binding
-                        Path="Name"
-                        UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                x:Name="tbValorInicial"
+                materialDesign:HintAssist.Hint="Valor Inicial:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
-            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 50 0 0" >
+            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <TextBox
-                x:Name="tbMarca"
-                materialDesign:HintAssist.Hint="Marca:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="White" FontFamily="Century">
-                    <TextBox.Text>
-                        <Binding
-                        Path="Name"
-                        UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                x:Name="tbValorFinal"
+                materialDesign:HintAssist.Hint="Valor Final:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
-            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="20 50 0 0" >
-                <ComboBox x:Name="cbTipo" materialDesign:HintAssist.Hint="Tipo:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
-                    <ComboBoxItem
-                     Content="Bebida" />
-                </ComboBox>
+            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <DatePicker Margin="8,0,8,0" x:Name="dtpData"
+                    materialDesign:HintAssist.Hint=" Data de Abertura:" BorderBrush="White" FontFamily="Century" Height="34"/>
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <materialDesign:TimePicker x:Name="tmAbertura" Margin="8,0,8,0" Height="34" materialDesign:HintAssist.Hint=" Hora de Abertura:" FontFamily="Century"/>
+            </Border>
+            
+            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <materialDesign:TimePicker x:Name="tmFechamento" Margin="8,0,8,0" Height="34" materialDesign:HintAssist.Hint=" Hora de Fechamento:" FontFamily="Century"/>
             </Border>
 
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,197,0,0" RenderTransformOrigin="0.5,0.5">
+        <StackPanel Grid.Column="1" Margin="0,283,20,0">
 
-            <StackPanel Margin="0,75,20,0" HorizontalAlignment="Right">
+            <StackPanel Grid.Column="2" Width="175" Height="219" Margin="0,20,0,0" HorizontalAlignment="Right">
                 <Button
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
@@ -104,7 +92,7 @@
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="btSalvar_Click" Cursor="Hand">
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="btSalvar_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFFF3D00"/>
@@ -115,6 +103,9 @@
       Text="Salvar" FontFamily="Century" FontSize="20" />
                 </Button>
             </StackPanel>
+
         </StackPanel>
+
     </Grid>
+
 </Page>

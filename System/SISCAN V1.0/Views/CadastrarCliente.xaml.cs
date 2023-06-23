@@ -49,7 +49,6 @@ namespace SISCAN.Formularios
                 ClienteDAO clienteDAO = new ClienteDAO();
                 clienteDAO.Insert(cliente);
 
-                MessageBox.Show("Dados salvos com sucesso!");
                 Clear();
             }
             catch (Exception ex)

@@ -8,34 +8,30 @@ using System.Windows;
 
 namespace SISCAN.Models
 {
-    class ClienteDAO
+    class RecebimentoDAO
     {
         private static Conexao conn;
 
-        public ClienteDAO()
+        public RecebimentoDAO()
         {
             conn = new Conexao();
         }
 
-        public void Insert(Cliente cliente)
+        public void Insert(Recebimento recebimento)
         {
             try
             {
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, id_cid_fk) " +
-                    $"VALUES (@nome, @cpf, @email, @sexo, @data_nasc, @rua, @bairro, @numero, @id_cid)";
+                query.CommandText = $"INSERT INTO Recebimento (data_rec, valor_rec, hora_rec, id_cai_fk, id_form_pag_fk) " +
+                    $"VALUES (@data, @valor, @hora, @id_cai, @id_form_pag)";
 
-                query.Parameters.AddWithValue("@nome", cliente.Nome);
-                query.Parameters.AddWithValue("@cpf", cliente.Cpf);
-                query.Parameters.AddWithValue("@email", cliente.Email);
-                query.Parameters.AddWithValue("@sexo", cliente.Sexo);
-                query.Parameters.AddWithValue("@data_nasc", cliente.DataNascimento?.ToString("yyyy-MM-dd"));
-                query.Parameters.AddWithValue("@rua", cliente.Rua);
-                query.Parameters.AddWithValue("@bairro", cliente.Bairro);
-                query.Parameters.AddWithValue("@numero", cliente.Numero);
-                query.Parameters.AddWithValue("@id_cid", cliente.Cidade.ID);
+                query.Parameters.AddWithValue("@data", recebimento.Data?.ToString("yyyy-MM-dd"));
+                query.Parameters.AddWithValue("@valor", recebimento.Valor);
+                query.Parameters.AddWithValue("@hora", recebimento.Hora);
+                query.Parameters.AddWithValue("@id_cai", recebimento.Caixa.id);
+                query.Parameters.AddWithValue("@id_form_pag", recebimento.FormaPagamento.Id);
 
                 var result = query.ExecuteNonQuery();
 

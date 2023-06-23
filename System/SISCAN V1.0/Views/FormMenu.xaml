@@ -79,14 +79,15 @@
         <StackPanel Grid.Row="2">
             <Button x:Name="tbFuncao" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="tbFuncao_Click">Função</Button>
             <Button x:Name="btFuncionario" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btFuncionario_Click">Funcionário</Button>
+            <Button x:Name="btEstoque" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btEstoque_Click">Estoque</Button>
             <TreeView
                 MinWidth="220" Foreground="#FF872000" Margin="0,0,0,0" >
                 <TreeViewItem 
     Header="Financeiro" FontFamily="Century" Cursor="" Background="White" Width="296" HorizontalAlignment="Center" FontSize="14">
-                    <Button Width="228" Height="26" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10">Caixa</Button>
+                    <Button x:Name="btCaixa" Width="228" Height="26" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btCaixa_Click">Caixa</Button>
                     <Button x:Name="btDespesa" Width="228" Height="25" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btDespesa_Click">Despesa</Button>
                     <Button x:Name="btRecebimento" Width="228" Height="26" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btRecebimento_Click">Recebimento</Button>
-                    <Button Width="228" Height="26" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10">Pagamento</Button>
+                    <Button x:Name="btPagamento" Width="228" Height="26" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btPagamento_Click">Pagamento</Button>
                 </TreeViewItem>
             </TreeView>
         </StackPanel>

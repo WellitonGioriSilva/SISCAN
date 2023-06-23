@@ -1,5 +1,4 @@
-﻿using MySqlX.XDevAPI;
-using SISCAN.Models;
+﻿using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +14,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SISCAN.Formularios
+namespace SISCAN.Views
 {
     /// <summary>
-    /// Interação lógica para Cadastrar_Recebimento.xam
+    /// Interação lógica para CadastrarPagamento.xam
     /// </summary>
-    public partial class CadastrarRecebimento : Page
+    public partial class CadastrarPagamento : Page
     {
-        public CadastrarRecebimento()
+        public CadastrarPagamento()
         {
             InitializeComponent();
 
             DadosCbForm();
             DadosCbCai();
+            DadosCbDesp();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -35,25 +35,26 @@ namespace SISCAN.Formularios
             try
             {
                 //Setando informações na tabela cliente
-                Recebimento recebimento = new Recebimento();
-                recebimento.Valor = Convert.ToDouble(tbValor.Text);
-                recebimento.Hora = tmHora.SelectedTime;
-                recebimento.Data = dtpData.SelectedDate;
-                recebimento.Caixa = new Caixa();
-                recebimento.Caixa.id = cbCaixa.SelectedIndex + 1;
-                recebimento.FormaPagamento = new FormaPagamento();
-                recebimento.FormaPagamento.Id = cbFormaPagamento.SelectedIndex + 1;
+                Pagamento pagamento = new Pagamento();
+                pagamento.Valor = Convert.ToDouble(tbValor.Text);
+                pagamento.Hora = tmHora.SelectedTime;
+                pagamento.Data = dtpData.SelectedDate;
+                pagamento.Caixa = new Caixa();
+                pagamento.Caixa.id = cbCaixa.SelectedIndex + 1;
+                pagamento.FormaPagamento = new FormaPagamento();
+                pagamento.FormaPagamento.Id = cbFormapag.SelectedIndex + 1;
+                pagamento.Despesa = new Despesa();
+                pagamento.Despesa.Id = cbDespesa.SelectedIndex + 1;
 
                 //Inserindo os Dados           
-                RecebimentoDAO recebimentoDAO = new RecebimentoDAO();
-                recebimentoDAO.Insert(recebimento);
+                PagamentoDAO pagamentoDAO = new PagamentoDAO();
+                pagamentoDAO.Insert(pagamento);
 
                 Clear();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro 3008 : Contate o suporte");
-                MessageBox.Show(ex.Message);
             }
         }
 
@@ -61,14 +62,15 @@ namespace SISCAN.Formularios
         {
             tbValor.Clear();
             cbCaixa.SelectedIndex = -1;
-            cbFormaPagamento.SelectedIndex = -1;
+            cbFormapag.SelectedIndex = -1;
+            cbDespesa.SelectedIndex = -1;
         }
 
         private void DadosCbForm()
         {
             FormaPagamentoDAO formaPagamentoDAO = new FormaPagamentoDAO();
-            cbFormaPagamento.ItemsSource = formaPagamentoDAO.List();
-            cbFormaPagamento.DisplayMemberPath = "Nome";
+            cbFormapag.ItemsSource = formaPagamentoDAO.List();
+            cbFormapag.DisplayMemberPath = "Nome";
         }
 
         private void DadosCbCai()
@@ -76,6 +78,13 @@ namespace SISCAN.Formularios
             CaixaDAO caixaDAO = new CaixaDAO();
             cbCaixa.ItemsSource = caixaDAO.List();
             cbCaixa.DisplayMemberPath = "Data";
+        }
+        
+        private void DadosCbDesp()
+        {
+            DespesaDAO despesaDAO = new DespesaDAO();
+            cbDespesa.ItemsSource = despesaDAO.List();
+            cbDespesa.DisplayMemberPath = "Nome";
         }
 
         private void btCancelar_Click(object sender, RoutedEventArgs e)

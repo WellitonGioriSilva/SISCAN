@@ -3,32 +3,33 @@ use bd_siscan;
 
 create table Produto
 (
-id_prod int primary key,
+id_prod int primary key auto_increment,
 nome_prod varchar(45),
 marca_prod varchar(45),
+tipo_prod varchar(45),
 foto_prod varchar(45)
 );
 
 create table Caixa
 (
-id_cai int primary key,
+id_cai int primary key auto_increment,
 data_cai date,
 hora_abertura_cai time,
 hora_fechamento_cai time,
-valor_inicial_cai float,
-valor_final_cai float
+valor_inicial_cai double,
+valor_final_cai double
 );
 
 create table Funcao(
 id_fun int primary key auto_increment,
 nome_fun varchar(45),
-salario_fun float,
+salario_fun double,
 turno_fun varchar(45)
 );
 
 create table Forma_Pagamento
 (
-id_form_pag int primary key,
+id_form_pag int primary key auto_increment,
 nome_form_pag varchar(45)
 );
 
@@ -94,12 +95,12 @@ foreign key (id_fun_fk) references Funcao (id_fun)
 
 create table Venda
 (
-id_vend int primary key,
+id_vend int primary key auto_increment,
 data_vend date,
 hora_vend time,
-valor_vend float,
+valor_vend double,
 status_vend varchar(45),
-peso_vend float,
+peso_vend double,
 id_cid_fk int,
 foreign key (id_cid_fk) references Cidade (id_cid),
 id_func_fk int,
@@ -108,7 +109,7 @@ foreign key (id_func_fk) references Funcionario (id_func)
 
 create table Venda_produto
 (
-id_vend_prod int primary key,
+id_vend_prod int primary key auto_increment,
 quantidade_vend_prod int,
 id_prod_fk int,
 foreign key (id_prod_fk) references produto (id_prod),
@@ -118,9 +119,9 @@ foreign key (id_vend_fk) references Venda (id_vend)
 
 create table Estoque
 (
-id_est int primary key,
+id_est int primary key auto_increment,
 lote_est varchar(45),
-quantidade_est float,
+quantidade_est double,
 validade_est date,
 id_prod_fk int,
 foreign key (id_prod_fk) references produto (id_prod)
@@ -128,8 +129,8 @@ foreign key (id_prod_fk) references produto (id_prod)
 
 create table Compra
 (
-id_com int primary key,
-valor_com float,
+id_com int primary key auto_increment,
+valor_com double,
 data_com date,
 id_forn_fk int,
 foreign key (id_forn_fk) references Fornecedor (id_forn)
@@ -137,7 +138,7 @@ foreign key (id_forn_fk) references Fornecedor (id_forn)
 
 create table Compra_produto
 (
-id_com_prod int primary key,
+id_com_prod int primary key auto_increment,
 quantidade_com_prod int,
 id_com_fk int,
 foreign key (id_com_fk) references Compra (id_com),
@@ -147,33 +148,36 @@ foreign key (id_prod_fk) references produto (id_prod)
 
 create table Despesa
 (
-id_desp int primary key,
+id_desp int primary key auto_increment,
 nome_desp varchar(45),
-parcelas_desp varchar(45),
-valor_desp varchar(45),
+parcelas_desp int,
+valor_desp double,
 data_desp varchar(45),
 vencimento_desp varchar(45),
+status_desp varchar(45),
 id_com_fk int,
 foreign key (id_com_fk) references Compra (id_com)
 );
 
 create table Pagamento
 (
-id_pag int primary key,
+id_pag int primary key auto_increment,
 data_pag date, 
-valor_pag float,
+valor_pag double,
 hora_pag time,
 id_desp_fk int,
 foreign key (id_desp_fk) references Despesa (id_desp),
 id_cai_fk int,
-foreign key (id_cai_fk) references Caixa (id_cai)
+foreign key (id_cai_fk) references Caixa (id_cai),
+id_form_pag_fk int,
+foreign key (id_form_pag_fk) references Forma_Pagamento (id_form_pag)
 );
 
 create table Recebimento
 (
-id_rec int primary key,
+id_rec int primary key auto_increment,
 data_rec date,
-valor_rec float,
+valor_rec double,
 hora_rec time,
 id_vend_fk int,
 foreign key (id_vend_fk) references Venda (id_vend),
@@ -185,7 +189,7 @@ foreign key (id_form_pag_fk) references Forma_Pagamento (id_form_pag)
 
 create table Usuario
 (
-id_usu int primary key,
+id_usu int primary key auto_increment,
 usuario_usu varchar(45),
 senha_usu varchar(45),
 id_func_fk int,
@@ -193,6 +197,10 @@ foreign key (id_func_fk) references Funcionario (id_func)
 );
 
 #Inserts
+INSERT INTO Forma_Pagamento VALUES(null, 'Cartão de Crédito'),
+(null, 'Cartão de Débito'),
+(null, 'Pix');
+
 INSERT INTO Estado VALUES(null, "Rôndonia", "RO", 11);
 
 INSERT INTO Cidade VALUES
@@ -252,10 +260,10 @@ INSERT INTO Cidade VALUES
 
 #Checks
 select * from Cidade;
+select * from Caixa;
 select * from Cliente;
 select * from Funcionario;
 select * from Fornecedor;
 select * from Funcao;
-
-delete from Funcao;
-delete from Funcionario;
+select * from Produto;
+select * from Pagamento;

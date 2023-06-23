@@ -48,7 +48,6 @@ namespace SISCAN.Formularios
                 FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
                 funcionarioDAO.Insert(funcionario);
 
-                MessageBox.Show("Dados salvos com sucesso!");
                 Clear();
             }
             catch (Exception ex)

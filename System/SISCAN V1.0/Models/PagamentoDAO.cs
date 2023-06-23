@@ -8,34 +8,31 @@ using System.Windows;
 
 namespace SISCAN.Models
 {
-    class ClienteDAO
+    internal class PagamentoDAO
     {
         private static Conexao conn;
 
-        public ClienteDAO()
+        public PagamentoDAO()
         {
             conn = new Conexao();
         }
 
-        public void Insert(Cliente cliente)
+        public void Insert(Pagamento pagamento)
         {
             try
             {
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, id_cid_fk) " +
-                    $"VALUES (@nome, @cpf, @email, @sexo, @data_nasc, @rua, @bairro, @numero, @id_cid)";
+                query.CommandText = $"INSERT INTO Pagamento (data_pag, valor_pag, hora_pag, id_cai_fk, id_form_pag_fk, id_desp_fk) " +
+                    $"VALUES (@data, @valor, @hora, @id_cai, @id_form_pag, @id_desp)";
 
-                query.Parameters.AddWithValue("@nome", cliente.Nome);
-                query.Parameters.AddWithValue("@cpf", cliente.Cpf);
-                query.Parameters.AddWithValue("@email", cliente.Email);
-                query.Parameters.AddWithValue("@sexo", cliente.Sexo);
-                query.Parameters.AddWithValue("@data_nasc", cliente.DataNascimento?.ToString("yyyy-MM-dd"));
-                query.Parameters.AddWithValue("@rua", cliente.Rua);
-                query.Parameters.AddWithValue("@bairro", cliente.Bairro);
-                query.Parameters.AddWithValue("@numero", cliente.Numero);
-                query.Parameters.AddWithValue("@id_cid", cliente.Cidade.ID);
+                query.Parameters.AddWithValue("@data", pagamento.Data?.ToString("yyyy-MM-dd"));
+                query.Parameters.AddWithValue("@valor", pagamento.Valor);
+                query.Parameters.AddWithValue("@hora", pagamento.Hora);
+                query.Parameters.AddWithValue("@id_cai", pagamento.Caixa.id);
+                query.Parameters.AddWithValue("@id_form_pag", pagamento.FormaPagamento.Id);
+                query.Parameters.AddWithValue("@id_desp", pagamento.Despesa.Id);
 
                 var result = query.ExecuteNonQuery();
 

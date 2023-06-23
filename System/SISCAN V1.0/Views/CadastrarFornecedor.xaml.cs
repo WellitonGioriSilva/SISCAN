@@ -49,7 +49,6 @@ namespace SISCAN.Formularios
                 FornecedorDAO fornecedorDAO = new FornecedorDAO();
                 fornecedorDAO.Insert(fornecedor);
 
-                MessageBox.Show("Dados salvos com sucesso!");
                 Clear();
             }
             catch (Exception ex)

@@ -1,5 +1,7 @@
-﻿using MySqlX.XDevAPI;
+﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 using SISCAN.Database;
+using SISCAN.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +52,49 @@ namespace SISCAN.Models
                 conn.Close();
             }
 
+        }
+
+        public List<Estoque> List(string busca)
+        {
+            try
+            {
+                List<Estoque> list = new List<Estoque>();
+
+                var query = conn.Query();
+
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Estoque LEFT JOIN Produto ON Estoque.id_prod_fk = Produto.id_prod;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Estoque, Produto WHERE (Estoque.id_prod_fk = Produto.id_prod) AND (lote_est LIKE '%{busca}%');";
+                }
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new Estoque()
+                    {
+                        Id = reader.GetInt32("id_est"),
+                        Lote = DAOHelper.GetString(reader, "lote_est"),
+                        Quantidade = reader.GetInt32("quantidade_est"),
+                        Validade = DAOHelper.GetDateTime(reader, "validade_est"),
+                        Produto = DAOHelper.IsNull(reader, "id_prod_fk") ? null : new Produto() { Id = reader.GetInt32("id_prod"), Nome = reader.GetString("nome_prod"), Marca = reader.GetString("marca_prod"), Tipo = reader.GetString("tipo_prod") }
+                    });
+                }
+
+                return list;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
     }

@@ -17,14 +17,21 @@ namespace SISCAN.Models
         {
             conn = new Conexao();
         }
-        public List<Caixa> List()
+        public List<Caixa> List(string busca)
         {
             try
             {
                 List<Caixa> list = new List<Caixa>();
 
                 var query = conn.Query();
-                query.CommandText = "SELECT * FROM Caixa;";
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Caixa;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Caixa WHERE (id_cai LIKE '%{busca}%');";
+                }
 
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -34,8 +41,8 @@ namespace SISCAN.Models
                     {
                         id = reader.GetInt32("id_cai"),
                         Data = DAOHelper.GetDateTime(reader, "data_cai"),
-                        HoraAbertura = DAOHelper.GetDateTime(reader, "hora_abertura_cai"),
-                        HoraFechamento = DAOHelper.GetDateTime(reader, "hora_fechamento_cai"),
+                        HoraAbertura = reader.GetTimeSpan("hora_abertura_cai"),
+                        HoraFechamento = reader.GetTimeSpan("hora_fechamento_cai"),
                         ValorIncial = DAOHelper.GetDouble(reader, "valor_inicial_cai"),
                         ValorFinal = DAOHelper.GetDouble(reader, "valor_final_cai")
                     });

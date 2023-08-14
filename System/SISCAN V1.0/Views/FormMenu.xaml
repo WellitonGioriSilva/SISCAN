@@ -18,9 +18,9 @@
     </Window.Background>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.95*"/>
-            <RowDefinition Height="1.2*"/>
-            <RowDefinition Height="1.6*"/>
+            <RowDefinition Height="75*"/>
+            <RowDefinition Height="136*"/>
+            <RowDefinition Height="149*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -60,15 +60,16 @@
         </StackPanel>
 
         <StackPanel>
-            <Button Height="152" Width="156" Background="{x:Null}" BorderBrush="{x:Null}">
+            <Button Height="150" Width="145" Background="{x:Null}" BorderBrush="{x:Null}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <materialDesign:PackIcon Kind="AccountCircleOutline" Height="116" Width="116" />
+                    <materialDesign:PackIcon Kind="AccountCircleOutline" Height="96" Width="89" />
                     <Label HorizontalAlignment="Center" FontFamily="Century" FontSize="18">Usuário</Label>
                 </StackPanel>
             </Button>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Margin="0,8,0,8">
+            <Button x:Name="btUser" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btUser_Click">Usuário</Button>
             <Button x:Name="btCliente" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btCliente_Click">Cliente</Button>
             <Button x:Name="btProduto" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Cursor="Hand" Click="btProduto_Click">Produto</Button>
             <Button Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century">Compra</Button>
@@ -92,7 +93,7 @@
             </TreeView>
         </StackPanel>
 
-        <StackPanel Grid.RowSpan="3" Margin="34,110,34,72" Grid.Column="1" Width="900" Height="536">
+        <StackPanel Grid.RowSpan="3" Margin="34,111,34,73" Grid.Column="1">
             <Frame x:Name="Frame" Content="" Height="506" NavigationUIVisibility="Hidden" Width="850"/>
         </StackPanel>
     </Grid>

@@ -12,8 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 using MySqlX.XDevAPI;
 using SISCAN.Models;
+using SISCAN.Views;
 
 namespace SISCAN.Formularios
 {
@@ -85,6 +87,12 @@ namespace SISCAN.Formularios
             CidadeDAO cidDAO = new CidadeDAO();
             cbCidade.ItemsSource = cidDAO.List();
             cbCidade.DisplayMemberPath = "Nome";
+        }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarCliente());
         }
     }
 }

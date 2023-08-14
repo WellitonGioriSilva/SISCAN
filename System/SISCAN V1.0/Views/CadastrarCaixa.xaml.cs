@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySqlX.XDevAPI;
 using SISCAN.Models;
+using SISCAN.Views;
+using SISCAN.Helpers;
 
 namespace SISCAN.Formularios
 {
@@ -36,8 +38,10 @@ namespace SISCAN.Formularios
                 caixa.ValorIncial = Convert.ToInt32(tbValorInicial.Text);
                 caixa.ValorFinal = Convert.ToInt32(tbValorFinal.Text);
                 caixa.Data = dtpData.SelectedDate;
-                caixa.HoraAbertura = tmAbertura.SelectedTime;
-                caixa.HoraFechamento = tmFechamento.SelectedTime;
+                DateTime? aber = tmAbertura.SelectedTime;
+                DateTime? fec = tmFechamento.SelectedTime;
+                caixa.HoraAbertura = DAOHelper.DateTimeToTimeSpan(aber);
+                caixa.HoraFechamento = DAOHelper.DateTimeToTimeSpan(fec);
 
                 //Inserindo os Dados           
                 CaixaDAO caixaDAO = new CaixaDAO();
@@ -65,6 +69,12 @@ namespace SISCAN.Formularios
         {
             tbValorInicial.Clear();
             tbValorFinal.Clear();
+        }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarCaixa());
         }
     }
 }

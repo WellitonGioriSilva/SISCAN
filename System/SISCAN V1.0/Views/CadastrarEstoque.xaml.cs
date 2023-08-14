@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySqlX.XDevAPI;
 using SISCAN.Models;
+using SISCAN.Views;
 
 namespace SISCAN.Formularios
 {
@@ -25,6 +26,12 @@ namespace SISCAN.Formularios
         public CadastrarEstoque()
         {
             InitializeComponent();
+        }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarEstoque());
         }
     }
 }

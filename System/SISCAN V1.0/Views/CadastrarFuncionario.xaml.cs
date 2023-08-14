@@ -1,4 +1,5 @@
 ﻿using SISCAN.Models;
+using SISCAN.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +78,7 @@ namespace SISCAN.Formularios
 
             //Setando dados no combobox de função
             FuncaoDAO funDAO = new FuncaoDAO();
-            cbFuncao.ItemsSource = funDAO.List();
+            cbFuncao.ItemsSource = funDAO.List(null);
             cbFuncao.DisplayMemberPath = "Nome";
         }
 
@@ -90,6 +91,12 @@ namespace SISCAN.Formularios
                 Clear();
                 MessageBox.Show("Campos limpos com sucesso!");
             }
+        }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarFuncionario());
         }
     }
 }

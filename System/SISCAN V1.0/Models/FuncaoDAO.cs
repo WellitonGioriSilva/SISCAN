@@ -52,14 +52,21 @@ namespace SISCAN.Models
             }
         }
 
-        public List<Funcao> List()
+        public List<Funcao> List(string busca)
         {
             try
             {
                 List<Funcao> list = new List<Funcao>();
 
                 var query = conn.Query();
-                query.CommandText = "SELECT * FROM Funcao;";
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Funcao;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Funcao WHERE (nome_fun LIKE '%{busca}%');";
+                }
 
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -68,8 +75,9 @@ namespace SISCAN.Models
                     list.Add(new Funcao()
                     {
                         Id = reader.GetInt32("id_fun"),
-                        Nome = DAOHelper.GetString(reader, "nome_fun")
-                        //Estado = DAOHelper.IsNull(reader, "id_est_fk") ? null : new Estado() { Id = reader.GetInt32("id_est"), Nome = reader.GetString("nome_est") }
+                        Nome = DAOHelper.GetString(reader, "nome_fun"),
+                        Salario = DAOHelper.GetDouble(reader, "salario_fun"),
+                        Turno = DAOHelper.GetString(reader, "turno_fun")
                     });
                 }
 

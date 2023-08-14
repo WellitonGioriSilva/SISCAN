@@ -18,7 +18,7 @@
         <ImageBrush ImageSource="/Resources/Base Laranja.png"/>
     </Page.Background>
 
-    <Grid Margin="0,0,26,25">
+    <Grid Margin="0,0,26,25" Cursor="">
         <StackPanel Margin="0,0,450,-16" Grid.Column="0">
 
 
@@ -79,12 +79,12 @@
             </Border>
 
             <StackPanel Grid.Column="2" Width="198" Height="235" Margin="0,20,0,0" HorizontalAlignment="Right">
-                <Button
+                <Button x:Name="btBuscar"
                     Height="48"
                     materialDesign:ButtonAssist.CornerRadius="25"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,20,0,0">
+                    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,20,0,0" Click="btBuscar_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFFF3D00"/>
@@ -128,5 +128,8 @@
 
         </StackPanel>
 
+        <StackPanel Margin="0,0,-26,-25">
+            <Frame x:Name="fmFrame" Content="" Height="506" Visibility="Collapsed"/>
+        </StackPanel>
     </Grid>
 </Page>

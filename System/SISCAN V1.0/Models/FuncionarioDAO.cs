@@ -1,4 +1,6 @@
-﻿using SISCAN.Database;
+﻿using MySql.Data.MySqlClient;
+using SISCAN.Database;
+using SISCAN.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,53 @@ namespace SISCAN.Models
         public FuncionarioDAO()
         {
             conn = new Conexao();
+        }
+
+        public List<Funcionario> List(string busca)
+        {
+            try
+            {
+                List<Funcionario> list = new List<Funcionario>();
+
+                var query = conn.Query();
+
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Funcionario RIGHT JOIN Cidade ON Funcionario.id_cid_fk = Cidade.id_cid INNER JOIN Funcao ON Funcionario.id_fun_fk = Funcao.id_fun;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Funcionario, Funcao, Cidade WHERE (Funcionario.id_cid_fk = Cidade.id_cid) AND (Funcionario.id_fun_fk = Funcao.id_fun) AND (nome_func LIKE '%{busca}%');";
+                }
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new Funcionario()
+                    {
+                        Id = reader.GetInt32("id_func"),
+                        Nome = DAOHelper.GetString(reader, "nome_func"),
+                        Cpf = DAOHelper.GetString(reader, "cpf_func"),
+                        Sexo = DAOHelper.GetString(reader, "sexo_func"),
+                        Rua = DAOHelper.GetString(reader, "rua_func"),
+                        Bairro = DAOHelper.GetString(reader, "bairro_func"),
+                        Numero = reader.GetInt32("numero_func"),
+                        Cidade = DAOHelper.IsNull(reader, "id_cid_fk") ? null : new Cidade() { ID = reader.GetInt32("id_cid"), Nome = reader.GetString("nome_cid") },
+                        Funcao = DAOHelper.IsNull(reader, "id_fun_fk") ? null : new Funcao() { Id = reader.GetInt32("id_fun"), Nome = reader.GetString("nome_fun") }
+                    });
+                }
+
+                return list;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         public void Insert(Funcionario funcionario)

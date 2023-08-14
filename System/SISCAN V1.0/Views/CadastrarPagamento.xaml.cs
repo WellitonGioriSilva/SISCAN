@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Helpers;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace SISCAN.Views
                 //Setando informações na tabela cliente
                 Pagamento pagamento = new Pagamento();
                 pagamento.Valor = Convert.ToDouble(tbValor.Text);
-                pagamento.Hora = tmHora.SelectedTime;
+                pagamento.Hora = DAOHelper.DateTimeToTimeSpan(tmHora.SelectedTime);
                 pagamento.Data = dtpData.SelectedDate;
                 pagamento.Caixa = new Caixa();
                 pagamento.Caixa.id = cbCaixa.SelectedIndex + 1;
@@ -76,14 +77,14 @@ namespace SISCAN.Views
         private void DadosCbCai()
         {
             CaixaDAO caixaDAO = new CaixaDAO();
-            cbCaixa.ItemsSource = caixaDAO.List();
+            cbCaixa.ItemsSource = caixaDAO.List(null);
             cbCaixa.DisplayMemberPath = "Data";
         }
         
         private void DadosCbDesp()
         {
             DespesaDAO despesaDAO = new DespesaDAO();
-            cbDespesa.ItemsSource = despesaDAO.List();
+            cbDespesa.ItemsSource = despesaDAO.List(null);
             cbDespesa.DisplayMemberPath = "Nome";
         }
 
@@ -96,6 +97,12 @@ namespace SISCAN.Views
                 Clear();
                 MessageBox.Show("Campos limpos com sucesso!");
             }
+        }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarPagamento());
         }
     }
 }

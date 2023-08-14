@@ -37,11 +37,17 @@ namespace SISCAN.Helpers
                 value = reader.GetDateTime(column_name);
 
             return value;
-        }
+        }        
 
         public static bool IsNull(MySqlDataReader reader, string column_name)
         {
             return reader.IsDBNull(reader.GetOrdinal(column_name));
+        }
+
+        public static TimeSpan DateTimeToTimeSpan(DateTime? ts)
+        {
+            if (!ts.HasValue) return TimeSpan.Zero;
+            else return new TimeSpan(0, ts.Value.Hour, ts.Value.Minute, ts.Value.Second, ts.Value.Millisecond);
         }
     }
 }

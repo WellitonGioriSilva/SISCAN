@@ -60,14 +60,22 @@ namespace SISCAN.Models
             }
         }
 
-        public List<Despesa> List()
+        public List<Despesa> List(string busca)
         {
             try
             {
                 List<Despesa> list = new List<Despesa>();
 
                 var query = conn.Query();
-                query.CommandText = "SELECT * FROM Despesa";
+
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Despesa LEFT JOIN Compra ON Despesa.id_com_fk = Compra.id_com;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Despesa, Compra WHERE (Despesa.id_com_fk = Compra.id_com) AND (nome_desp LIKE '%{busca}%');";
+                }
 
                 MySqlDataReader reader = query.ExecuteReader();
 

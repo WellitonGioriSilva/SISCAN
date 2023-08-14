@@ -17,14 +17,22 @@ namespace SISCAN.Models
         {
             conn = new Conexao();
         }
-        public List<Produto> List()
+        public List<Produto> List(string busca)
         {
             try
             {
                 List<Produto> list = new List<Produto>();
 
                 var query = conn.Query();
-                query.CommandText = "SELECT * FROM Produto;";
+
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Produto;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Produto WHERE (nome_prod LIKE '%{busca}%');";
+                }
 
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -34,7 +42,8 @@ namespace SISCAN.Models
                     {
                         Id = reader.GetInt32("id_prod"),
                         Nome = DAOHelper.GetString(reader, "nome_prod"),
-                        Marca = DAOHelper.GetString(reader, "marca_prod")
+                        Marca = DAOHelper.GetString(reader, "marca_prod"),
+                        Tipo = DAOHelper.GetString(reader, "tipo_prod")
                     });
                 }
 

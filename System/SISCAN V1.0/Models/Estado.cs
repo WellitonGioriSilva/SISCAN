@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SISCAN.Models
 {
-    class Estado
+    public class Estado
     {
         public int Id { get; set; }
         public string Nome { get; set; }

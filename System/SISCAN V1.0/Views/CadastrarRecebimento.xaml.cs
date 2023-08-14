@@ -1,5 +1,6 @@
 ﻿using MySqlX.XDevAPI;
 using SISCAN.Models;
+using SISCAN.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SISCAN.Helpers;
 
 namespace SISCAN.Formularios
 {
@@ -37,7 +39,7 @@ namespace SISCAN.Formularios
                 //Setando informações na tabela cliente
                 Recebimento recebimento = new Recebimento();
                 recebimento.Valor = Convert.ToDouble(tbValor.Text);
-                recebimento.Hora = tmHora.SelectedTime;
+                recebimento.Hora = DAOHelper.DateTimeToTimeSpan(tmHora.SelectedTime);
                 recebimento.Data = dtpData.SelectedDate;
                 recebimento.Caixa = new Caixa();
                 recebimento.Caixa.id = cbCaixa.SelectedIndex + 1;
@@ -74,7 +76,7 @@ namespace SISCAN.Formularios
         private void DadosCbCai()
         {
             CaixaDAO caixaDAO = new CaixaDAO();
-            cbCaixa.ItemsSource = caixaDAO.List();
+            cbCaixa.ItemsSource = caixaDAO.List(null);
             cbCaixa.DisplayMemberPath = "Data";
         }
 
@@ -87,6 +89,12 @@ namespace SISCAN.Formularios
                 Clear();
                 MessageBox.Show("Campos limpos com sucesso!");
             }
+        }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarRecebimento());
         }
     }
 }

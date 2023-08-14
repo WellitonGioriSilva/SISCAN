@@ -1,4 +1,6 @@
-﻿using SISCAN.Database;
+﻿using MySql.Data.MySqlClient;
+using SISCAN.Database;
+using SISCAN.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +51,51 @@ namespace SISCAN.Models
             {
                 MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public List<Pagamento> List(string busca)
+        {
+            try
+            {
+                List<Pagamento> list = new List<Pagamento>();
+
+                var query = conn.Query();
+
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Pagamento LEFT JOIN Despesa ON Pagamento.id_desp_fk = Despesa.id_desp INNER JOIN Caixa ON Pagamento.id_cai_fk = Caixa.id_cai INNER JOIN Forma_Pagamento ON Pagamento.id_form_pag_fk = Forma_Pagamento.id_form_pag;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Pagamento, Caixa, Despesa, Forma_Pagamento WHERE (Pagamento.id_cai_fk = Caixa.id_cai) AND (Pagamento.id_desp_fk = Despesa.id_desp) AND (Pagamento.id_form_pag_fk = Forma_Pagamento.id_form_pag) AND (data_pag LIKE '%{busca}%');";
+                }
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new Pagamento()
+                    {
+                        Id = reader.GetInt32("id_pag"),
+                        Valor = DAOHelper.GetDouble(reader, "valor_pag"),
+                        Data = DAOHelper.GetDateTime(reader, "data_pag"),
+                        Hora = reader.GetTimeSpan("hora_pag"),
+                        Caixa = DAOHelper.IsNull(reader, "id_cai_fk") ? null : new Caixa() { id = reader.GetInt32("id_cai"), Data = DAOHelper.GetDateTime(reader, "data_cai") },
+                        Despesa = DAOHelper.IsNull(reader, "id_desp_fk") ? null : new Despesa() { Id = reader.GetInt32("id_desp"), Nome = reader.GetString("nome_desp") },
+                        FormaPagamento = DAOHelper.IsNull(reader, "id_form_pag_fk") ? null : new FormaPagamento() { Id = reader.GetInt32("id_form_pag"), Nome = reader.GetString("nome_form_pag") }
+                    });
+                }
+
+                return list;
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
             finally
             {

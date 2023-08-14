@@ -55,9 +55,6 @@ namespace SISCAN.Formularios
 
         private void btVoltar_Click(object sender, RoutedEventArgs e)
         {
-            lbTitulo.Content = "Menu";
-            Frame.NavigationService.Navigate(new Menu());
-
             MessageBoxResult result = MessageBox.Show("Deseja realmente voltar ao menu?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
@@ -111,6 +108,12 @@ namespace SISCAN.Formularios
         {
             lbTitulo.Content = "Pagar Despesa";
             Frame.NavigationService.Navigate(new CadastrarPagamento());
+        }
+
+        private void btUser_Click(object sender, RoutedEventArgs e)
+        {
+            lbTitulo.Content = "Cadastrar Usuário";
+            Frame.NavigationService.Navigate(new CadastrarUsuario());
         }
     }
 }

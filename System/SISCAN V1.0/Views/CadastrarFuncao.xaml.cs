@@ -1,4 +1,5 @@
 ﻿using SISCAN.Models;
+using SISCAN.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,6 +106,12 @@ namespace SISCAN.Formularios
             {
                 turnoSelect = $"{turnoSelect}, Noturno";
             }
+        }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarFuncao());
         }
     }
 }

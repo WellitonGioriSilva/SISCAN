@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SISCAN.Models;
+using SISCAN.Views;
 
 namespace SISCAN.Formularios
 {
@@ -85,6 +86,12 @@ namespace SISCAN.Formularios
                 Clear();
                 MessageBox.Show("Campos limpos com sucesso!");
             }
+        }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarFornecedor());
         }
     }
 }

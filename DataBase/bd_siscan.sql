@@ -93,6 +93,8 @@ id_fun_fk int,
 foreign key (id_fun_fk) references Funcao (id_fun)
 );
 
+SELECT * FROM Funcionario RIGHT JOIN Cidade ON Funcionario.id_cid_fk = Cidade.id_cid INNER JOIN Funcao ON Funcionario.id_fun_fk = Funcao.id_fun;
+
 create table Venda
 (
 id_vend int primary key auto_increment,
@@ -267,3 +269,4 @@ select * from Fornecedor;
 select * from Funcao;
 select * from Produto;
 select * from Pagamento;
+SELECT * FROM Cliente, Cidade WHERE (Cliente.id_cid_fk = Cidade.id_cid) AND (nome_cli LIKE '%Welliton%');

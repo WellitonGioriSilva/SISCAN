@@ -1,4 +1,6 @@
-﻿using SISCAN.Database;
+﻿using MySql.Data.MySqlClient;
+using SISCAN.Database;
+using SISCAN.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +54,54 @@ namespace SISCAN.Models
             {
                 MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public List<Fornecedor> List(string busca)
+        {
+            try
+            {
+                List<Fornecedor> list = new List<Fornecedor>();
+
+                var query = conn.Query();
+
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Fornecedor LEFT JOIN Cidade ON Fornecedor.id_cid_fk = Cidade.id_cid LEFT JOIN Estado ON Cidade.id_est_fk = Estado.id_est;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Fornecedor, Cidade, Estado WHERE (Fornecedor.id_cid_fk = Cidade.id_cid) AND (Cidade.id_est_fk = Estado.id_est) AND (razao_social_forn LIKE '%{busca}%');";
+                }
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new Fornecedor()
+                    {
+                        Id = reader.GetInt32("id_forn"),
+                        RazaoSocial = DAOHelper.GetString(reader, "razao_social_forn"),
+                        Cnpj = DAOHelper.GetString(reader, "cnpj_forn"),
+                        Bairro = DAOHelper.GetString(reader, "bairro_forn"),
+                        Rua = DAOHelper.GetString(reader, "rua_forn"),
+                        NomeFantasia = DAOHelper.GetString(reader, "nome_fantasia_forn"),
+                        Telefone = DAOHelper.GetString(reader, "telefone_forn"),
+                        InscricaoEstadual = DAOHelper.GetString(reader, "inscricao_estadual_forn"),
+                        Responsavel = DAOHelper.GetString(reader, "responsavel_forn"),
+                        Cidade = DAOHelper.IsNull(reader, "id_cid_fk") ? null : new Cidade() { ID = reader.GetInt32("id_cid"), Nome = reader.GetString("nome_cid"), Estado = DAOHelper.IsNull(reader, "id_est_fk") ? null : new Estado() { Id = reader.GetInt32("id_est"), Nome = reader.GetString("nome_est") } }
+                    });
+                }
+
+                return list;
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
             finally
             {

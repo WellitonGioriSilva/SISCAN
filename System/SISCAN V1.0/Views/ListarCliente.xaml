@@ -1,0 +1,90 @@
+﻿<Page x:Class="SISCAN.Views.ListarCliente"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SISCAN.Formularios"
+      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal" 
+      TextOptions.TextRenderingMode="Auto"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      d:DesignHeight="536" d:DesignWidth="900"
+      Title="ListarCliente">
+    <Page.Background>
+        <ImageBrush ImageSource="/Resources/Base Laranja.png"/>
+    </Page.Background>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <Border BorderThickness="1.5" Margin="50 31 0 0" HorizontalAlignment="Left" CornerRadius="20" Height="34" Width="584" Background="#1FFFFFFF" BorderBrush="#FF872000">
+                <TextBox
+                x:Name="tbNome"
+                materialDesign:HintAssist.Hint="Nome:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+
+            <Button x:Name="btBuscar"
+    Height="46"
+    materialDesign:ButtonAssist.CornerRadius="25"
+    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="150" BorderBrush="White" Margin="600,-40,0,0" Click="btBuscar_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
+      Text="Buscar" FontFamily="Century" FontSize="20" />
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <DataGrid Grid.Row="2" Margin="5,5,5,5" x:Name="dgvList" IsReadOnly="true"
+                      AutoGenerateColumns="False" AlternatingRowBackground="#FFE5E5E5" AlternationCount="2" Grid.ColumnSpan="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Nome do Funcionário" Binding="{Binding Nome}"/>
+                    <DataGridTextColumn Header="Sexo" Binding="{Binding Sexo}"/>
+                    <DataGridTextColumn Header="CPF" Binding="{Binding CPF}"/>
+                    <DataGridTextColumn Header="Data de Nascimento" Binding="{Binding DataNascimento}"/>
+                    <DataGridTextColumn Header="E-mail" Binding="{Binding Email}"/>
+                    <DataGridTextColumn Header="Rua" Binding="{Binding Rua}"/>
+                    <DataGridTextColumn Header="Bairro" Binding="{Binding Bairro}"/>
+                    <DataGridTextColumn Header="Número" Binding="{Binding Numero}"/>
+                    <DataGridTextColumn Header="Cidade" Binding="{Binding Cidade.Nome}"/>
+
+                    <DataGridTemplateColumn Header="Ações">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                        Content="{materialDesign:PackIcon Eye}"
+                                        ToolTip="Visualizar Registro" Margin="0 0 5 0" />
+                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                        Content="{materialDesign:PackIcon Delete}"
+                                        ToolTip="Excluir Registro"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+</Page>

@@ -40,4 +40,10 @@
     <Resource Include="Resources\Logotipo Lanchonete.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\UpdateUsuario.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

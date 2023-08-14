@@ -1,4 +1,6 @@
-﻿using SISCAN.Database;
+﻿using MySql.Data.MySqlClient;
+using SISCAN.Database;
+using SISCAN.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,58 @@ namespace SISCAN.Models
     class ClienteDAO
     {
         private static Conexao conn;
+        //public List<Cidade> listCid = new List<Cidade>();
 
         public ClienteDAO()
         {
             conn = new Conexao();
+        }
+        public List<Cliente> List(string busca)
+        {
+            try
+            {
+                List<Cliente> listCli = new List<Cliente>();
+
+                var query = conn.Query();
+
+                if(busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Cliente LEFT JOIN Cidade ON Cliente.id_cid_fk = Cidade.id_cid;";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Cliente, Cidade WHERE (Cliente.id_cid_fk = Cidade.id_cid) AND (nome_cli LIKE '%{busca}%');";
+                }
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    listCli.Add(new Cliente()
+                    {
+                        Id = reader.GetInt32("id_cli"),
+                        Nome = DAOHelper.GetString(reader, "nome_cli"),
+                        Cpf = DAOHelper.GetString(reader, "cpf_cli"),
+                        Email = DAOHelper.GetString(reader, "email_cli"),
+                        Sexo = DAOHelper.GetString(reader, "sexo_cli"),
+                        DataNascimento = DAOHelper.GetDateTime(reader, "data_nascimento_cli"),
+                        Rua = DAOHelper.GetString(reader, "rua_cli"),
+                        Bairro = DAOHelper.GetString(reader, "bairro_cli"),
+                        Numero = reader.GetInt32("numero_cli"),
+                        Cidade = DAOHelper.IsNull(reader, "id_cid_fk") ? null : new Cidade() { ID = reader.GetInt32("id_cid"), Nome = reader.GetString("nome_cid") }
+                    }) ;                    
+                }
+
+                return listCli;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         public void Insert(Cliente cliente)
@@ -58,5 +108,6 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+        
     }
 }

@@ -58,12 +58,12 @@
 
 
         <StackPanel Grid.Row="2" Grid.Column="2">
-            <Button
+            <Button x:Name="btBuscar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0">
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="btBuscar_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFFF3D00"/>
@@ -103,6 +103,11 @@
                 <TextBlock
       Text="Salvar" FontFamily="Century" FontSize="20" />
             </Button>
+        </StackPanel>
+
+
+        <StackPanel Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Frame x:Name="fmFrame" Content="" Height="506" Visibility="Collapsed"/>
         </StackPanel>
     </Grid>
 </Page>

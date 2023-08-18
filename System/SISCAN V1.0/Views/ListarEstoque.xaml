@@ -54,13 +54,10 @@
                       AutoGenerateColumns="False" AlternatingRowBackground="#FFE5E5E5" AlternationCount="2" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="Nome do Funcionário" Binding="{Binding Nome}"/>
-                    <DataGridTextColumn Header="Sexo" Binding="{Binding Sexo.Nome}"/>
-                    <DataGridTextColumn Header="CPF" Binding="{Binding CPF}"/>
-                    <DataGridTextColumn Header="E-mail" Binding="{Binding Email}"/>
-                    <DataGridTextColumn Header="Celular" Binding="{Binding Celular}"/>
-                    <DataGridTextColumn Header="Função" Binding="{Binding Funcao}"/>
-                    <DataGridTextColumn Header="Salário" Binding="{Binding Salario, ConverterCulture='pt-BR', StringFormat=C}"/>
+                    <DataGridTextColumn Header="Quantidade" Binding="{Binding Quantidade, ConverterCulture='pt-BR', StringFormat=C}"/>
+                    <DataGridTextColumn Header="Lote" Binding="{Binding Lote}"/>
+                    <DataGridTextColumn Header="Validade" Binding="{Binding Validade}"/>
+                    <DataGridTextColumn Header="Produto" Binding="{Binding Produto.Nome}"/>
 
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>

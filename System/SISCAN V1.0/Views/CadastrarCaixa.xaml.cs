@@ -22,9 +22,9 @@ namespace SISCAN.Formularios
     /// <summary>
     /// Interação lógica para CadastrarCliente.xam
     /// </summary>
-    public partial class CadastrarCaixa : Page
+    public partial class ConsultarCaixa : Page
     {
-        public CadastrarCaixa()
+        public ConsultarCaixa()
         {
             InitializeComponent();
         }

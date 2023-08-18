@@ -50,7 +50,36 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1">
-            <DataGrid x:Name="dgvList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20,0,20,0" Height="308"/>
+            <DataGrid x:Name="dgvList" Grid.Row="2" Margin="5,5,5,5" IsReadOnly="true"
+                      AutoGenerateColumns="False" AlternatingRowBackground="#FFE5E5E5" AlternationCount="2" Grid.ColumnSpan="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Nome do Funcionário" Binding="{Binding Nome}"/>
+                    <DataGridTextColumn Header="Sexo" Binding="{Binding Sexo.Nome}"/>
+                    <DataGridTextColumn Header="CPF" Binding="{Binding CPF}"/>
+                    <DataGridTextColumn Header="Celular" Binding="{Binding Celular}"/>
+                    <DataGridTextColumn Header="Número" Binding="{Binding Numero}"/>
+                    <DataGridTextColumn Header="Rua" Binding="{Binding Rua}"/>
+                    <DataGridTextColumn Header="Bairro" Binding="{Binding Bairro}"/>
+                    <DataGridTextColumn Header="Função" Binding="{Binding Funcao.Nome}"/>
+                    <DataGridTextColumn Header="Cidade" Binding="{Binding Cidade.Nome}"/>
+
+                    <DataGridTemplateColumn Header="Ações">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                        Content="{materialDesign:PackIcon Eye}"
+                                        ToolTip="Visualizar Registro" Margin="0 0 5 0" />
+                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                        Content="{materialDesign:PackIcon Delete}"
+                                        ToolTip="Excluir Registro" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
 
         <StackPanel>

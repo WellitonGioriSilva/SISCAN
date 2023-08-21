@@ -1,0 +1,135 @@
+﻿<Page x:Class="SISCAN.Views.UpdatePagamento"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SISCAN.Formularios"
+      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal" 
+      TextOptions.TextRenderingMode="Auto"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      d:DesignHeight="536" d:DesignWidth="900"
+      Title="CadastrarPagamento">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Resources/Base Laranja.png"/>
+        </Grid.Background>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="0,0,0,0" Grid.Column="0">
+
+            <Border BorderThickness="1.5" Margin="30 50 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbDespesa" materialDesign:HintAssist.Hint="Despesa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbFormapag" materialDesign:HintAssist.Hint="Forma de Pagamento:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbCaixa" materialDesign:HintAssist.Hint="Caixa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+            </Border>
+            
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <TextBox
+                x:Name="tbValor"
+                materialDesign:HintAssist.Hint="Valor:" BorderBrush="{x:Null}"  Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <DatePicker Margin="8,0,8,0" x:Name="dtpData"
+                    materialDesign:HintAssist.Hint="Data:" BorderBrush="White" FontFamily="Century" Height="34"/>
+
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <materialDesign:TimePicker Margin="8,0,8,0" x:Name="tmHora"
+                    materialDesign:HintAssist.Hint="Hora do pagamento:" BorderBrush="White" FontFamily="Century" Height="34"/>
+
+            </Border>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Margin="0,25,0,0">
+            <Label FontFamily="Century" FontSize="16" HorizontalAlignment="Center">
+               Dados atuais
+            </Label>
+            
+            <Label x:Name="lbDespesa" FontFamily="Century" FontSize="16" HorizontalAlignment="Center">
+               Despesa:
+            </Label>
+
+            <Label x:Name="lbFormadepagamento" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
+                Forma de pagamento:
+            </Label>
+
+            <Label x:Name="lbCaixa" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
+               Caixa:
+            </Label>
+
+            <Label x:Name="lbValor" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
+                Valor:
+            </Label>
+
+            <Label x:Name="lbData" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
+                Data:
+            </Label>
+            
+            <Label x:Name="lbHoradopagamento" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
+                Hora do pagamento:
+            </Label>
+
+
+        </StackPanel>
+
+
+
+        <StackPanel Grid.Column="1">
+          
+
+            <Button x:Name="btCancelar"
+                    Height="48"
+                    materialDesign:ButtonAssist.CornerRadius="25"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,350,10,0" HorizontalAlignment="Right" Click="btCancelar_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
+                        Text="Cancelar" FontFamily="Century" FontSize="20" />
+            </Button>
+
+            <Button x:Name="btSalvar"
+                    Height="48"
+                    materialDesign:ButtonAssist.CornerRadius="25"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,30,10,0" HorizontalAlignment="Right" Click="btSalvar_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
+                        Text="Salvar" FontFamily="Century" FontSize="20" />
+            </Button>
+
+
+        </StackPanel>
+
+        <StackPanel Grid.ColumnSpan="2">
+            <Frame x:Name="fmFrame" Content="" Height="506" Visibility="Collapsed"/>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -80,10 +80,10 @@ namespace SISCAN.Models
                 {
                     list.Add(new Recebimento()
                     {
-                        Id = reader.GetInt32("id_pag"),
-                        Valor = DAOHelper.GetDouble(reader, "valor_pag"),
-                        Data = DAOHelper.GetDateTime(reader, "data_pag"),
-                        Hora = reader.GetTimeSpan("hora_pag"),
+                        Id = reader.GetInt32("id_rec"),
+                        Valor = DAOHelper.GetDouble(reader, "valor_rec"),
+                        Data = DAOHelper.GetDateTime(reader, "data_rec"),
+                        Hora = reader.GetTimeSpan("hora_rec"),
                         Caixa = DAOHelper.IsNull(reader, "id_cai_fk") ? null : new Caixa() { id = reader.GetInt32("id_cai"), Data = DAOHelper.GetDateTime(reader, "data_cai") },
                         Venda = DAOHelper.IsNull(reader, "id_vend_fk") ? null : new Venda() { Id = reader.GetInt32("id_desp"), Data = DAOHelper.GetDateTime(reader, "nome_desp") },
                         FormaPagamento = DAOHelper.IsNull(reader, "id_form_pag_fk") ? null : new FormaPagamento() { Id = reader.GetInt32("id_form_pag"), Nome = reader.GetString("nome_form_pag") }
@@ -95,6 +95,40 @@ namespace SISCAN.Models
             catch (Exception e)
             {
                 throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public void Update(Recebimento recebimento)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Recebimento SET data_rec = @data, valor_rec = @valor, id_cai_fk = @id_cai, id_form_pag_fk = @id_form_pag WHERE id_rec = @id";
+
+                query.Parameters.AddWithValue("@id", recebimento.Id);
+                query.Parameters.AddWithValue("@data", recebimento.Data);
+                query.Parameters.AddWithValue("@valor", recebimento.Valor);
+                query.Parameters.AddWithValue("@id_form_pag", recebimento.FormaPagamento.Id);
+                query.Parameters.AddWithValue("@id_cai", recebimento.Caixa.id);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
+                }
+                else
+                {
+                    MessageBox.Show("Dados atualizados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
             }
             finally
             {

@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SISCAN.Views
     public partial class ListarRecebimento : Page
     {
         public string textBusca;
+        Recebimento selectedItemRec;
         public ListarRecebimento()
         {
             InitializeComponent();
@@ -47,9 +49,18 @@ namespace SISCAN.Views
             }
         }
 
-        private void btUpdate_Click(object sender, RoutedEventArgs e)
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
         {
-
+            if (dgvList.SelectedItem != null)
+            {
+                selectedItemRec = (Recebimento)this.dgvList.SelectedItem;
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new UpdateRecebimento(selectedItemRec));
+            }
+            else
+            {
+                MessageBox.Show("Selecione um usuário antes de atualizar!");
+            }
         }
     }
 }

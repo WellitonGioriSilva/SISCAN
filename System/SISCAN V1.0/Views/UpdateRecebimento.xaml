@@ -126,7 +126,7 @@
                 Valor
             </Label>
 
-            <Label x:Name="Data" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,30,0,0">
+            <Label x:Name="lbData" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,30,0,0">
                 Data
             </Label>
         </StackPanel>

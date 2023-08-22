@@ -54,20 +54,20 @@
                       AutoGenerateColumns="False" AlternatingRowBackground="#FFE5E5E5" AlternationCount="2" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="Caixa" Binding="{Binding Caixa.Numero}"/>
+                    <DataGridTextColumn Header="Caixa" Binding="{Binding Caixa.id}"/>
                     <DataGridTextColumn Header="Venda" Binding="{Binding Venda.Data}"/>
                     <DataGridTextColumn Header="Forma de Pagamento " Binding="{Binding FormaPagamento.Nome}"/>
-                    <DataGridTextColumn Header="Data" Binding="{Binding Celular}"/>
-                    <DataGridTextColumn Header="Hora" Binding="{Binding Funcao}"/>
+                    <DataGridTextColumn Header="Data" Binding="{Binding Data}"/>
+                    <DataGridTextColumn Header="Hora" Binding="{Binding Hora}"/>
                     <DataGridTextColumn Header="Valor" Binding="{Binding Valor, ConverterCulture='pt-BR', StringFormat=C}"/>
 
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
-                                        Content="{materialDesign:PackIcon Eye}"
-                                        ToolTip="Visualizar Registro" Margin="0 0 5 0" />
+                                    <Button x:Name="btAtualizar" Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                        Content="{materialDesign:PackIcon Pencil}"
+                                        ToolTip="Visualizar Registro" Margin="0 0 5 0" Click="btAtualizar_Click" />
                                     <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
                                         Content="{materialDesign:PackIcon Delete}"
                                         ToolTip="Excluir Registro" />
@@ -79,22 +79,8 @@
             </DataGrid>
         </StackPanel>
 
-        <StackPanel Grid.Row="3">
-            <Button x:Name="btUpdate"
-    Height="46"
-    materialDesign:ButtonAssist.CornerRadius="25"
-    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="150" BorderBrush="White" Margin="600,20,0,0" Click="btUpdate_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FFFF3D00"/>
-                        <GradientStop Color="#FFEDAB00" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-                <TextBlock
-      Text="Atualizar" FontFamily="Century" FontSize="20" />
-            </Button>
+        <StackPanel Grid.RowSpan="3">
+            <Frame x:Name="fmFrame" Content="" Height="506" Visibility="Collapsed"/>
         </StackPanel>
 
     </Grid>

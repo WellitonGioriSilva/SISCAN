@@ -91,8 +91,8 @@ namespace SISCAN.Formularios
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)
         {
-            fmFrame.Visibility = Visibility.Visible;
-            fmFrame.NavigationService.Navigate(new ListarCliente());
+            //fmFrame.Visibility = Visibility.Visible;
+            //fmFrame.NavigationService.Navigate(new ListarCliente());
         }
     }
 }

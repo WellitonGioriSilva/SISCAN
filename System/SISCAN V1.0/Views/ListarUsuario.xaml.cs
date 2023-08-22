@@ -27,7 +27,6 @@ namespace SISCAN.Views
         {
             InitializeComponent();
             CarregarLista();
-            btAtualizar.Visibility = Visibility.Visible;
         }
 
         public void CarregarLista()
@@ -51,20 +50,11 @@ namespace SISCAN.Views
 
         }
 
-        private void dgvList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dgvList.SelectedItem != null)
-            {
-                selectedItemUser = (Usuario)dgvList.SelectedItem;
-                MessageBox.Show(selectedItemUser.UsuarioNome + " selecionado!");
-            }
-        }
-
         private void btAtualizar_Click(object sender, RoutedEventArgs e)
         {
             if (dgvList.SelectedItem != null)
             {
-                btAtualizar.Visibility = Visibility.Collapsed;
+                selectedItemUser = (Usuario)this.dgvList.SelectedItem;
                 fmFrame.Visibility = Visibility.Visible;
                 fmFrame.NavigationService.Navigate(new UpdateUsuario(selectedItemUser));
             }

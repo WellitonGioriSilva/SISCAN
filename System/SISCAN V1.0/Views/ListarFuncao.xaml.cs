@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SISCAN.Views
     public partial class ListarFuncao : Page
     {
         public string textBusca;
+        Funcao selectedItem;
         public ListarFuncao()
         {
             InitializeComponent();
@@ -45,6 +47,20 @@ namespace SISCAN.Views
             else
             {
                 MessageBox.Show("Insira um nome antes de buscar");
+            }
+        }
+
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                selectedItem = (Funcao)this.dgvList.SelectedItem;
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new UpdateFuncao(selectedItem));
+            }
+            else
+            {
+                MessageBox.Show("Selecione uma função antes de atualizar!");
             }
         }
     }

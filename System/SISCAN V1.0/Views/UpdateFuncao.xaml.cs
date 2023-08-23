@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Helpers;
+using SISCAN.Models;
 using SISCAN.Views;
 using System;
 using System.Collections.Generic;
@@ -23,36 +24,61 @@ namespace SISCAN.Formularios
     public partial class UpdateFuncao : Page
     {
         string turnoSelect = "";
-        public UpdateFuncao()
+        Funcao funcao = new Funcao();
+        public UpdateFuncao(Funcao func)
         {
             InitializeComponent();
+            funcao = func;
+            ImportDados();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //Setando informações na tabela função
-                Funcao funcao = new Funcao();
-                funcao.Nome = tbNome.Text;
-                funcao.Salario = Convert.ToSingle(tbSalario.Text);
-                funcao.Turno = turnoSelect;
+                Funcao func = new Funcao();
+
+                func.Id = funcao.Id;
+                if (tbNome.Text != "")
+                {
+                    func.Nome = tbNome.Text;
+                }
+                else
+                {
+                    func.Nome = funcao.Nome;
+                }
+                if (tbSalario.Text != "")
+                {
+                    func.Salario = Convert.ToDouble(tbSalario.Text);
+                }
+                else
+                {
+                    func.Salario = funcao.Salario;
+                }
+                if (turnoSelect != "")
+                {
+                    func.Turno = turnoSelect;
+                }
+                else
+                {
+                    func.Turno = funcao.Turno;
+                }
 
                 //Inserindo os Dados           
                 FuncaoDAO funcaoDAO = new FuncaoDAO();
-                funcaoDAO.Insert(funcao);
+                funcaoDAO.Update(func);
 
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro 3008 : Contate o suporte");
+
             }
         }
 
         private void btCancelar_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Deseja realmente cancelar o cadastro?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Deseja realmente cancelar a atualização?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
@@ -108,10 +134,11 @@ namespace SISCAN.Formularios
             }
         }
 
-        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        private void ImportDados()
         {
-            fmFrame.Visibility = Visibility.Visible;
-            fmFrame.NavigationService.Navigate(new ListarFuncao());
+            lbNome.Content = "Nome: " + funcao.Nome;
+            lbSalario.Content = "Salário: " + funcao.Salario;
+            lbTurno.Content = "Turno: " + funcao.Turno;
         }
-    }
+    } 
 }

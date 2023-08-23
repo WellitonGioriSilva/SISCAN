@@ -107,10 +107,5 @@
                 Turno
             </Label>
         </StackPanel>
-
-
-        <StackPanel Grid.ColumnSpan="2" Grid.RowSpan="2">
-            <Frame x:Name="fmFrame" Content="" Height="506" Visibility="Collapsed"/>
-        </StackPanel>
     </Grid>
 </Page>

@@ -92,5 +92,38 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Update(Funcao funcao)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Funcao SET nome_fun = @nome, salario_fun = @salario, turno_fun = @turno WHERE id_fun = @id";
+
+                query.Parameters.AddWithValue("@id", funcao.Id);
+                query.Parameters.AddWithValue("@nome", funcao.Nome);
+                query.Parameters.AddWithValue("@salario", funcao.Salario);
+                query.Parameters.AddWithValue("@turno", funcao.Turno);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
+                }
+                else
+                {
+                    MessageBox.Show("Dados atualizados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

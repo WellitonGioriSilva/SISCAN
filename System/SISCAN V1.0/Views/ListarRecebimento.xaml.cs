@@ -59,7 +59,7 @@ namespace SISCAN.Views
             }
             else
             {
-                MessageBox.Show("Selecione um usuário antes de atualizar!");
+                MessageBox.Show("Selecione um recebimento antes de atualizar!");
             }
         }
     }

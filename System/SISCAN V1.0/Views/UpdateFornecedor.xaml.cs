@@ -23,7 +23,8 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class UpdateFornecedor : Page
     {
-        public UpdateFornecedor()
+        Fornecedor fornecedor = new Fornecedor();
+        public UpdateFornecedor(Fornecedor fornecedor)
         {
             InitializeComponent();
             DadosCb();
@@ -33,18 +34,54 @@ namespace SISCAN.Formularios
         {
             try
             {
-                //Setando informações na tabela fornecedor
                 Fornecedor fornecedor = new Fornecedor();
-                fornecedor.RazaoSocial = tbRazaoSocial.Text;
-                fornecedor.Cnpj = tbCnpj.Text;
-                fornecedor.Bairro = tbBairro.Text;
-                fornecedor.Rua = tbRua.Text;
-                fornecedor.NomeFantasia = tbFantasia.Text;
-                fornecedor.Telefone = tbTelefone.Text;
-                fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
-                fornecedor.Responsavel = tbResponsavel.Text;
-                fornecedor.Cidade = new Cidade();
-                fornecedor.Cidade.ID = cbCidade.SelectedIndex + 1;
+
+                if (tbRazaoSocial.Text != "")
+                {
+                    fornecedor.RazaoSocial = tbRazaoSocial.Text;
+                }
+                else
+                if (tbCnpj.Text != "")
+                {
+                    fornecedor.Cnpj = tbCnpj.Text;
+                }
+                else
+                if (tbBairro.Text != "")
+                {
+                    fornecedor.Bairro = tbBairro.Text;
+                }
+                else
+                if (tbRua.Text != "")
+                {
+                    fornecedor.Rua = tbRua.Text;
+
+                }
+                else
+                if (tbFantasia.Text != "")
+                {
+                    fornecedor.NomeFantasia = tbFantasia.Text;
+                }
+                else
+                if (tbTelefone.Text != "")
+                {
+                    fornecedor.Telefone = tbTelefone.Text;
+                }
+                else
+                if (tbInscricaoEstadual.Text != "")
+                {
+                    fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
+                }
+                else
+                if (tbResponsavel.Text != "")
+                {
+                    fornecedor.Responsavel = tbResponsavel.Text;
+                }
+                else
+                if (cbCidade.SelectedIndex != 1)
+                {
+                    fornecedor.Cidade = new Cidade();
+                    fornecedor.Cidade.ID = cbCidade.SelectedIndex + 1;
+                }
 
                 //Inserindo os Dados           
                 FornecedorDAO fornecedorDAO = new FornecedorDAO();

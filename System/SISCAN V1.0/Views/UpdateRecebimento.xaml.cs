@@ -139,7 +139,7 @@ namespace SISCAN.Formularios
 
         private void ImportDados()
         {
-            lbFormaDePagamento.Content = "Forma de Pagametno: " + recebimento.FormaPagamento.Nome;
+            lbFormaDePagamento.Content = "Forma de Pagamento: " + recebimento.FormaPagamento.Nome;
             lbCaixa.Content = "Caixa: " + recebimento.Caixa.id;
             lbHoraDeAbertura.Content = "Hora de Abertura: " + recebimento.Hora;
             lbValor.Content = "Valor: " + recebimento.Valor;

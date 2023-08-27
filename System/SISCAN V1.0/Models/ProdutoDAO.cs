@@ -90,5 +90,39 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Update(Produto produto)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Produto SET nome_prod = @nome, marca_prod = @marca, tipo_prod = @tipo WHERE id_prod = @id";
+
+                query.Parameters.AddWithValue("@id", produto.Id);
+                query.Parameters.AddWithValue("@nome", produto.Nome);
+                query.Parameters.AddWithValue("@marca", produto.Marca);
+                query.Parameters.AddWithValue("@tipo", produto.Tipo);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
+                }
+                else
+                {
+                    MessageBox.Show("Dados atualizados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
     }
 }

@@ -102,5 +102,41 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Update(Pagamento pagamento)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Pagamento SET data_pag = @data, valor_pag = @valor, hora_pag = @hora, id_cai_fk = @id_cai, id_form_pag_fk = @id_form_pag, id_desp_fk = @id_desp WHERE id_pag = @id";
+
+                query.Parameters.AddWithValue("@id", pagamento.Id);
+                query.Parameters.AddWithValue("@data", pagamento.Data);
+                query.Parameters.AddWithValue("@valor", pagamento.Valor);
+                query.Parameters.AddWithValue("@hora", pagamento.Hora);
+                query.Parameters.AddWithValue("@id_form_pag", pagamento.FormaPagamento.Id);
+                query.Parameters.AddWithValue("@id_desp", pagamento.Despesa.Id);
+                query.Parameters.AddWithValue("@id_cai", pagamento.Caixa.id);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
+                }
+                else
+                {
+                    MessageBox.Show("Dados atualizados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

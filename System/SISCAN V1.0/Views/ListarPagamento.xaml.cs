@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SISCAN.Views
     public partial class ListarPagamento : Page
     {
         public string textBusca;
+        Pagamento selectedItem;
         public ListarPagamento()
         {
             InitializeComponent();
@@ -47,6 +49,20 @@ namespace SISCAN.Views
                 MessageBox.Show("Insira uma data antes de buscar");
             }
 
-        }      
+        }
+
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                selectedItem = (Pagamento)this.dgvList.SelectedItem;
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new UpdatePagamento(selectedItem));
+            }
+            else
+            {
+                MessageBox.Show("Selecione um pagamento antes de atualizar!");
+            }
+        }
     }
 }

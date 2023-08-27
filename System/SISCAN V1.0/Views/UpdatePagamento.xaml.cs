@@ -22,40 +22,89 @@ namespace SISCAN.Views
     /// </summary>
     public partial class UpdatePagamento : Page
     {
-        public UpdatePagamento()
+        Pagamento pagamento = new Pagamento();
+        public UpdatePagamento(Pagamento pag)
         {
             InitializeComponent();
 
             DadosCbForm();
             DadosCbCai();
             DadosCbDesp();
+            pagamento = pag;
+            ImportDados();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //Setando informações na tabela cliente
-                Pagamento pagamento = new Pagamento();
-                pagamento.Valor = Convert.ToDouble(tbValor.Text);
-                pagamento.Hora = DAOHelper.DateTimeToTimeSpan(tmHora.SelectedTime);
-                pagamento.Data = dtpData.SelectedDate;
-                pagamento.Caixa = new Caixa();
-                pagamento.Caixa.id = cbCaixa.SelectedIndex + 1;
-                pagamento.FormaPagamento = new FormaPagamento();
-                pagamento.FormaPagamento.Id = cbFormapag.SelectedIndex + 1;
-                pagamento.Despesa = new Despesa();
-                pagamento.Despesa.Id = cbDespesa.SelectedIndex + 1;
+                Pagamento pag = new Pagamento();
+
+                pag.Id = pagamento.Id;
+                if (tbValor.Text != "")
+                {
+                    pag.Valor = Convert.ToDouble(tbValor.Text);
+                }
+                else
+                {
+                    pag.Valor = pagamento.Valor;
+                }
+                if (dtpData.Text != "")
+                {
+                    pag.Data = dtpData.DisplayDate;
+                }
+                else
+                {
+                    pag.Data = pagamento.Data;
+                }
+                if (tmHora.Text != "")
+                {
+                    pag.Hora = DAOHelper.DateTimeToTimeSpan(tmHora.SelectedTime);
+                }
+                else
+                {
+                    pag.Hora = pag.Hora;
+                }
+                if (cbFormapag.SelectedIndex != -1)
+                {
+                    pag.FormaPagamento = new FormaPagamento();
+                    pag.FormaPagamento.Id = cbFormapag.SelectedIndex + 1;
+                }
+                else
+                {
+                    pag.FormaPagamento = new FormaPagamento();
+                    pag.FormaPagamento.Id = pagamento.FormaPagamento.Id;
+                }
+                if (cbCaixa.SelectedIndex != -1)
+                {
+                    pag.Caixa = new Caixa();
+                    pag.Caixa.id = cbCaixa.SelectedIndex + 1;
+                }
+                else
+                {
+                    pag.Caixa = new Caixa();
+                    pag.Caixa.id = pagamento.Caixa.id;
+                }
+                if (cbDespesa.SelectedIndex != -1)
+                {
+                    pag.Despesa = new Despesa();
+                    pag.Despesa.Id = cbDespesa.SelectedIndex + 1;
+                }
+                else
+                {
+                    pag.Despesa = new Despesa();
+                    pag.Despesa.Id = pagamento.Despesa.Id;
+                }
 
                 //Inserindo os Dados           
                 PagamentoDAO pagamentoDAO = new PagamentoDAO();
-                pagamentoDAO.Insert(pagamento);
+                pagamentoDAO.Update(pag);
 
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro 3008 : Contate o suporte");
+
             }
         }
 
@@ -103,6 +152,16 @@ namespace SISCAN.Views
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarPagamento());
+        }
+
+        private void ImportDados()
+        {
+            lbData.Content = "Data: " + pagamento.Data;
+            lbValor.Content = "Valor: " + pagamento.Valor;
+            lbHoradopagamento.Content = "Hora de Pagamento: " + pagamento.Hora;
+            lbCaixa.Content = "Caixa: " + pagamento.Caixa.id;
+            lbFormadepagamento.Content = "Forma de Pagamento: " + pagamento.FormaPagamento.Nome;
+            lbDespesa.Content = "Despesa: " + pagamento.Despesa.Nome;
         }
     }
 }

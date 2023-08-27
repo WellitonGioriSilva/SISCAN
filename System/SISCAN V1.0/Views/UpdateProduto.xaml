@@ -111,11 +111,11 @@
                 Nome
             </Label>
 
-            <Label x:Name="lbSenha" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,50,0,0">
+            <Label x:Name="lbMarca" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,50,0,0">
                 Marca
             </Label>
 
-            <Label x:Name="lbFuncionario" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,50,0,0">
+            <Label x:Name="lbTipo" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,50,0,0">
                 Tipo
             </Label>
         </StackPanel>

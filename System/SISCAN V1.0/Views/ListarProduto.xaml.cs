@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace SISCAN.Views
     public partial class ListarProduto : Page
     {
         public string textBusca;
-
+        Produto selectedItem;
         public ListarProduto()
         {
             InitializeComponent();
@@ -47,6 +48,20 @@ namespace SISCAN.Views
             {
                 MessageBox.Show("Insira um nome antes de buscar");
             }
-        }   
+        }
+
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                selectedItem = (Produto)this.dgvList.SelectedItem;
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new UpdateProduto(selectedItem));
+            }
+            else
+            {
+                MessageBox.Show("Selecione um produto antes de atualizar!");
+            }
+        }
     }
 }

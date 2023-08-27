@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SISCAN.Formularios;
 using SISCAN.Views;
+using SISCAN.Helpers;
 
 namespace SISCAN.Formularios
 {
@@ -23,30 +24,55 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class UpdateProduto : Page
     {
-        public UpdateProduto()
+        Produto produto = new Produto();
+        public UpdateProduto(Produto prod)
         {
-            InitializeComponent();
+            InitializeComponent();     
+            produto = prod;
+            ImportDados();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //Setando informações na tabela cliente
-                Produto produto = new Produto();
-                produto.Nome = tbNome.Text;
-                produto.Marca = tbMarca.Text;
-                produto.Tipo = cbTipo.SelectionBoxItem.ToString();
+                Produto prod = new Produto();
+
+                prod.Id = produto.Id;
+                if (tbNome.Text != "")
+                {
+                    prod.Nome = tbNome.Text;
+                }
+                else
+                {
+                    prod.Nome = produto.Nome;
+                }
+                if (tbMarca.Text != "")
+                {
+                    prod.Marca = tbMarca.Text;
+                }
+                else
+                {
+                    prod.Marca = produto.Marca;
+                }
+                if (cbTipo.SelectedIndex != -1)
+                {
+                    prod.Tipo = cbTipo.SelectionBoxItem.ToString();
+                }
+                else
+                {
+                    prod.Tipo = produto.Tipo;
+                }
 
                 //Inserindo os Dados           
                 ProdutoDAO produtoDAO = new ProdutoDAO();
-                produtoDAO.Insert(produto);
-                
+                produtoDAO.Update(prod);
+
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro 3008 : Contate o suporte");
+
             }
         }
 
@@ -72,6 +98,14 @@ namespace SISCAN.Formularios
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarProduto());
+        }
+
+
+        private void ImportDados()
+        {
+            lbNome.Content = "Nome: " + produto.Nome;
+            lbTipo.Content = "Tipo: " + produto.Tipo;
+            lbMarca.Content = "Marca: " + produto.Marca;
         }
     }
 }

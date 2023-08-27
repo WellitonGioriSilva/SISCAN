@@ -54,7 +54,7 @@
                       AutoGenerateColumns="False" AlternatingRowBackground="#FFE5E5E5" AlternationCount="2" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="Caixa" Binding="{Binding Caixa.Numero}"/>
+                    <DataGridTextColumn Header="Caixa" Binding="{Binding Caixa.id}"/>
                     <DataGridTextColumn Header="Despesa" Binding="{Binding Despesa.Nome}"/>
                     <DataGridTextColumn Header="Forma de Pagamento" Binding="{Binding FormaPagamento.Nome}"/>
                     <DataGridTextColumn Header="Hora" Binding="{Binding Hora}"/>
@@ -65,9 +65,9 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
-                                        Content="{materialDesign:PackIcon Eye}"
-                                        ToolTip="Visualizar Registro" Margin="0 0 5 0" />
+                                    <Button x:Name="btAtualizar" Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                        Content="{materialDesign:PackIcon Pencil}"
+                                        ToolTip="Visualizar Registro" Margin="0 0 5 0" Click="btAtualizar_Click" />
                                     <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
                                         Content="{materialDesign:PackIcon Delete}"
                                         ToolTip="Excluir Registro" />
@@ -77,6 +77,10 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+        </StackPanel>
+
+        <StackPanel Grid.RowSpan="3">
+            <Frame x:Name="fmFrame" Content="" Height="506" Visibility="Collapsed"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -97,5 +97,36 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Caixa caixa)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = $"DELETE FROM Caixa WHERE id_cai = @id;";
+
+                query.Parameters.AddWithValue("@id", caixa.id);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                }
+                else
+                {
+                    MessageBox.Show("Dados deletados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show("Erro 3007 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

@@ -67,9 +67,9 @@
                                     <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
                                         Content="{materialDesign:PackIcon Eye}"
                                         ToolTip="Visualizar Registro" Margin="0 0 5 0" />
-                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                    <Button x:Name="btDelete" Style="{StaticResource MaterialDesignIconForegroundButton}" 
                                         Content="{materialDesign:PackIcon Delete}"
-                                        ToolTip="Excluir Registro" />
+                                        ToolTip="Excluir Registro" Click="btDelete_Click" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

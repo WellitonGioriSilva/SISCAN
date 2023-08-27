@@ -47,5 +47,16 @@ namespace SISCAN.Views
                 MessageBox.Show("Insira um número antes de buscar");
             }
         }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                Caixa selectedItem = (Caixa)this.dgvList.SelectedItem;
+                CaixaDAO caixaDAO = new CaixaDAO();
+
+                caixaDAO.Delete(selectedItem);
+            }
+        }
     }
 }

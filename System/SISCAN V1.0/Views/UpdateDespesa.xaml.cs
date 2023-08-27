@@ -22,25 +22,57 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class UpdateDespesa : Page
     {
-        public UpdateDespesa()
+        Despesa user = new Despesa();
+        public UpdateDespesa(Despesa despesa)
         {
             InitializeComponent();
+            user = despesa;
+            ImportDados();
+            DadosCbCom();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //Setando informações na tabela cliente
                 Despesa despesa = new Despesa();
-                despesa.Nome = tbNome.Text;
-                despesa.Parcelas = Convert.ToInt32(tbParcelas.Text);
-                despesa.Valor = Convert.ToInt32(tbValor.Text);
-                despesa.Status = cbStatus.SelectionBoxItem.ToString();
-                despesa.Data = dtpData.SelectedDate;
-                despesa.Vencimento = dtpVencimento.SelectedDate;
-                //despesa.Compra.Id = 1;
+                despesa.Id = despesa.Id;
 
+                if (tbNome.Text != "")
+                {
+                    despesa.Nome = tbNome.Text;
+                }
+                else 
+                if (tbParcelas.Text != "")
+                {
+                    despesa.Parcelas = Convert.ToInt32(tbParcelas.Text);
+                }
+                else
+                if (tbValor.Text != "")
+                {
+                    despesa.Valor = Convert.ToInt32(tbValor.Text);
+                }
+                else
+                if (cbStatus.Text != "")
+                {
+                    despesa.Status = cbStatus.SelectionBoxItem.ToString();
+                }
+                else
+                if (dtpData.Text != "")
+                {
+                    despesa.Data = dtpData.SelectedDate;
+                }
+                else
+                if (dtpVencimento.Text != "")
+                {
+                    despesa.Vencimento = dtpVencimento.SelectedDate;
+                }
+                else
+                if (cbStatus.SelectedIndex != 1)
+                {
+                    despesa.Compra = new Compra();
+                    despesa.Compra.Id = cbStatus.SelectedIndex - 1;
+                }
                 //Inserindo os Dados           
                 DespesaDAO despesaDAO = new DespesaDAO();
                 despesaDAO.Insert(despesa);
@@ -76,6 +108,22 @@ namespace SISCAN.Formularios
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarDespesa());
+        }
+
+        private void DadosCbCom()
+        {
+            CompraDAO compraDAO = new CompraDAO();
+            cbStatus.ItemsSource = compraDAO.List(null);
+            cbStatus.DisplayMemberPath = "Data";
+        }
+        private void ImportDados()
+        {
+            tbNome.Text = "Nome: " + user.Nome;
+            tbParcelas.Text = "Parcelas: " + user.Parcelas;
+            tbValor.Text = "Valor: " + user.Valor;
+            cbStatus.Text = "Status: " + user.Status;
+            dtpData.Text = "Data: " + user.Data;
+            dtpVencimento.Text = "Vencimento: " + user.Vencimento;
         }
     }
 }

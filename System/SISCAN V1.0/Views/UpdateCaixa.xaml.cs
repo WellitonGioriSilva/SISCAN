@@ -24,24 +24,45 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class UpdateCaixa : Page
     {
-        public UpdateCaixa()
+        Caixa user = new Caixa();
+        public UpdateCaixa(Caixa caixa)
         {
             InitializeComponent();
+            user = caixa;
+            ImportDados();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //Setando informações na tabela cliente
                 Caixa caixa = new Caixa();
-                caixa.ValorIncial = Convert.ToInt32(tbValorInicial.Text);
-                caixa.ValorFinal = Convert.ToInt32(tbValorFinal.Text);
-                caixa.Data = dtpData.SelectedDate;
-                DateTime? aber = tmAbertura.SelectedTime;
-                DateTime? fec = tmFechamento.SelectedTime;
-                caixa.HoraAbertura = DAOHelper.DateTimeToTimeSpan(aber);
-                caixa.HoraFechamento = DAOHelper.DateTimeToTimeSpan(fec);
+
+                caixa.id = user.id;
+                if (tbValorInicial.Text != "")
+                {
+                    caixa.ValorIncial = Convert.ToInt32(tbValorInicial.Text);
+                }
+                else
+                if (tbValorFinal.Text != "")
+                {
+                    caixa.ValorFinal = Convert.ToInt32(tbValorFinal.Text);
+                }
+                else
+                if (dtpData.Text != "")
+                {
+                    caixa.Data = dtpData.SelectedDate;
+                }
+                else
+                if (tmAbertura.Text != "")
+                {
+                    DateTime? aber = tmAbertura.SelectedTime;
+                }
+                else
+                if (tmFechamento.Text != "")
+                {
+                    DateTime? fec = tmFechamento.SelectedTime;
+                }
 
                 //Inserindo os Dados           
                 CaixaDAO caixaDAO = new CaixaDAO();
@@ -75,6 +96,15 @@ namespace SISCAN.Formularios
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarCaixa());
+        }
+
+        private void ImportDados()
+        {
+            tbValorInicial.Text = "Valor Inicial: " + user.ValorFinal;
+            tbValorFinal.Text = "Valor Final: " + user.ValorFinal;
+            dtpData.Text = "Data: " + user.Data;
+            tmAbertura.Text = "Abertura: " + user.HoraAbertura;
+            tmFechamento.Text = "Fechamento: " + user.HoraFechamento;
         }
     }
 }

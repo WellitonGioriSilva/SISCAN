@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SISCAN.Views
     public partial class ListarFuncionario : Page
     {
         public string textBusca;
+        Funcionario selectedItem;
 
         public ListarFuncionario()
         {
@@ -49,6 +51,18 @@ namespace SISCAN.Views
             }
         }
 
-        
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                selectedItem = (Funcionario)this.dgvList.SelectedItem;
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new UpdateFuncionario(selectedItem));
+            }
+            else
+            {
+                MessageBox.Show("Selecione um funcionário antes de atualizar!");
+            }
+        }
     }
 }

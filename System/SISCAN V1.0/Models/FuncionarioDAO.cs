@@ -105,5 +105,43 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Update(Funcionario funcionario)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Funcionario SET nome_func = @nome, bairro_func = @bairro, rua_func = @rua, cpf_func = @cpf, numero_func = @numero, sexo_func = @sexo, id_cid_fk = @id_cid, id_fun_fk = @id_fun WHERE id_func = @id";
+
+                query.Parameters.AddWithValue("@id", funcionario.Id);
+                query.Parameters.AddWithValue("@nome", funcionario.Nome);
+                query.Parameters.AddWithValue("@rua", funcionario.Rua);
+                query.Parameters.AddWithValue("@bairro", funcionario.Bairro);
+                query.Parameters.AddWithValue("@numero", funcionario.Numero);
+                query.Parameters.AddWithValue("@sexo", funcionario.Sexo);
+                query.Parameters.AddWithValue("@cpf", funcionario.Cpf);
+                query.Parameters.AddWithValue("@id_cid", funcionario.Cidade.ID);
+                query.Parameters.AddWithValue("@id_fun", funcionario.Funcao.Id);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
+                }
+                else
+                {
+                    MessageBox.Show("Dados atualizados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

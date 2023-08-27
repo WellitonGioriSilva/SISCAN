@@ -1,9 +1,11 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Helpers;
+using SISCAN.Models;
 using SISCAN.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,38 +24,101 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class UpdateFuncionario : Page
     {
-        public UpdateFuncionario()
+        Funcionario funcionario = new Funcionario();
+        public UpdateFuncionario(Funcionario func)
         {
             InitializeComponent();
             DadosCb();
+            funcionario = func;
+            ImportDados();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //Setando informações na tabela funcionário
-                Funcionario funcionario = new Funcionario();
-                funcionario.Nome = tbNome.Text;
-                funcionario.Cpf = tbCpf.Text;
-                funcionario.Bairro = tbBairro.Text;
-                funcionario.Sexo = cbSexo.SelectionBoxItem.ToString();
-                funcionario.Numero = Convert.ToInt16(tbNumero.Text);
-                funcionario.Rua = tbRua.Text;
-                funcionario.Funcao = new Funcao();
-                funcionario.Funcao.Id = cbFuncao.SelectedIndex + 1;
-                funcionario.Cidade = new Cidade();
-                funcionario.Cidade.ID = cbCidade.SelectedIndex + 1;
+                Funcionario func = new Funcionario();
+
+                func.Id = funcionario.Id;
+                if (tbNome.Text != "")
+                {
+                    func.Nome = tbNome.Text;
+                }
+                else
+                {
+                    func.Nome = funcionario.Nome;
+                }
+                if (tbBairro.Text != "")
+                {
+                    func.Bairro = tbBairro.Text;
+                }
+                else
+                {
+                    func.Bairro = funcionario.Bairro;
+                }
+                if (tbCpf.Text != "")
+                {
+                    func.Cpf = tbCpf.Text;
+                }
+                else
+                {
+                    func.Cpf = funcionario.Cpf;
+                }
+                if (tbRua.Text != "")
+                {
+                    func.Rua = tbRua.Text;
+                }
+                else
+                {
+                    func.Rua = funcionario.Rua;
+                }
+                if (tbNumero.Text != "")
+                {
+                    func.Numero = Convert.ToInt32(tbNumero.Text);
+                }
+                else
+                {
+                    func.Numero = funcionario.Numero;
+                }
+                if (cbFuncao.SelectedIndex != -1)
+                {
+                    func.Funcao = new Funcao();
+                    func.Funcao.Id = cbFuncao.SelectedIndex + 1;
+                }
+                else
+                {
+                    func.Funcao = new Funcao();
+                    func.Funcao.Id = funcionario.Funcao.Id;
+                }
+                if (cbCidade.SelectedIndex != -1)
+                {
+                    func.Cidade = new Cidade();
+                    func.Cidade.ID = cbCidade.SelectedIndex + 1;
+                }
+                else
+                {
+                    func.Cidade = new Cidade();
+                    func.Cidade.ID = funcionario.Cidade.ID;
+                }
+                if (cbSexo.SelectedIndex != -1)
+                {
+                    func.Sexo = cbSexo.SelectionBoxItem.ToString();
+                }
+                else
+                {
+                    func.Sexo = funcionario.Sexo;
+                }
+
 
                 //Inserindo os Dados           
                 FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-                funcionarioDAO.Insert(funcionario);
+                funcionarioDAO.Update(func);
 
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro 3008 : Contate o suporte");
+
             }
         }
 
@@ -84,7 +149,7 @@ namespace SISCAN.Formularios
 
         private void btCancelar_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Deseja realmente cancelar o cadastro?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Deseja realmente cancelar a atualização?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
@@ -97,6 +162,18 @@ namespace SISCAN.Formularios
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarFuncionario());
+        }
+
+        private void ImportDados()
+        {
+            lbNome.Content = "Nome: " + funcionario.Nome;
+            lbBairro.Content = "Bairro: " + funcionario.Bairro;
+            lbRua.Content = "Rua: " + funcionario.Rua;
+            lbCpf.Content = "Cpf: " + funcionario.Cpf;
+            lbNumero.Content = "Número: " + funcionario.Numero;
+            lbSexo.Content = "Sexo: " + funcionario.Sexo;
+            lbCidade.Content = "Cidade: " + funcionario.Cidade.Nome;
+            lbFuncao.Content = "Função: " + funcionario.Funcao.Nome;
         }
     }
 }

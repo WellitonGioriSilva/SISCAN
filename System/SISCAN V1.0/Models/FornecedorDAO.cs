@@ -109,6 +109,45 @@ namespace SISCAN.Models
             }
         }
 
+        public void Update(Fornecedor fornecedor)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Fornecedor SET razao_social_forn = @razao_social, cnpj_forn = @cnpj, bairro_forn = @bairro, rua_forn = @rua, nome_fantasia_forn = @nome_fantasia, telefone_forn = @telefone" +
+                    "inscricao_estadual_forn = @incricao_estadual, responsavel_forn = @responsavel, id_cid_fk = @id_cid WHERE id_forn = @id";
+
+                query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
+                query.Parameters.AddWithValue("@cnpj", fornecedor.Cnpj);
+                query.Parameters.AddWithValue("@bairro", fornecedor.Bairro);
+                query.Parameters.AddWithValue("@rua", fornecedor.Rua);
+                query.Parameters.AddWithValue("@nomeFantasia", fornecedor.NomeFantasia);
+                query.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
+                query.Parameters.AddWithValue("@inscricaoEstadual", fornecedor.InscricaoEstadual);
+                query.Parameters.AddWithValue("@responsavel", fornecedor.Responsavel);
+                query.Parameters.AddWithValue("@id_cid", fornecedor.Cidade.ID);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
+                }
+                else
+                {
+                    MessageBox.Show("Dados salvos com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         public void Delete(Fornecedor fornecedor)
         {
 

@@ -107,11 +107,11 @@ namespace SISCAN.Models
                     "valor_inicial_cai = @valor_inicial, valor_final_cai = @valor_final WHERE id_cai = @id";
 
                 query.Parameters.AddWithValue("@id", caixa.id);
-                query.Parameters.AddWithValue("@data_cai", caixa.Data);
-                query.Parameters.AddWithValue("@hora_abertura_cai", caixa.HoraAbertura);
-                query.Parameters.AddWithValue("@hora_fechamento_cai", caixa.HoraFechamento);
-                query.Parameters.AddWithValue("@valor_inicial_cai", caixa.ValorIncial);
-                query.Parameters.AddWithValue("@valor_final_cai", caixa.ValorFinal);
+                query.Parameters.AddWithValue("@data", caixa.Data);
+                query.Parameters.AddWithValue("@hora_abertura", caixa.HoraAbertura);
+                query.Parameters.AddWithValue("@hora_fechamento", caixa.HoraFechamento);
+                query.Parameters.AddWithValue("@valor_inicial", caixa.ValorIncial);
+                query.Parameters.AddWithValue("@valor_final", caixa.ValorFinal);
 
                 var result = query.ExecuteNonQuery();
 

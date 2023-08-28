@@ -98,6 +98,42 @@ namespace SISCAN.Models
             }
         }
 
+        public void Update(Caixa caixa)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Caixa SET data_cai = @data, hora_abertura_cai = @hora_abertura, hora_fechamento_cai = @hora_fechamento, " +
+                    "valor_inicial_cai = @valor_inicial, valor_final_cai = @valor_final WHERE id_cai = @id";
+
+                query.Parameters.AddWithValue("@id", caixa.id);
+                query.Parameters.AddWithValue("@data_cai", caixa.Data);
+                query.Parameters.AddWithValue("@hora_abertura_cai", caixa.HoraAbertura);
+                query.Parameters.AddWithValue("@hora_fechamento_cai", caixa.HoraFechamento);
+                query.Parameters.AddWithValue("@valor_inicial_cai", caixa.ValorIncial);
+                query.Parameters.AddWithValue("@valor_final_cai", caixa.ValorFinal);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
+                }
+                else
+                {
+                    MessageBox.Show("Dados atualizados com sucesso!");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
         public void Delete(Caixa caixa)
         {
 

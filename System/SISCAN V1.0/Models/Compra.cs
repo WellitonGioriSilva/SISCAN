@@ -9,5 +9,8 @@ namespace SISCAN.Models
     public class Compra
     {
         public int Id { get; set; }
+        public double Valor { get; set; }
+        public DateTime? Data { get; set; }
+        public Fornecedor Fornecedor { get; set; }
     }
 }

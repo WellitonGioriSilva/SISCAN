@@ -23,11 +23,14 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class UpdateFornecedor : Page
     {
-        Fornecedor fornecedor = new Fornecedor();
+        Fornecedor user = new Fornecedor();
         public UpdateFornecedor(Fornecedor fornecedor)
         {
             InitializeComponent();
+            user = fornecedor;
             DadosCb();
+            ImportDados();
+
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -35,6 +38,7 @@ namespace SISCAN.Formularios
             try
             {
                 Fornecedor fornecedor = new Fornecedor();
+                fornecedor.Id = fornecedor.Id;
 
                 if (tbRazaoSocial.Text != "")
                 {
@@ -107,13 +111,6 @@ namespace SISCAN.Formularios
             cbCidade.SelectedIndex = -1;
         }
 
-        private void DadosCb()
-        {
-            CidadeDAO cidDAO = new CidadeDAO();
-            cbCidade.ItemsSource = cidDAO.List();
-            cbCidade.DisplayMemberPath = "Nome";
-        }
-
         private void tbCancelar_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Deseja realmente cancelar o cadastro?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -129,6 +126,25 @@ namespace SISCAN.Formularios
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarFornecedor());
+        }
+
+        private void DadosCb()
+        {
+            CidadeDAO cidDAO = new CidadeDAO();
+            cbCidade.ItemsSource = cidDAO.List();
+            cbCidade.DisplayMemberPath = "Nome";
+        }
+
+        private void ImportDados()
+        {
+            tbRazaoSocial.Text = "Razão Social: " + user.RazaoSocial;
+            tbCnpj.Text = "Cnpj: " + user.Cnpj;
+            tbBairro.Text = "Bairro: " + user.Bairro;
+            tbRua.Text = "Rua: " + user.Rua;
+            tbFantasia.Text = "Fantasia: " + user.NomeFantasia;
+            tbTelefone.Text = "Telefone: " + user.Telefone;
+            tbInscricaoEstadual.Text = "InscriçãoEstadual: " + user.InscricaoEstadual;
+            tbResponsavel.Text = "Responsavel: " + user.Responsavel;
         }
     }
 }

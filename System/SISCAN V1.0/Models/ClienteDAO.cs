@@ -109,6 +109,45 @@ namespace SISCAN.Models
             }
         }
 
+        public void Update(Cliente cliente)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Cliente SET nome_cli = @nome, cpf_cli = @cpf, email_cli = @email, sexo_cli = @sexo, data_nascimento_cli = @data_nascimento, " +
+                    "rua_cli = @rua, bairro_cli = @bairro, numero_cli = @numero, id_cid_fk = @id_cid WHERE id_cli = @id";
+
+                query.Parameters.AddWithValue("@nome", cliente.Nome);
+                query.Parameters.AddWithValue("@cpf", cliente.Cpf);
+                query.Parameters.AddWithValue("@email", cliente.Email);
+                query.Parameters.AddWithValue("@sexo", cliente.Sexo);
+                query.Parameters.AddWithValue("@data_nasc", cliente.DataNascimento?.ToString("yyyy-MM-dd"));
+                query.Parameters.AddWithValue("@rua", cliente.Rua);
+                query.Parameters.AddWithValue("@bairro", cliente.Bairro);
+                query.Parameters.AddWithValue("@numero", cliente.Numero);
+                query.Parameters.AddWithValue("@id_cid", cliente.Cidade.ID);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
+                }
+                else
+                {
+                    MessageBox.Show("Dados atualizados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         public void Delete(Cliente cliente)
         {
 

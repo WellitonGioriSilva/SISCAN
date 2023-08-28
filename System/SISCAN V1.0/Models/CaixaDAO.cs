@@ -84,7 +84,7 @@ namespace SISCAN.Models
                 }
                 else
                 {
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    MessageBox.Show("Dados atualizados com sucesso!");
                 }
             }
             catch (Exception ex)

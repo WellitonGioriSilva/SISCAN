@@ -56,6 +56,8 @@ namespace SISCAN.Views
                 CaixaDAO caixaDAO = new CaixaDAO();
 
                 caixaDAO.Delete(selectedItem);
+
+                CarregarLista();
             }
         }
     }

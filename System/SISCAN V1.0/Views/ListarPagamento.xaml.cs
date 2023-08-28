@@ -64,5 +64,18 @@ namespace SISCAN.Views
                 MessageBox.Show("Selecione um pagamento antes de atualizar!");
             }
         }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                Pagamento selectedItem = (Pagamento)this.dgvList.SelectedItem;
+                PagamentoDAO pagamentoDAO = new PagamentoDAO();
+
+                pagamentoDAO.Delete(selectedItem);
+
+                CarregarLista();
+            }
+        }
     }
 }

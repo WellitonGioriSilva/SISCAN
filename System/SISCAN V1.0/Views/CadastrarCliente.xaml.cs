@@ -45,7 +45,10 @@ namespace SISCAN.Formularios
                 cliente.Bairro = tbBairro.Text;
                 cliente.Numero = Convert.ToInt16(tbNumero.Text);
                 cliente.Cidade = new Cidade();
-                cliente.Cidade.ID = cbCidade.SelectedIndex + 1;
+                if (cbCidade.SelectedItem is Cidade selectedItem)
+                {
+                    cliente.Cidade.ID = selectedItem.ID;
+                }
 
                 //Inserindo os Dados           
                 ClienteDAO clienteDAO = new ClienteDAO();

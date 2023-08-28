@@ -26,8 +26,8 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Pagamento (data_pag, valor_pag, hora_pag, id_cai_fk, id_form_pag_fk, id_desp_fk) " +
-                    $"VALUES (@data, @valor, @hora, @id_cai, @id_form_pag, @id_desp)";
+                query.CommandText = $"INSERT INTO Pagamento (visivel_pag, data_pag, valor_pag, hora_pag, id_cai_fk, id_form_pag_fk, id_desp_fk) " +
+                    $"VALUES ('Sim',@data, @valor, @hora, @id_cai, @id_form_pag, @id_desp)";
 
                 query.Parameters.AddWithValue("@data", pagamento.Data?.ToString("yyyy-MM-dd"));
                 query.Parameters.AddWithValue("@valor", pagamento.Valor);
@@ -68,11 +68,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Pagamento LEFT JOIN Despesa ON Pagamento.id_desp_fk = Despesa.id_desp INNER JOIN Caixa ON Pagamento.id_cai_fk = Caixa.id_cai INNER JOIN Forma_Pagamento ON Pagamento.id_form_pag_fk = Forma_Pagamento.id_form_pag;";
+                    query.CommandText = "SELECT * FROM Pagamento LEFT JOIN Despesa ON Pagamento.id_desp_fk = Despesa.id_desp INNER JOIN Caixa ON Pagamento.id_cai_fk = Caixa.id_cai INNER JOIN Forma_Pagamento ON Pagamento.id_form_pag_fk = Forma_Pagamento.id_form_pag WHERE visivel_pag = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Pagamento, Caixa, Despesa, Forma_Pagamento WHERE (Pagamento.id_cai_fk = Caixa.id_cai) AND (Pagamento.id_desp_fk = Despesa.id_desp) AND (Pagamento.id_form_pag_fk = Forma_Pagamento.id_form_pag) AND (data_pag LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Pagamento, Caixa, Despesa, Forma_Pagamento WHERE (Pagamento.id_cai_fk = Caixa.id_cai) AND (Pagamento.id_desp_fk = Despesa.id_desp) AND (Pagamento.id_form_pag_fk = Forma_Pagamento.id_form_pag) AND (data_pag LIKE '%{busca}%') AND (visivel_pag = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -138,5 +138,43 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Pagamento pagamento)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Pagamento SET visivel_pag = 'Nao' WHERE id_pag = @id;";
+
+                    query.Parameters.AddWithValue("@id", pagamento.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
     }
 }

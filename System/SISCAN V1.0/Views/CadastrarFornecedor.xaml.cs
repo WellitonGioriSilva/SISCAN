@@ -44,7 +44,10 @@ namespace SISCAN.Formularios
                 fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
                 fornecedor.Responsavel = tbResponsavel.Text;
                 fornecedor.Cidade = new Cidade();
-                fornecedor.Cidade.ID = cbCidade.SelectedIndex + 1;
+                if (cbCidade.SelectedItem is Cidade selectedItem)
+                {
+                    fornecedor.Cidade.ID = selectedItem.ID;
+                }
 
                 //Inserindo os Dados           
                 FornecedorDAO fornecedorDAO = new FornecedorDAO();

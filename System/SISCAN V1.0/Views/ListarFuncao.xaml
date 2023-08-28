@@ -51,7 +51,7 @@
 
         <StackPanel Grid.Row="1">
             <DataGrid x:Name="dgvList" Grid.Row="2" Margin="5,5,5,5" IsReadOnly="true"
-                      AutoGenerateColumns="False" AlternatingRowBackground="#FFE5E5E5" AlternationCount="2" Grid.ColumnSpan="2">
+                      AutoGenerateColumns="False" AlternatingRowBackground="#FF1D1D1D" AlternationCount="2" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Nome" Binding="{Binding Nome}"/>
@@ -65,9 +65,9 @@
                                     <Button x:Name="btAtualizar" Style="{StaticResource MaterialDesignIconForegroundButton}" 
                                         Content="{materialDesign:PackIcon Pencil}"
                                         ToolTip="Visualizar Registro" Margin="0 0 5 0" Click="btAtualizar_Click" />
-                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                    <Button x:Name="btDelete" Style="{StaticResource MaterialDesignIconForegroundButton}" 
                                         Content="{materialDesign:PackIcon Delete}"
-                                        ToolTip="Excluir Registro" />
+                                        ToolTip="Excluir Registro" Click="btDelete_Click" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

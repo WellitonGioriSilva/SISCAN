@@ -24,8 +24,8 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Funcao (nome_fun, salario_fun, turno_fun) " +
-                    $"VALUES (@nome, @salario, @turno)";
+                query.CommandText = $"INSERT INTO Funcao (visivel_fun, nome_fun, salario_fun, turno_fun) " +
+                    $"VALUES ('Sim',@nome, @salario, @turno)";
 
                 query.Parameters.AddWithValue("@nome", funcao.Nome);
                 query.Parameters.AddWithValue("@salario", funcao.Salario);
@@ -61,11 +61,11 @@ namespace SISCAN.Models
                 var query = conn.Query();
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Funcao;";
+                    query.CommandText = "SELECT * FROM Funcao WHERE visivel_fun = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Funcao WHERE (nome_fun LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Funcao WHERE (nome_fun LIKE '%{busca}%') AND (visivel_fun = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -125,5 +125,43 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Funcao funcao)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Funcao SET visivel_fun = 'Nao' WHERE id_fun = @id;";
+
+                    query.Parameters.AddWithValue("@id", funcao.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
     }
 }

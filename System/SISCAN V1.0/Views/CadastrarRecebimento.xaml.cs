@@ -42,9 +42,15 @@ namespace SISCAN.Formularios
                 recebimento.Hora = DAOHelper.DateTimeToTimeSpan(tmHora.SelectedTime);
                 recebimento.Data = dtpData.SelectedDate;
                 recebimento.Caixa = new Caixa();
-                recebimento.Caixa.id = cbCaixa.SelectedIndex + 1;
+                if (cbCaixa.SelectedItem is Caixa selectedItemCai)
+                {
+                    recebimento.Caixa.id = selectedItemCai.id;
+                }
                 recebimento.FormaPagamento = new FormaPagamento();
-                recebimento.FormaPagamento.Id = cbFormaPagamento.SelectedIndex + 1;
+                if (cbFormaPagamento.SelectedItem is FormaPagamento selectedItemForm)
+                {
+                    recebimento.FormaPagamento.Id = selectedItemForm.Id;
+                }
 
                 //Inserindo os Dados           
                 RecebimentoDAO recebimentoDAO = new RecebimentoDAO();

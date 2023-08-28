@@ -29,11 +29,11 @@ namespace SISCAN.Models
 
                 if(busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Cliente LEFT JOIN Cidade ON Cliente.id_cid_fk = Cidade.id_cid;";
+                    query.CommandText = "SELECT * FROM Cliente LEFT JOIN Cidade ON Cliente.id_cid_fk = Cidade.id_cid WHERE visivel_cli = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Cliente, Cidade WHERE (Cliente.id_cid_fk = Cidade.id_cid) AND (nome_cli LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Cliente, Cidade WHERE (Cliente.id_cid_fk = Cidade.id_cid) AND (nome_cli LIKE '%{busca}%') AND (visivel_cli = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -74,8 +74,8 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, id_cid_fk) " +
-                    $"VALUES (@nome, @cpf, @email, @sexo, @data_nasc, @rua, @bairro, @numero, @id_cid)";
+                query.CommandText = $"INSERT INTO Cliente (visivel_cli, nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, id_cid_fk) " +
+                    $"VALUES ('Sim',@nome, @cpf, @email, @sexo, @data_nasc, @rua, @bairro, @numero, @id_cid)";
 
                 query.Parameters.AddWithValue("@nome", cliente.Nome);
                 query.Parameters.AddWithValue("@cpf", cliente.Cpf);
@@ -108,6 +108,44 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
-        
+
+        public void Delete(Cliente cliente)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Cliente SET visivel_cli = 'Nao' WHERE id_cli = @id;";
+
+                    query.Parameters.AddWithValue("@id", cliente.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+
     }
 }

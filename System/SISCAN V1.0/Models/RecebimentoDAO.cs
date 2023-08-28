@@ -26,8 +26,8 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Recebimento (data_rec, valor_rec, hora_rec, id_cai_fk, id_form_pag_fk) " +
-                    $"VALUES (@data, @valor, @hora, @id_cai, @id_form_pag)";
+                query.CommandText = $"INSERT INTO Recebimento (visivel_rec,data_rec, valor_rec, hora_rec, id_cai_fk, id_form_pag_fk) " +
+                    $"VALUES ('Sim',@data, @valor, @hora, @id_cai, @id_form_pag)";
 
                 query.Parameters.AddWithValue("@data", recebimento.Data?.ToString("yyyy-MM-dd"));
                 query.Parameters.AddWithValue("@valor", recebimento.Valor);
@@ -67,11 +67,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Recebimento LEFT JOIN Venda ON Recebimento.id_vend_fk = Venda.id_vend INNER JOIN Caixa ON Recebimento.id_cai_fk = Caixa.id_cai INNER JOIN Forma_Pagamento ON Recebimento.id_form_pag_fk = Forma_Pagamento.id_form_pag;";
+                    query.CommandText = "SELECT * FROM Recebimento LEFT JOIN Venda ON Recebimento.id_vend_fk = Venda.id_vend INNER JOIN Caixa ON Recebimento.id_cai_fk = Caixa.id_cai INNER JOIN Forma_Pagamento ON Recebimento.id_form_pag_fk = Forma_Pagamento.id_form_pag WHERE visivel_rec = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Recebimento, Caixa, Venda, Forma_Pagamento WHERE (Recebimento.id_cai_fk = Caixa.id_cai) AND (Recebimento.id_vend_fk = Venda.id_vend) AND (Recebimento.id_form_pag_fk = Forma_Pagamento.id_form_pag) AND (data_pag LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Recebimento, Caixa, Venda, Forma_Pagamento WHERE (Recebimento.id_cai_fk = Caixa.id_cai) AND (Recebimento.id_vend_fk = Venda.id_vend) AND (Recebimento.id_form_pag_fk = Forma_Pagamento.id_form_pag) AND (data_pag LIKE '%{busca}%') AND (visivel_rec = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -135,5 +135,43 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Recebimento recebimento)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Recebimento SET visivel_rec = 'Nao' WHERE id_rec = @id;";
+
+                    query.Parameters.AddWithValue("@id", recebimento.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
     }
 }

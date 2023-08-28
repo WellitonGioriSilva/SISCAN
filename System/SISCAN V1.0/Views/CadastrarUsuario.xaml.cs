@@ -40,7 +40,10 @@ namespace SISCAN.Views
                     usuario.UsuarioNome = tbUsuario.Text;
                     usuario.Senha = tbSenha.Text;
                     usuario.Funcionario = new Funcionario();
-                    usuario.Funcionario.Id = cbFuncionario.SelectedIndex + 1;
+                    if (cbFuncionario.SelectedItem is Funcionario selectedItem)
+                    {
+                        usuario.Funcionario.Id = selectedItem.Id;
+                    }
 
                     //Inserindo os Dados           
                     UsuarioDAO usuarioDAO = new UsuarioDAO();

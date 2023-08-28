@@ -63,5 +63,18 @@ namespace SISCAN.Views
                 MessageBox.Show("Selecione um usuário antes de atualizar!");
             }
         }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                Usuario selectedItem = (Usuario)this.dgvList.SelectedItem;
+                UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+                usuarioDAO.Delete(selectedItem);
+
+                CarregarLista();
+            }
+        }
     }
 }

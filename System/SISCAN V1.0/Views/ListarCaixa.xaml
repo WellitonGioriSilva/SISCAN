@@ -51,7 +51,7 @@
 
         <StackPanel Grid.Row="1">
             <DataGrid x:Name="dgvList" Grid.Row="2" Margin="5,5,5,5" IsReadOnly="true"
-                      AutoGenerateColumns="False" AlternatingRowBackground="#FFE5E5E5" AlternationCount="2" Grid.ColumnSpan="2">
+                      AutoGenerateColumns="False" AlternatingRowBackground="#FF1D1D1D" AlternationCount="2" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding id}"/>
                     <DataGridTextColumn Header="Data" Binding="{Binding Data}"/>

@@ -64,5 +64,18 @@ namespace SISCAN.Views
                 MessageBox.Show("Selecione um funcionário antes de atualizar!");
             }
         }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                Funcionario selectedItem = (Funcionario)this.dgvList.SelectedItem;
+                FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+
+                funcionarioDAO.Delete(selectedItem);
+
+                CarregarLista();
+            }
+        }
     }
 }

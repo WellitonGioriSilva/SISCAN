@@ -29,11 +29,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Funcionario RIGHT JOIN Cidade ON Funcionario.id_cid_fk = Cidade.id_cid INNER JOIN Funcao ON Funcionario.id_fun_fk = Funcao.id_fun;";
+                    query.CommandText = "SELECT * FROM Funcionario RIGHT JOIN Cidade ON Funcionario.id_cid_fk = Cidade.id_cid INNER JOIN Funcao ON Funcionario.id_fun_fk = Funcao.id_fun WHERE visivel_func = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Funcionario, Funcao, Cidade WHERE (Funcionario.id_cid_fk = Cidade.id_cid) AND (Funcionario.id_fun_fk = Funcao.id_fun) AND (nome_func LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Funcionario, Funcao, Cidade WHERE (Funcionario.id_cid_fk = Cidade.id_cid) AND (Funcionario.id_fun_fk = Funcao.id_fun) AND (nome_func LIKE '%{busca}%') AND (visivel_func = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -73,8 +73,8 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Funcionario (nome_func, bairro_func, rua_func, cpf_func, numero_func, sexo_func, id_cid_fk, id_fun_fk) " +
-                    $"VALUES (@nome, @bairro, @rua, @cpf, @numero, @sexo, @id_cid, @id_fun)";
+                query.CommandText = $"INSERT INTO Funcionario (visivel_func,nome_func, bairro_func, rua_func, cpf_func, numero_func, sexo_func, id_cid_fk, id_fun_fk) " +
+                    $"VALUES ('Sim',@nome, @bairro, @rua, @cpf, @numero, @sexo, @id_cid, @id_fun)";
 
                 query.Parameters.AddWithValue("@nome", funcionario.Nome);
                 query.Parameters.AddWithValue("@bairro", funcionario.Bairro);
@@ -143,5 +143,43 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Funcionario funcionario)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Funcionario SET visivel_func = 'Nao' WHERE id_func = @id;";
+
+                    query.Parameters.AddWithValue("@id", funcionario.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
     }
 }

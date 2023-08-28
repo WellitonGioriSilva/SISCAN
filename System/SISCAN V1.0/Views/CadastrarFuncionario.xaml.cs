@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using MySqlX.XDevAPI;
+using SISCAN.Models;
 using SISCAN.Views;
 using System;
 using System.Collections.Generic;
@@ -41,10 +42,15 @@ namespace SISCAN.Formularios
                 funcionario.Numero = Convert.ToInt16(tbNumero.Text);
                 funcionario.Rua = tbRua.Text;
                 funcionario.Funcao = new Funcao();
-                funcionario.Funcao.Id = cbFuncao.SelectedIndex + 1;
+                if (cbFuncao.SelectedItem is Funcao selectedItem)
+                {
+                    funcionario.Funcao.Id = selectedItem.Id;
+                }
                 funcionario.Cidade = new Cidade();
-                funcionario.Cidade.ID = cbCidade.SelectedIndex + 1;
-
+                if (cbCidade.SelectedItem is Cidade selectedItemCid)
+                {
+                    funcionario.Cidade.ID = selectedItemCid.ID;
+                }
                 //Inserindo os Dados           
                 FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
                 funcionarioDAO.Insert(funcionario);

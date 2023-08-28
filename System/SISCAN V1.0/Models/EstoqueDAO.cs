@@ -23,8 +23,8 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Estoque (lote_est, quantidade_est, validade_est, id_prod_fk)" +
-                    $"VALUES (@lote, @quantidade, @validade, @id_prod)";
+                query.CommandText = $"INSERT INTO Estoque (visivel_est, lote_est, quantidade_est, validade_est, id_prod_fk)" +
+                    $"VALUES ('Sim', @lote, @quantidade, @validade, @id_prod)";
 
                 query.Parameters.AddWithValue("@lote", estoque.Lote);
                 query.Parameters.AddWithValue("@quantidade", estoque.Quantidade);
@@ -64,11 +64,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Estoque LEFT JOIN Produto ON Estoque.id_prod_fk = Produto.id_prod;";
+                    query.CommandText = "SELECT * FROM Estoque LEFT JOIN Produto ON Estoque.id_prod_fk = Produto.id_prod WHERE visivel_cai = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Estoque, Produto WHERE (Estoque.id_prod_fk = Produto.id_prod) AND (lote_est LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Estoque, Produto WHERE (Estoque.id_prod_fk = Produto.id_prod) AND (lote_est LIKE '%{busca}%') AND (visivel_est = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -96,6 +96,44 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Estoque estoque)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Estoque SET visivel_est = 'Nao' WHERE id_est = @id;";
+
+                    query.Parameters.AddWithValue("@id", estoque.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
 
     }
 }

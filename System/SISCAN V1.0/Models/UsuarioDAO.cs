@@ -28,11 +28,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Usuario LEFT JOIN Funcionario ON Usuario.id_func_fk = Funcionario.id_func;";
+                    query.CommandText = "SELECT * FROM Usuario LEFT JOIN Funcionario ON Usuario.id_func_fk = Funcionario.id_func WHERE visivel_usu = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Usuario, Funcionario WHERE (Usuario.id_func_fk = Funcionario.id_func) AND (usuario_usu LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Usuario, Funcionario WHERE (Usuario.id_func_fk = Funcionario.id_func) AND (usuario_usu LIKE '%{busca}%') AND (visivel_usu = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -65,8 +65,8 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Usuario (usuario_usu, senha_usu, id_func_fk)" +
-                    $"VALUES (@usuario, @senha, @id_func)";
+                query.CommandText = $"INSERT INTO Usuario (visivel_usu,usuario_usu, senha_usu, id_func_fk)" +
+                    $"VALUES ('Sim',@usuario, @senha, @id_func)";
 
                 query.Parameters.AddWithValue("@usuario", usuario.UsuarioNome);
                 query.Parameters.AddWithValue("@senha", usuario.Senha);
@@ -125,5 +125,43 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Usuario usuario)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Usuario SET visivel_usu = 'Nao' WHERE id_usu = @id;";
+
+                    query.Parameters.AddWithValue("@id", usuario.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
     }
 }

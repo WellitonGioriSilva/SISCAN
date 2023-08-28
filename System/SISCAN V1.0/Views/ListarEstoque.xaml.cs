@@ -47,5 +47,18 @@ namespace SISCAN.Views
                 MessageBox.Show("Insira um lote antes de buscar");
             }
         }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                Estoque selectedItem = (Estoque)this.dgvList.SelectedItem;
+                EstoqueDAO estoqueDAO = new EstoqueDAO();
+
+                estoqueDAO.Delete(selectedItem);
+
+                CarregarLista();
+            }
+        }
     }
 }

@@ -27,8 +27,8 @@ namespace SISCAN.Models
                 //query.CommandText = $"INSERT INTO Despesa (nome_desp, parcelas_desp, valor_desp, data_desp, status_desp, vencimento_desp, id_comp_fk)" +
                     //$"VALUES (@nome, @parcelas, @valor, @data, @status, @vencimento, @id_comp)";
                 
-                query.CommandText = $"INSERT INTO Despesa (nome_desp, parcelas_desp, valor_desp, data_desp, status_desp, vencimento_desp)" +
-                    $"VALUES (@nome, @parcelas, @valor, @data, @status, @vencimento)";
+                query.CommandText = $"INSERT INTO Despesa (visivel_desp, nome_desp, parcelas_desp, valor_desp, data_desp, status_desp, vencimento_desp)" +
+                    $"VALUES ('Sim',@nome, @parcelas, @valor, @data, @status, @vencimento)";
 
                 query.Parameters.AddWithValue("@nome", despesa.Nome);
                 query.Parameters.AddWithValue("@parcelas", despesa.Parcelas);
@@ -70,11 +70,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Despesa LEFT JOIN Compra ON Despesa.id_com_fk = Compra.id_com;";
+                    query.CommandText = "SELECT * FROM Despesa LEFT JOIN Compra ON Despesa.id_com_fk = Compra.id_com WHERE visivel_desp = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Despesa, Compra WHERE (Despesa.id_com_fk = Compra.id_com) AND (nome_desp LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Despesa, Compra WHERE (Despesa.id_com_fk = Compra.id_com) AND (nome_desp LIKE '%{busca}%') AND (visivel_desp = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -105,5 +105,43 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Despesa despesa)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Despesa SET visivel_desp = 'Nao' WHERE id_desp = @id;";
+
+                    query.Parameters.AddWithValue("@id", despesa.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
     }
 }

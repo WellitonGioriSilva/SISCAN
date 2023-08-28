@@ -63,5 +63,18 @@ namespace SISCAN.Views
                 MessageBox.Show("Selecione um produto antes de atualizar!");
             }
         }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                Produto selectedItem = (Produto)this.dgvList.SelectedItem;
+                ProdutoDAO produtoDAO = new ProdutoDAO();
+
+                produtoDAO.Delete(selectedItem);
+
+                CarregarLista();
+            }
+        }
     }
 }

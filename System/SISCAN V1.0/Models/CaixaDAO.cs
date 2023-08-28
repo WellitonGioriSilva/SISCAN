@@ -26,11 +26,11 @@ namespace SISCAN.Models
                 var query = conn.Query();
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Caixa;";
+                    query.CommandText = "SELECT * FROM Caixa WHERE visivel_cai = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Caixa WHERE (id_cai LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Caixa WHERE (id_cai LIKE '%{busca}%') AND (visivel_cai = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -67,8 +67,8 @@ namespace SISCAN.Models
                 //var caixaId = new CaixaDao().Insert(caixa.Caixa);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Caixa (data_cai, hora_abertura_cai, hora_fechamento_cai, valor_inicial_cai, valor_final_cai)" +
-                    $"VALUES (@data, @hora_abertura, @hora_fechamento, @valor_inicial, @valor_final)";
+                query.CommandText = $"INSERT INTO Caixa (visivel_cai ,data_cai, hora_abertura_cai, hora_fechamento_cai, valor_inicial_cai, valor_final_cai)" +
+                    $"VALUES ('Sim',@data, @hora_abertura, @hora_fechamento, @valor_inicial, @valor_final)";
 
                 query.Parameters.AddWithValue("@data", caixa.Data?.ToString("yyyy-MM-dd"));
                 query.Parameters.AddWithValue("@hora_abertura", caixa.HoraAbertura);
@@ -100,32 +100,38 @@ namespace SISCAN.Models
 
         public void Delete(Caixa caixa)
         {
-            try
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
             {
-                var query = conn.Query();
-                query.CommandText = $"DELETE FROM Caixa WHERE id_cai = @id;";
-
-                query.Parameters.AddWithValue("@id", caixa.id);
-
-                var result = query.ExecuteNonQuery();
-
-                if (result == 0)
+                try
                 {
-                    MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Caixa SET visivel_cai = 'Nao' WHERE id_cai = @id;";
+
+                    query.Parameters.AddWithValue("@id", caixa.id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Dados deletados com sucesso!");
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                MessageBox.Show("Erro 3007 : Contate o suporte!");
-            }
-            finally
-            {
-                conn.Close();
+                finally
+                {
+                    conn.Close();
+                }
             }
         }
     }

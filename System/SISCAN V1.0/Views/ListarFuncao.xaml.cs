@@ -63,5 +63,18 @@ namespace SISCAN.Views
                 MessageBox.Show("Selecione uma função antes de atualizar!");
             }
         }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                Funcao selectedItem = (Funcao)this.dgvList.SelectedItem;
+                FuncaoDAO funcaoDAO = new FuncaoDAO();
+
+                funcaoDAO.Delete(selectedItem);
+
+                CarregarLista();
+            }
+        }
     }
 }

@@ -62,5 +62,18 @@ namespace SISCAN.Views
                 MessageBox.Show("Selecione um recebimento antes de atualizar!");
             }
         }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                Recebimento selectedItem = (Recebimento)this.dgvList.SelectedItem;
+                RecebimentoDAO recebimentoDAO = new RecebimentoDAO();
+
+                recebimentoDAO.Delete(selectedItem);
+
+                CarregarLista();
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SISCAN.Helpers;
+﻿using MySqlX.XDevAPI;
+using SISCAN.Helpers;
 using SISCAN.Models;
 using System;
 using System.Collections.Generic;
@@ -41,12 +42,20 @@ namespace SISCAN.Views
                 pagamento.Hora = DAOHelper.DateTimeToTimeSpan(tmHora.SelectedTime);
                 pagamento.Data = dtpData.SelectedDate;
                 pagamento.Caixa = new Caixa();
-                pagamento.Caixa.id = cbCaixa.SelectedIndex + 1;
+                if (cbCaixa.SelectedItem is Caixa selectedItemCai)
+                {
+                    pagamento.Caixa.id = selectedItemCai.id;
+                }
                 pagamento.FormaPagamento = new FormaPagamento();
-                pagamento.FormaPagamento.Id = cbFormapag.SelectedIndex + 1;
+                if (cbFormapag.SelectedItem is FormaPagamento selectedItemForm)
+                {
+                    pagamento.FormaPagamento.Id = selectedItemForm.Id;
+                }
                 pagamento.Despesa = new Despesa();
-                pagamento.Despesa.Id = cbDespesa.SelectedIndex + 1;
-
+                if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
+                {
+                    pagamento.Despesa.Id = selectedItemDesp.Id;
+                }
                 //Inserindo os Dados           
                 PagamentoDAO pagamentoDAO = new PagamentoDAO();
                 pagamentoDAO.Insert(pagamento);

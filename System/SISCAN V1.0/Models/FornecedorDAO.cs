@@ -26,8 +26,8 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Fornecedor (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, id_cid_fk) " +
-                    $"VALUES (@razaoSocial, @cnpj, @bairro, @rua, @nomeFantasia, @telefone, @inscricaoEstadual, @responsavel, @id_cid)";
+                query.CommandText = $"INSERT INTO Fornecedor (visivel_forn, razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, id_cid_fk) " +
+                    $"VALUES ('Sim', @razaoSocial, @cnpj, @bairro, @rua, @nomeFantasia, @telefone, @inscricaoEstadual, @responsavel, @id_cid)";
 
                 query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
                 query.Parameters.AddWithValue("@cnpj", fornecedor.Cnpj);
@@ -71,11 +71,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Fornecedor LEFT JOIN Cidade ON Fornecedor.id_cid_fk = Cidade.id_cid LEFT JOIN Estado ON Cidade.id_est_fk = Estado.id_est;";
+                    query.CommandText = "SELECT * FROM Fornecedor LEFT JOIN Cidade ON Fornecedor.id_cid_fk = Cidade.id_cid LEFT JOIN Estado ON Cidade.id_est_fk = Estado.id_est WHERE visivel_forn = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Fornecedor, Cidade, Estado WHERE (Fornecedor.id_cid_fk = Cidade.id_cid) AND (Cidade.id_est_fk = Estado.id_est) AND (razao_social_forn LIKE '%{busca}%');";
+                    query.CommandText = $"SELECT * FROM Fornecedor, Cidade, Estado WHERE (Fornecedor.id_cid_fk = Cidade.id_cid) AND (Cidade.id_est_fk = Estado.id_est) AND (razao_social_forn LIKE '%{busca}%') AND (visivel_forn = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -108,5 +108,43 @@ namespace SISCAN.Models
                 conn.Close();
             }
         }
+
+        public void Delete(Fornecedor fornecedor)
+        {
+
+            MessageBoxResult resultado = MessageBox.Show("Deseja deletar esse dado?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var query = conn.Query();
+                    query.CommandText = $"UPDATE Fornecedor SET visivel_forn = 'Nao' WHERE id_forn = @id;";
+
+                    query.Parameters.AddWithValue("@id", fornecedor.Id);
+
+                    var result = query.ExecuteNonQuery();
+
+                    if (result == 0)
+                    {
+                        MessageBox.Show("Erro ao deletar os dados, verifique e tente novamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dados deletados com sucesso!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Erro 3007 : Contate o suporte!");
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
     }
 }

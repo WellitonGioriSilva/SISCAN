@@ -75,7 +75,7 @@ namespace SISCAN.Formularios
                 }
                 //Inserindo os Dados           
                 DespesaDAO despesaDAO = new DespesaDAO();
-                despesaDAO.Insert(despesa);
+                despesaDAO.Update(despesa);
 
                 Clear();
             }

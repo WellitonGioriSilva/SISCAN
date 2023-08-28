@@ -66,7 +66,7 @@ namespace SISCAN.Formularios
 
                 //Inserindo os Dados           
                 CaixaDAO caixaDAO = new CaixaDAO();
-                caixaDAO.Insert(caixa);
+                caixaDAO.Update(caixa);
 
                 Clear();
             }

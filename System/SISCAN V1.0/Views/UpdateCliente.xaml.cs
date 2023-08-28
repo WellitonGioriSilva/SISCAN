@@ -87,7 +87,7 @@ namespace SISCAN.Formularios
 
                 //Inserindo os Dados           
                 ClienteDAO clienteDAO = new ClienteDAO();
-                clienteDAO.Insert(cliente);
+                clienteDAO.Update(cliente);
 
                 Clear();
             }

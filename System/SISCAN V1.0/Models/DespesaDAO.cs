@@ -106,6 +106,44 @@ namespace SISCAN.Models
             }
         }
 
+        public void Update(Despesa despesa)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = "UPDATE Despesa SET nome_desp = @nome, parcelas_desp = @parcelas, valor_desp = @valor, data_desp = @data, " +
+                    "vencimento_desp = @vencimento, status_desp = @status, id_com_fk = id_com WHERE id_desp = @id";
+                
+                query.Parameters.AddWithValue("@id", despesa.Id);
+                query.Parameters.AddWithValue("@nome", despesa.Nome);
+                query.Parameters.AddWithValue("@parcelas", despesa.Parcelas);
+                query.Parameters.AddWithValue("@valor", despesa.Valor);
+                query.Parameters.AddWithValue("@data", despesa.Data);
+                query.Parameters.AddWithValue("@vencimento", despesa.Vencimento);
+                query.Parameters.AddWithValue("@status", despesa.Status);
+                query.Parameters.AddWithValue("@id_com", despesa.Compra.Id);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
+                }
+                else
+                {
+                    MessageBox.Show("Dados atualizados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3008 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         public void Delete(Despesa despesa)
         {
 

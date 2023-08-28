@@ -111,7 +111,8 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = "UPDATE Funcionario SET nome_func = @nome, bairro_func = @bairro, rua_func = @rua, cpf_func = @cpf, numero_func = @numero, sexo_func = @sexo, id_cid_fk = @id_cid, id_fun_fk = @id_fun WHERE id_func = @id";
+                query.CommandText = "UPDATE Funcionario SET nome_func = @nome, bairro_func = @bairro, rua_func = @rua, cpf_func = @cpf, " +
+                    "numero_func = @numero, sexo_func = @sexo, id_cid_fk = @id_cid, id_fun_fk = @id_fun WHERE id_func = @id";
 
                 query.Parameters.AddWithValue("@id", funcionario.Id);
                 query.Parameters.AddWithValue("@nome", funcionario.Nome);

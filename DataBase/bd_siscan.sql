@@ -279,6 +279,7 @@ INSERT INTO Cidade VALUES
 (null, 'Vale do Paraíso',"Sim", 1);
 
 #Checks
+select * from Usuario;
 select * from Cidade;
 select * from Caixa;
 select * from Cliente;
@@ -288,3 +289,4 @@ select * from Funcao;
 select * from Produto;
 select * from Pagamento;
 SELECT * FROM Cliente, Cidade WHERE (Cliente.id_cid_fk = Cidade.id_cid) AND (nome_cli LIKE '%Welliton%');
+SELECT * FROM Usuario WHERE (usuario_usu = 'Welliton') AND (visivel_usu = 'Sim') AND (senha_usu = '123');

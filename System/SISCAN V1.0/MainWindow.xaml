@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"
         FontFamily="{DynamicResource MaterialDesignFont}"
         
-        Title="MainWindow" Height="480" Width="854" WindowStartupLocation="CenterScreen" Background="#FFFFDC84">
+        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen" Background="#FFFFDC84">
 
     <Grid>
         <Grid.Background>
@@ -36,18 +36,18 @@
 
 
         <StackPanel Grid.ColumnSpan="4" Grid.RowSpan="4" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Image Margin="0,0,0,0" Source="/Resources/Frente.png" Stretch="Fill" Height="416" Width="699"/>
+            <Image Margin="0,0,0,0" Source="/Resources/Frente.png" Stretch="Fill" Height="536" Width="900"/>
         </StackPanel>
 
 
-        <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,20,0,0" Height="36" Width="198">
+        <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,100,50,0" Height="38" Width="202">
             <Label Content="Login de Usuário" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Foreground="#FF872000" FontFamily="Century" FontSize="24"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="35">
-            <Border BorderThickness="1" BorderBrush="#FF3D00" CornerRadius="20" Height="34" Width="320" Background="#19FF3D00">
+        <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Height="41" Margin="0,0,75,0">
+            <Border BorderThickness="1" BorderBrush="#FF3D00" CornerRadius="20" Height="40" Width="400" Background="#19FF3D00">
                 <TextBox
-                x:Name="NameTextBox"
+                x:Name="tbUser"
                 materialDesign:HintAssist.Hint="Nome:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="#FF161515" Height="22" Margin="9,5,-4,5" CaretBrush="#FF161515" FontFamily="Century">
                     <TextBox.Text>
                         <Binding
@@ -59,23 +59,23 @@
             </Border>
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Height="35">
-            <Border BorderThickness="1" BorderBrush="#FF3D00" CornerRadius="20" Height="34" Width="320" Background="#19FF3D00">
-               <PasswordBox
-                x:Name="PasswordBox"
+        <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Height="41" Margin="0,0,75,0">
+            <Border BorderThickness="1" BorderBrush="#FF3D00" CornerRadius="20" Height="40" Width="400" Background="#19FF3D00">
+                <PasswordBox
+                x:Name="tbSenha"
                 materialDesign:HintAssist.HelperText=""
                 materialDesign:HintAssist.Hint="Senha:"
-                materialDesign:TextFieldAssist.HasClearButton="True" SelectionTextBrush="#FF161515" BorderBrush="{x:Null}" Foreground="#FF161515" Margin="9,4,4,0" CaretBrush="#FF161515" FontFamily="Century" 
+                materialDesign:TextFieldAssist.HasClearButton="True" SelectionTextBrush="#FF161515" BorderBrush="{x:Null}" Foreground="#FF161515" Margin="9,9,4,0" CaretBrush="#FF161515" FontFamily="Century" 
                />
             </Border>
         </StackPanel>
 
         <StackPanel Grid.Row="4" Grid.Column="2">
-            <Button
+            <Button x:Name="btLogar"
                 materialDesign:ButtonAssist.CornerRadius="15"
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Margin="152,30,61,54" BorderBrush="White" Grid.Column="2" Grid.Row="3" Click="Button_Click">
+                ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Margin="152,30,61,54" BorderBrush="White" Grid.Column="2" Grid.Row="3" Click="btLogar_Click" Width="142" Height="42">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFFF3D00" Offset="0"/>
@@ -87,6 +87,18 @@
             </Button>
         </StackPanel>
 
-        <Image Grid.Column="1" Margin="59,116,59,0" Grid.RowSpan="3" Source="/Resources/Logotipo Lanchonete.png" Stretch="Fill"/>
+        <Image Grid.Column="1" Margin="93,116,5,0" Grid.RowSpan="3" Source="/Resources/Logotipo Lanchonete.png" Stretch="Fill"/>
+
+        <StackPanel Grid.RowSpan="4" Grid.ColumnSpan="4">
+            <Frame x:Name="fmCadastro" Height="552" Width="926" Margin="0,70,0,0"></Frame>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,50" Height="68" Grid.Column="4">
+            <Button x:Name="btVoltar" Height="70" Width="69" Margin="10,0,0,0" Click="btVoltar_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Resources/Botão Voltar.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>

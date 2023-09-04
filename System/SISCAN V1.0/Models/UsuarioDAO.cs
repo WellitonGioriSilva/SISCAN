@@ -4,6 +4,7 @@ using SISCAN.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,7 @@ namespace SISCAN.Models
 {
     internal class UsuarioDAO
     {
+        public int count;
         private static Conexao conn;
         public UsuarioDAO()
         {
@@ -65,8 +67,17 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Usuario (visivel_usu,usuario_usu, senha_usu, id_func_fk)" +
-                    $"VALUES ('Sim',@usuario, @senha, @id_func)";
+
+                if (usuario.Funcionario.Id == 0)
+                {
+                    query.CommandText = $"INSERT INTO Usuario (visivel_usu,usuario_usu, senha_usu)" +
+                    $"VALUES ('Sim',@usuario, @senha)";
+                }
+                else
+                {
+                    query.CommandText = $"INSERT INTO Usuario (visivel_usu,usuario_usu, senha_usu, id_func_fk)" +
+                        $"VALUES ('Sim',@usuario, @senha, @id_func)";
+                }
 
                 query.Parameters.AddWithValue("@usuario", usuario.UsuarioNome);
                 query.Parameters.AddWithValue("@senha", usuario.Senha);
@@ -160,6 +171,46 @@ namespace SISCAN.Models
                 {
                     conn.Close();
                 }
+            }
+        }
+
+        public List<Usuario> Login(string user, string senha)
+        {
+            try
+            {
+                List<Usuario> listCli = new List<Usuario>();
+
+                var query = conn.Query();
+
+                if (user == null && senha == null)
+                {
+                    query.CommandText = "SELECT * FROM Usuario WHERE visivel_usu = 'Sim';";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Usuario WHERE (usuario_usu = '{user}') AND (visivel_usu = 'Sim') AND (senha_usu = '{senha}');";
+                }
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    count = 1;
+                }
+                else
+                {
+                    count = 0;
+                }
+
+                return listCli;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
 

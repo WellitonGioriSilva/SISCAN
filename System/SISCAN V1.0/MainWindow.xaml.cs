@@ -45,6 +45,10 @@ namespace SISCAN
             {
                 fmCadastro.NavigationService.Navigate(new CadastrarUsuario());
             }
+            else
+            {
+                btVoltar.Visibility = Visibility.Collapsed;
+            }
         }
 
         public void Login()
@@ -68,6 +72,7 @@ namespace SISCAN
         private void btVoltar_Click(object sender, RoutedEventArgs e)
         {
             fmCadastro.Visibility = Visibility.Collapsed;
+            btVoltar.Visibility = Visibility.Collapsed;
         }
     }
 }

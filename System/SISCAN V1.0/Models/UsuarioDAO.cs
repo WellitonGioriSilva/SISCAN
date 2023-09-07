@@ -3,6 +3,7 @@ using SISCAN.Database;
 using SISCAN.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -66,17 +67,16 @@ namespace SISCAN.Models
         {
             try
             {
+                //string msg = "";
                 var query = conn.Query();
 
                 if (usuario.Funcionario.Id == 0)
                 {
-                    query.CommandText = $"INSERT INTO Usuario (visivel_usu,usuario_usu, senha_usu)" +
-                    $"VALUES ('Sim',@usuario, @senha)";
+                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha, @result)";
                 }
                 else
                 {
-                    query.CommandText = $"INSERT INTO Usuario (visivel_usu,usuario_usu, senha_usu, id_func_fk)" +
-                        $"VALUES ('Sim',@usuario, @senha, @id_func)";
+                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func, @result)";
                 }
 
                 query.Parameters.AddWithValue("@usuario", usuario.UsuarioNome);
@@ -96,6 +96,7 @@ namespace SISCAN.Models
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
             }
             finally

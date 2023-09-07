@@ -278,15 +278,48 @@ INSERT INTO Cidade VALUES
 (null, 'Vale do Anari',"Sim", 1),
 (null, 'Vale do Paraíso',"Sim", 1);
 
+#Procedimentos
+
+#Procedimento - Primeiro Usuário
+DELIMITER $$
+CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), out Msg varchar(100))
+BEGIN
+DECLARE verificador_usu INT;
+IF((usuario <> '') AND (senha <> '')) THEN
+	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu) VALUES (null, 'Sim', usuario, senha);
+	SELECT 'Usuário cadastrado com sucesso!' as SUCESSO INTO Msg;
+ELSE
+	SELECT 'Todos os campos devem ser preenchidos' as ERRO INTO Msg;
+END IF;
+END;
+$$ DELIMITER ;
+
+#Procedimento - Usuário
+DELIMITER $$
+CREATE PROCEDURE InsertUsuario(usuario varchar(100), senha varchar(100), id_fk int, out Msg varchar(100))
+BEGIN
+DECLARE verificador_usu INT;
+IF((usuario <> '') AND (senha <> '') AND (id_fk <> '')) THEN
+	SELECT count(id_usu) INTO verificador_usu FROM usuario WHERE usuario_usu = usuario;
+    IF(verificador_usu = 0) THEN
+		INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, id_fk);
+        SELECT 'Usuário cadastrado com sucesso!' as SUCESSO INTO Msg;
+    ELSE
+		SELECT 'O usuário informado já existe no sistema!' as ERRO INTO Msg;
+    END IF;
+ELSE
+	SELECT 'Todos os campos devem ser preenchidos' as ERRO INTO Msg;
+END IF;
+END;
+$$ DELIMITER ;
+
 #Checks
-select * from Usuario;
-select * from Cidade;
-select * from Caixa;
-select * from Cliente;
-select * from Funcionario;
-select * from Fornecedor;
-select * from Funcao;
-select * from Produto;
-select * from Pagamento;
-SELECT * FROM Cliente, Cidade WHERE (Cliente.id_cid_fk = Cidade.id_cid) AND (nome_cli LIKE '%Welliton%');
-SELECT * FROM Usuario WHERE (usuario_usu = 'Welliton') AND (visivel_usu = 'Sim') AND (senha_usu = '123');
+#select * from Usuario;
+#select * from Cidade;
+#select * from Caixa;
+#select * from Cliente;
+#select * from Funcionario;
+#select * from Fornecedor;
+#select * from Funcao;
+#select * from Produto;
+#select * from Pagamento;

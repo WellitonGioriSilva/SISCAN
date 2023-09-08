@@ -63,20 +63,19 @@ namespace SISCAN.Models
             }
         }
 
-        public void Insert(Usuario usuario) 
+        public void Insert(Usuario usuario, int contador) 
         {
             try
             {
-                //string msg = "";
                 var query = conn.Query();
 
-                if (usuario.Funcionario.Id == 0)
+                if (contador == 0)
                 {
-                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha, @result)";
+                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha)";
                 }
                 else
                 {
-                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func, @result)";
+                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func)";
                 }
 
                 query.Parameters.AddWithValue("@usuario", usuario.UsuarioNome);

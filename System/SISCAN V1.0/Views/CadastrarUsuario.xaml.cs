@@ -22,11 +22,13 @@ namespace SISCAN.Views
     /// </summary>
     public partial class CadastrarUsuario : Page
     {
+        public int contador = 0;
         public CadastrarUsuario()
         {
             InitializeComponent();
 
             DadosCb();
+            Verificacao();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -53,7 +55,7 @@ namespace SISCAN.Views
 
                     //Inserindo os Dados           
                     UsuarioDAO usuarioDAO = new UsuarioDAO();
-                    usuarioDAO.Insert(usuario);
+                    usuarioDAO.Insert(usuario, contador);
 
                     Clear();
                 }
@@ -97,6 +99,13 @@ namespace SISCAN.Views
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarUsuario());
+        }
+
+        public void Verificacao()
+        {
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            usuarioDAO.Login(null, null);
+            contador = usuarioDAO.count;
         }
     }
 }

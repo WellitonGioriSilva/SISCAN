@@ -71,27 +71,23 @@ namespace SISCAN.Models
 
                 if (contador == 0)
                 {
-                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha)";
+                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha, @result)";
                 }
                 else
                 {
-                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func)";
+                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func, @result)";
                 }
 
                 query.Parameters.AddWithValue("@usuario", usuario.UsuarioNome);
                 query.Parameters.AddWithValue("@senha", usuario.Senha);
                 query.Parameters.AddWithValue("@id_func", usuario.Funcionario.Id);
+                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
+                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
 
-                var result = query.ExecuteNonQuery();
+                query.ExecuteNonQuery();
 
-                if (result == 0)
-                {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
-                }
+                string resultado = (string)query.Parameters["@result"].Value;
+                MessageBox.Show(resultado);
             }
             catch (Exception ex)
             {

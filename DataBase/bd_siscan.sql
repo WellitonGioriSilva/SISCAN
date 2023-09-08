@@ -282,33 +282,33 @@ INSERT INTO Cidade VALUES
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$
-CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100))
+CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), out msg varchar(100))
 BEGIN
 DECLARE verificador_usu INT;
 IF((usuario <> '') AND (senha <> '')) THEN
 	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu) VALUES (null, 'Sim', usuario, senha);
-	SELECT 'Usuário cadastrado com sucesso!' as SUCESSO;
+    SET msg = 'Usuário cadastrado com sucesso!';
 ELSE
-	SELECT 'Todos os campos devem ser preenchidos' as ERRO;
+    SET msg = 'Todos os campos devem ser preenchidos';
 END IF;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Usuário
 DELIMITER $$
-CREATE PROCEDURE InsertUsuario(usuario varchar(100), senha varchar(100), id_fk int)
+CREATE PROCEDURE InsertUsuario(usuario varchar(100), senha varchar(100), id_fk int, out msg varchar(100))
 BEGIN
 DECLARE verificador_usu INT;
 IF((usuario <> '') AND (senha <> '') AND (id_fk <> '')) THEN
 	SELECT count(id_usu) INTO verificador_usu FROM usuario WHERE usuario_usu = usuario;
     IF(verificador_usu = 0) THEN
 		INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, id_fk);
-        SELECT 'Usuário cadastrado com sucesso!' as SUCESSO;
+		SET msg = 'Usuário cadastrado com sucesso!';
     ELSE
-		SELECT 'O usuário informado já existe no sistema!' as ERRO;
+        SET msg = 'O usuário informado já existe no sistema!';
     END IF;
 ELSE
-	SELECT 'Todos os campos devem ser preenchidos' as ERRO;
+    SET msg = 'Todos os campos devem ser preenchidos';
 END IF;
 END;
 $$ DELIMITER ;

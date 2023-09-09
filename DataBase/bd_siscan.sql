@@ -299,11 +299,17 @@ DELIMITER $$
 CREATE PROCEDURE InsertUsuario(usuario varchar(100), senha varchar(100), id_fk int, out msg varchar(100))
 BEGIN
 DECLARE verificador_usu INT;
+DECLARE verificador_func INT;
 IF((usuario <> '') AND (senha <> '') AND (id_fk <> '')) THEN
 	SELECT count(id_usu) INTO verificador_usu FROM usuario WHERE usuario_usu = usuario;
     IF(verificador_usu = 0) THEN
-		INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, id_fk);
-		SET msg = 'Usuário cadastrado com sucesso!';
+        SELECT count(id_usu) INTO verificador_func FROM usuario WHERE id_func_fk = id_fk;
+        IF(verificador_func = 0) THEN
+			INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, id_fk);
+			SET msg = 'Usuário cadastrado com sucesso!';
+        ELSE
+			SET msg = 'O funcionário informado já possui um login no sistema!';
+        END IF;
     ELSE
         SET msg = 'O usuário informado já existe no sistema!';
     END IF;

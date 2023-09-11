@@ -279,6 +279,26 @@ INSERT INTO Cidade VALUES
 (null, 'Vale do Paraíso',"Sim", 1);
 
 #Procedimentos
+#Procedimento - Caixa
+DELIMITER $$
+CREATE PROCEDURE InsertCaixa(dataCad date, horaAbe time, horaFec time, valorIni double, valorFin double, out msg varchar(100))
+BEGIN
+DECLARE dataAtual date;
+IF(dataCad = CURDATE()) THEN
+	IF(horaFec > horaAbe) THEN
+		INSERT INTO caixa VALUES(null, dataCad, horaAbe, horaFec, valorIni, valorFin, 'Sim');
+        SET msg = 'Dados inseridos com sucesso!';
+	ELSE
+		SET msg = 'O horário de fechamento deve ser após o de abertura!';
+	END IF;
+ELSE
+	SET msg = 'A data de abertura deve ser a data atual!';
+END IF;
+END;
+$$ DELIMITER ;
+
+CALL InsertCaixa('2023-09-11', '13:00:00', '14:00:00', 150, 170, @teste);
+
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$

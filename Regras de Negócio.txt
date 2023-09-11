@@ -1,0 +1,42 @@
+Regras de Negócio
+
+Produtos:
+-Verificar se existe produto repetido;
+
+Caixa:
+-Verificar se a data de abertura corresponde com o dia;
+-Verificar se a data de fechamento corresponde com o dia;
+-Verificar se a hora de fechamento é após a hora de abertura;
+
+Função:
+-Verificar se existe função repetida;
+
+Fornecedor:
+-Verificar se o cnpj já está cadastrado;
+-Verificar se o telefone já está cadastrado;
+
+Cliente:
+-Verificar se o cpf já está cadastrado;
+-Verificar se o telefone já está cadastrado;
+
+Funcionário:
+-Verificar se o cpf já está cadastrado;
+
+Estoque:
+-Verificar se a data de validade é após a data atual;
+-Verificar se o lote já está cadastrado;
+
+Despesa:
+-Verificar se a data de validade é após a data atual;
+
+Pagamento:
+-Verificar se a despesa informada existe;
+
+Recebimento:
+-Verificar se a venda informada existe;
+
+Venda:
+-Verificar se o funcionário informado existe;
+
+Compra:
+-Verificar se o fornecedor informado existe;

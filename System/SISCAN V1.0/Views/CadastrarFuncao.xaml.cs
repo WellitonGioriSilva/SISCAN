@@ -36,6 +36,7 @@ namespace SISCAN.Formularios
                 Funcao funcao = new Funcao();
                 funcao.Nome = tbNome.Text;
                 funcao.Salario = Convert.ToSingle(tbSalario.Text);
+                funcao.Acesso = Convert.ToInt32(cbAcesso.SelectionBoxItem.ToString());
                 funcao.Turno = turnoSelect;
 
                 //Inserindo os Dados           

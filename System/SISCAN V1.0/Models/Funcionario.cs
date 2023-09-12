@@ -15,6 +15,7 @@ namespace SISCAN.Models
         public string Cpf { get; set; }
         public int Numero { get; set; }
         public string Sexo { get; set; }
+        public int Acesso { get; set; }
         public Cidade Cidade { get; set; }
         public Funcao Funcao { get; set; }
     }

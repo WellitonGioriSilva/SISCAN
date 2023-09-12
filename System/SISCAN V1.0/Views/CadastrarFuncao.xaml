@@ -42,6 +42,17 @@
                 materialDesign:HintAssist.Hint="Salário:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbAcesso" materialDesign:HintAssist.Hint="Nível de Acesso:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
+                    <ComboBoxItem
+                     Content="1" />
+                    <ComboBoxItem
+                     Content="2" />
+                    <ComboBoxItem
+                     Content="3" />
+                </ComboBox>
+            </Border>
+
             <StackPanel Margin="30,30,0,0">
                 <StackPanel Margin="0,0,0,5">
                     <Label FontFamily="Century">

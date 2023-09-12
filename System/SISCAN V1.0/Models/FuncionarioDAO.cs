@@ -49,6 +49,7 @@ namespace SISCAN.Models
                         Rua = DAOHelper.GetString(reader, "rua_func"),
                         Bairro = DAOHelper.GetString(reader, "bairro_func"),
                         Numero = reader.GetInt32("numero_func"),
+                        Acesso = reader.GetInt32("nivel_acess_func"),
                         Cidade = DAOHelper.IsNull(reader, "id_cid_fk") ? null : new Cidade() { ID = reader.GetInt32("id_cid"), Nome = reader.GetString("nome_cid") },
                         Funcao = DAOHelper.IsNull(reader, "id_fun_fk") ? null : new Funcao() { Id = reader.GetInt32("id_fun"), Nome = reader.GetString("nome_fun") }
                     });
@@ -73,8 +74,9 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Funcionario (visivel_func,nome_func, bairro_func, rua_func, cpf_func, numero_func, sexo_func, id_cid_fk, id_fun_fk) " +
-                    $"VALUES ('Sim',@nome, @bairro, @rua, @cpf, @numero, @sexo, @id_cid, @id_fun)";
+
+                query.CommandText = $"INSERT INTO Funcionario (visivel_func,nome_func, bairro_func, rua_func, cpf_func, numero_func, sexo_func, nivel_acess_func, id_cid_fk, id_fun_fk) " +
+                    $"VALUES ('Sim',@nome, @bairro, @rua, @cpf, @numero, @sexo, @acesso, @id_cid, @id_fun)";
 
                 query.Parameters.AddWithValue("@nome", funcionario.Nome);
                 query.Parameters.AddWithValue("@bairro", funcionario.Bairro);
@@ -82,6 +84,7 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@cpf", funcionario.Cpf);
                 query.Parameters.AddWithValue("@numero", funcionario.Numero);
                 query.Parameters.AddWithValue("@sexo", funcionario.Sexo);
+                query.Parameters.AddWithValue("@acesso", funcionario.Acesso);
                 query.Parameters.AddWithValue("@id_fun", funcionario.Funcao.Id);
                 query.Parameters.AddWithValue("@id_cid", funcionario.Cidade.ID);
 

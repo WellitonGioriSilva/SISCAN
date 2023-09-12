@@ -11,6 +11,7 @@ namespace SISCAN.Models
         public int Id { get; set; }
         public string Nome { get; set; }
         public double Salario { get; set; }
+        public int Acesso { get; set; }
         public string Turno { get; set; }
     }
 }

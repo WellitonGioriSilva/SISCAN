@@ -24,11 +24,12 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Funcao (visivel_fun, nome_fun, salario_fun, turno_fun) " +
-                    $"VALUES ('Sim',@nome, @salario, @turno)";
+                query.CommandText = $"INSERT INTO Funcao (visivel_fun, nome_fun, salario_fun, nivel_acess_fun, turno_fun) " +
+                    $"VALUES ('Sim',@nome, @salario, @acesso, @turno)";
 
                 query.Parameters.AddWithValue("@nome", funcao.Nome);
                 query.Parameters.AddWithValue("@salario", funcao.Salario);
+                query.Parameters.AddWithValue("@acesso", funcao.Acesso);
                 query.Parameters.AddWithValue("@turno", funcao.Turno);
 
                 var result = query.ExecuteNonQuery();
@@ -77,6 +78,7 @@ namespace SISCAN.Models
                         Id = reader.GetInt32("id_fun"),
                         Nome = DAOHelper.GetString(reader, "nome_fun"),
                         Salario = DAOHelper.GetDouble(reader, "salario_fun"),
+                        Acesso = reader.GetInt32("nivel_acess_fun"),
                         Turno = DAOHelper.GetString(reader, "turno_fun")
                     });
                 }
@@ -98,11 +100,12 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = "UPDATE Funcao SET nome_fun = @nome, salario_fun = @salario, turno_fun = @turno WHERE id_fun = @id";
+                query.CommandText = "UPDATE Funcao SET nome_fun = @nome, salario_fun = @salario, nivel_acess_fun = @acesso, turno_fun = @turno WHERE id_fun = @id";
 
                 query.Parameters.AddWithValue("@id", funcao.Id);
                 query.Parameters.AddWithValue("@nome", funcao.Nome);
                 query.Parameters.AddWithValue("@salario", funcao.Salario);
+                query.Parameters.AddWithValue("@acesso", funcao.Acesso);
                 query.Parameters.AddWithValue("@turno", funcao.Turno);
 
                 var result = query.ExecuteNonQuery();

@@ -60,7 +60,7 @@
         </StackPanel>
 
         <StackPanel>
-            <Button Height="150" Width="145" Background="{x:Null}" BorderBrush="{x:Null}">
+            <Button x:Name="btUserLogado" Height="150" Width="145" Background="{x:Null}" BorderBrush="{x:Null}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <materialDesign:PackIcon Kind="AccountCircleOutline" Height="96" Width="89" />
                     <Label HorizontalAlignment="Center" FontFamily="Century" FontSize="18">Usuário</Label>

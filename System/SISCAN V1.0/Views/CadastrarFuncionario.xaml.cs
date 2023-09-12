@@ -45,6 +45,7 @@ namespace SISCAN.Formularios
                 if (cbFuncao.SelectedItem is Funcao selectedItem)
                 {
                     funcionario.Funcao.Id = selectedItem.Id;
+                    funcionario.Acesso = selectedItem.Acesso;
                 }
                 funcionario.Cidade = new Cidade();
                 if (cbCidade.SelectedItem is Cidade selectedItemCid)

@@ -50,6 +50,7 @@ namespace SISCAN.Views
                     if (cbFuncionario.SelectedItem is Funcionario selectedItem)
                     {
                         usuario.Funcionario.Id = selectedItem.Id;
+                        usuario.Acesso = selectedItem.Acesso;
                     }
                     
 

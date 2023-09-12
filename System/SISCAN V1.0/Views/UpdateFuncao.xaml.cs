@@ -55,6 +55,14 @@ namespace SISCAN.Formularios
                 {
                     func.Salario = funcao.Salario;
                 }
+                if(cbAcesso.SelectedIndex != -1)
+                {
+                    func.Acesso = Convert.ToInt32(cbAcesso.SelectionBoxItem.ToString());
+                }
+                else
+                {
+                    func.Acesso = funcao.Acesso;
+                }
                 if (turnoSelect != "")
                 {
                     func.Turno = turnoSelect;
@@ -138,6 +146,7 @@ namespace SISCAN.Formularios
         {
             lbNome.Content = "Nome: " + funcao.Nome;
             lbSalario.Content = "Salário: " + funcao.Salario;
+            lbAcesso.Content = "Nível de Acesso: " + funcao.Acesso;
             lbTurno.Content = "Turno: " + funcao.Turno;
         }
     } 

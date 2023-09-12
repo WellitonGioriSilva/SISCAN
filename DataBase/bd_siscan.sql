@@ -27,6 +27,7 @@ id_fun int primary key auto_increment,
 nome_fun varchar(45),
 salario_fun double,
 turno_fun varchar(45),
+nivel_acess_fun int,
 visivel_fun varchar(10)
 );
 
@@ -95,6 +96,7 @@ rua_func varchar(45),
 cpf_func varchar(45),
 numero_func int,
 sexo_func varchar(45),
+nivel_acess_func int,
 visivel_func varchar(10),
 id_cid_fk int,
 foreign key (id_cid_fk) references Cidade (id_cid),
@@ -211,6 +213,7 @@ create table Usuario
 id_usu int primary key auto_increment,
 usuario_usu varchar(45),
 senha_usu varchar(45),
+nivel_acess_usu int,
 visivel_usu varchar(10),
 id_func_fk int,
 foreign key (id_func_fk) references Funcionario (id_func) 
@@ -302,11 +305,11 @@ CALL InsertCaixa('2023-09-11', '13:00:00', '14:00:00', 150, 170, @teste);
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$
-CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), out msg varchar(100))
+CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), acesso int, out msg varchar(100))
 BEGIN
 DECLARE verificador_usu INT;
 IF((usuario <> '') AND (senha <> '')) THEN
-	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu) VALUES (null, 'Sim', usuario, senha);
+	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, nivel_acess_usu) VALUES (null, 'Sim', usuario, senha, acesso);
     SET msg = 'Usuário cadastrado com sucesso!';
 ELSE
     SET msg = 'Todos os campos devem ser preenchidos';
@@ -316,7 +319,7 @@ $$ DELIMITER ;
 
 #Procedimento - Usuário
 DELIMITER $$
-CREATE PROCEDURE InsertUsuario(usuario varchar(100), senha varchar(100), id_fk int, out msg varchar(100))
+CREATE PROCEDURE InsertUsuario(usuario varchar(100), senha varchar(100), id_fk int, acesso int, out msg varchar(100))
 BEGIN
 DECLARE verificador_usu INT;
 DECLARE verificador_func INT;
@@ -325,7 +328,7 @@ IF((usuario <> '') AND (senha <> '') AND (id_fk <> '')) THEN
     IF(verificador_usu = 0) THEN
         SELECT count(id_usu) INTO verificador_func FROM usuario WHERE id_func_fk = id_fk;
         IF(verificador_func = 0) THEN
-			INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, id_fk);
+			INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, id_func_fk, nivel_acess_usu) VALUES (null, 'Sim', usuario, senha, id_fk, acesso);
 			SET msg = 'Usuário cadastrado com sucesso!';
         ELSE
 			SET msg = 'O funcionário informado já possui um login no sistema!';
@@ -340,7 +343,7 @@ END;
 $$ DELIMITER ;
 
 #Checks
-#select * from Usuario;
+select * from Usuario;
 #select * from Cidade;
 #select * from Caixa;
 #select * from Cliente;

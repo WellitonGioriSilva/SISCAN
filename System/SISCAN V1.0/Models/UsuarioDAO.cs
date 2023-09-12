@@ -47,6 +47,7 @@ namespace SISCAN.Models
                         Id = reader.GetInt32("id_usu"),
                         UsuarioNome = DAOHelper.GetString(reader, "usuario_usu"),
                         Senha = DAOHelper.GetString(reader, "senha_usu"),
+                        Acesso = reader.GetInt32("nivel_acess_usu"),
                         Funcionario = DAOHelper.IsNull(reader, "id_func_fk") ? null : new Funcionario() { Id = reader.GetInt32("id_func"), Nome = reader.GetString("nome_func") }
                     });
                 }
@@ -71,15 +72,19 @@ namespace SISCAN.Models
 
                 if (contador == 0)
                 {
-                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha, @result)";
+                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha, 3, @result)";
                 }
                 else
                 {
-                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func, @result)";
+                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func, @acesso, @result)";
                 }
 
                 query.Parameters.AddWithValue("@usuario", usuario.UsuarioNome);
                 query.Parameters.AddWithValue("@senha", usuario.Senha);
+                if (contador != 0)
+                {
+                    query.Parameters.AddWithValue("@acesso", usuario.Acesso);
+                }
                 query.Parameters.AddWithValue("@id_func", usuario.Funcionario.Id);
                 query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
                 query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;

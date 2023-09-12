@@ -56,6 +56,7 @@
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Nome" Binding="{Binding Nome}"/>
                     <DataGridTextColumn Header="Turno" Binding="{Binding Turno}"/>
+                    <DataGridTextColumn Header="Acesso" Binding="{Binding Acesso}"/>
                     <DataGridTextColumn Header="Salário" Binding="{Binding Salario, ConverterCulture='pt-BR', StringFormat=C}"/>
 
                     <DataGridTemplateColumn Header="Ações">

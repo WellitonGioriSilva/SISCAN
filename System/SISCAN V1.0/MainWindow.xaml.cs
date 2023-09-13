@@ -56,11 +56,12 @@ namespace SISCAN
             string user = tbUser.Text;
             string senha = new System.Net.NetworkCredential(string.Empty, tbSenha.SecurePassword).Password;
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            usuarioDAO.Login(user, senha);
+            Usuario usuario = new Usuario();
+            usuario = usuarioDAO.Login(user, senha);
 
             if (usuarioDAO.count == 1)
             {
-                FormMenu form = new FormMenu(this);
+                FormMenu form = new FormMenu(this, usuario);
                 form.Show();
             }
             else

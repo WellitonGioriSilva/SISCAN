@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SISCAN.Models;
 
 namespace SISCAN.Formularios
 {
@@ -20,13 +21,18 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class FormMenu : Window
     {
-        public FormMenu(MainWindow main)
+        Usuario usuario;
+        public FormMenu(MainWindow main, Usuario usu)
         {
             InitializeComponent();
 
             main.Close();
 
             Frame.NavigationService.Navigate(new Menu());
+
+            usuario = usu;
+
+            Acesso();
         }
 
         private void btCliente_Click(object sender, RoutedEventArgs e)
@@ -47,7 +53,7 @@ namespace SISCAN.Formularios
             Frame.NavigationService.Navigate(new CadastrarRecebimento());
         }
 
-        private void tbFuncao_Click(object sender, RoutedEventArgs e)
+        private void btFuncao_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Cadastrar Função";
             Frame.NavigationService.Navigate(new CadastrarFuncao());
@@ -74,7 +80,7 @@ namespace SISCAN.Formularios
             }           
         }
 
-        private void tbFornecedor_Click(object sender, RoutedEventArgs e)
+        private void btFornecedor_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Cadastrar Fornecedor";
             Frame.NavigationService.Navigate(new CadastrarFornecedor());
@@ -114,6 +120,22 @@ namespace SISCAN.Formularios
         {
             lbTitulo.Content = "Cadastrar Usuário";
             Frame.NavigationService.Navigate(new CadastrarUsuario());
+        }
+
+        private void Acesso()
+        {
+            if(usuario.Acesso == 1)
+            {
+                btUser.Visibility = Visibility.Collapsed;
+                btProduto.Visibility = Visibility.Collapsed;
+                btCompra.Visibility = Visibility.Collapsed;
+                btFornecedor.Visibility = Visibility.Collapsed;
+                btFuncao.Visibility = Visibility.Collapsed;
+                btFuncionario.Visibility = Visibility.Collapsed;
+                btEstoque.Visibility = Visibility.Collapsed;
+                btPagamento.Visibility = Visibility.Collapsed;
+                btDespesa.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

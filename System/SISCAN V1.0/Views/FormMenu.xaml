@@ -18,9 +18,8 @@
     </Window.Background>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="75*"/>
-            <RowDefinition Height="136*"/>
-            <RowDefinition Height="149*"/>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="227*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -60,9 +59,9 @@
         </StackPanel>
 
         <StackPanel>
-            <Button x:Name="btUserLogado" Height="150" Width="145" Background="{x:Null}" BorderBrush="{x:Null}">
+            <Button x:Name="btUserLogado" Height="116" Width="120" Background="{x:Null}" BorderBrush="{x:Null}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <materialDesign:PackIcon Kind="AccountCircleOutline" Height="96" Width="89" />
+                    <materialDesign:PackIcon Kind="AccountCircleOutline" Height="93" Width="82" />
                     <Label HorizontalAlignment="Center" FontFamily="Century" FontSize="18">Usuário</Label>
                 </StackPanel>
             </Button>
@@ -72,25 +71,26 @@
             <Button x:Name="btUser" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btUser_Click">Usuário</Button>
             <Button x:Name="btCliente" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btCliente_Click">Cliente</Button>
             <Button x:Name="btProduto" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Cursor="Hand" Click="btProduto_Click">Produto</Button>
-            <Button Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century">Compra</Button>
-            <Button Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century">Venda</Button>
-            <Button x:Name="tbFornecedor" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="tbFornecedor_Click">Fornecedor</Button>
-        </StackPanel>
-
-        <StackPanel Grid.Row="2">
-            <Button x:Name="tbFuncao" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="tbFuncao_Click">Função</Button>
+            <Button x:Name="btCompra" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century">Compra</Button>
+            <Button x:Name="btVenda" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century">Venda</Button>
+            <Button x:Name="btFornecedor" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btFornecedor_Click">Fornecedor</Button>
+            <Button x:Name="btFuncao" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btFuncao_Click">Função</Button>
             <Button x:Name="btFuncionario" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btFuncionario_Click">Funcionário</Button>
             <Button x:Name="btEstoque" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btEstoque_Click">Estoque</Button>
             <TreeView
                 MinWidth="220" Foreground="#FF872000" Margin="0,0,0,0" >
-                <TreeViewItem 
-    Header="Financeiro" FontFamily="Century" Cursor="" Background="White" Width="296" HorizontalAlignment="Center" FontSize="14">
+                <TreeViewItem Header="Financeiro" FontFamily="Century" Cursor="" Background="White" Width="296" HorizontalAlignment="Center" FontSize="14">
                     <Button x:Name="btCaixa" Width="228" Height="26" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btCaixa_Click">Caixa</Button>
                     <Button x:Name="btDespesa" Width="228" Height="25" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btDespesa_Click">Despesa</Button>
                     <Button x:Name="btRecebimento" Width="228" Height="26" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btRecebimento_Click">Recebimento</Button>
                     <Button x:Name="btPagamento" Width="228" Height="26" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btPagamento_Click">Pagamento</Button>
                 </TreeViewItem>
             </TreeView>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+
         </StackPanel>
 
         <StackPanel Grid.RowSpan="3" Margin="34,111,34,73" Grid.Column="1">

@@ -15,6 +15,7 @@ namespace SISCAN.Models
     internal class UsuarioDAO
     {
         public int count;
+        public int acess;
         private static Conexao conn;
         public UsuarioDAO()
         {
@@ -175,21 +176,21 @@ namespace SISCAN.Models
             }
         }
 
-        public List<Usuario> Login(string user, string senha)
+        public Usuario Login(string user, string senha)
         {
             try
             {
-                List<Usuario> listCli = new List<Usuario>();
+                Usuario usuario = new Usuario();
 
                 var query = conn.Query();
 
                 if (user == null && senha == null)
                 {
-                    query.CommandText = "SELECT * FROM Usuario WHERE visivel_usu = 'Sim';";
+                    query.CommandText = "SELECT * FROM Usuario, Funcionario WHERE visivel_usu = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Usuario WHERE (usuario_usu = '{user}') AND (visivel_usu = 'Sim') AND (senha_usu = '{senha}');";
+                    query.CommandText = $"SELECT * FROM Usuario, Funcionario WHERE (usuario_usu = '{user}') AND (visivel_usu = 'Sim') AND (senha_usu = '{senha}');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -197,13 +198,22 @@ namespace SISCAN.Models
                 if (reader.HasRows)
                 {
                     count = 1;
+
+                    while (reader.Read())
+                    {
+                        usuario.Id = reader.GetInt32("id_usu");
+                        usuario.UsuarioNome = DAOHelper.GetString(reader, "usuario_usu");
+                        usuario.Senha = DAOHelper.GetString(reader, "senha_usu");
+                        usuario.Acesso = reader.GetInt32("nivel_acess_usu");
+                        usuario.Funcionario = DAOHelper.IsNull(reader, "id_func_fk") ? null : new Funcionario() { Id = reader.GetInt32("id_func"), Nome = reader.GetString("nome_func") };
+                    }
                 }
                 else
                 {
                     count = 0;
                 }
 
-                return listCli;
+                return usuario;
             }
             catch (Exception e)
             {

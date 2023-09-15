@@ -7,7 +7,6 @@ id_prod int primary key auto_increment,
 nome_prod varchar(45),
 marca_prod varchar(45),
 tipo_prod varchar(45),
-foto_prod varchar(45),
 visivel_prod varchar(10)
 );
 
@@ -341,6 +340,44 @@ ELSE
 END IF;
 END;
 $$ DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100))
+BEGIN
+DECLARE VerificadorProduto int;
+IF ((nome <> '') AND (marca <> '') AND (tipo <> '')) THEN
+	SELECT COUNT(id_prod) into VerificadorProduto from produto where nome = nome_prod;
+    IF(VerificadorProduto = 0) THEN 
+		INSERT INTO PRODUTO VALUES (null, nome, marca, tipo, 'Sim');
+        SELECT 'Produto salvo com sucesso!'as CONFIRMAÇÃO;
+    ELSE
+		SELECT 'O produto já existe no sitema!' as ERRO;
+	END IF;
+ELSE
+	SELECT 'Todos os campos devem estar preenchidos!' as ERRO;
+END IF; 
+END;
+$$ DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE InsertCompra(valor double, dataCompra date, id_fk int)
+BEGIN
+DECLARE Verificador_fk int;
+IF ((valor <> '') AND (dataCompra <> '') AND (id_fk <> '')) THEN
+	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_fk = id_forn;
+	IF(Verificador_fk = 1) THEN
+		INSERT INTO Compra VALUES (null, valor, dataCompra,'Sim', id_fk);
+        SELECT 'Compra salva com sucesso!' as CONFIRMAÇÃO; 
+	ELSE
+		SELECT 'O fornecedor informado não existe no sistema!' as ERRO;
+	END IF;
+ELSE
+	SELECT 'Todos os campos devem estar preenchidos!' as ERRO;
+END IF;
+END;
+$$ DELIMITER ;
+
+
 
 #Checks
 select * from Usuario;

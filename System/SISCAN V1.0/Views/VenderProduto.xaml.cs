@@ -1,5 +1,4 @@
-﻿using SISCAN.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,49 +12,35 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using SISCAN.Formularios;
+using MySqlX.XDevAPI;
+using SISCAN.Models;
 using SISCAN.Views;
+using SISCAN.Helpers;
 
 namespace SISCAN.Formularios
 {
     /// <summary>
-    /// Interação lógica para CadastrarProduto.xam
+    /// Interação lógica para CadastrarCliente.xam
     /// </summary>
-    public partial class CadastrarProduto : Page
+    public partial class VenderProduto : Page
     {
-        public CadastrarProduto()
+        int quantidade;
+        public VenderProduto()
         {
             InitializeComponent();
+            DadosCb();
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //Setando informações na tabela cliente
-                Produto produto = new Produto();
-                produto.Nome = tbNome.Text;
-                produto.Marca = tbMarca.Text;
-                produto.Tipo = cbTipo.SelectionBoxItem.ToString();
-                produto.Valor = Convert.ToDouble(tbValor.Text);
 
-                //Inserindo os Dados           
-                ProdutoDAO produtoDAO = new ProdutoDAO();
-                produtoDAO.Insert(produto);
-                
-                Clear();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro 3008 : Contate o suporte");
             }
-        }
-
-        private void Clear()
-        {
-            tbNome.Clear();
-            tbMarca.Clear();
-            cbTipo.SelectedIndex = -1;
         }
 
         private void btCancelar_Click(object sender, RoutedEventArgs e)
@@ -68,11 +53,37 @@ namespace SISCAN.Formularios
                 MessageBox.Show("Campos limpos com sucesso!");
             }
         }
+        private void Clear()
+        {
+            
+        }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)
         {
-            fmFrame.Visibility = Visibility.Visible;
-            fmFrame.NavigationService.Navigate(new ListarProduto());
+            //fmFrame.Visibility = Visibility.Visible;
+            //fmFrame.NavigationService.Navigate(new ListarCaixa());
+        }
+
+        private void DadosCb()
+        {
+            FuncionarioDAO funcDAO = new FuncionarioDAO();
+            cbFuncionario.ItemsSource = funcDAO.List(null);
+            cbFuncionario.DisplayMemberPath = "Nome";
+            
+            ProdutoDAO prodDAO = new ProdutoDAO();
+            cbProduto.ItemsSource = prodDAO.List(null);
+            cbProduto.DisplayMemberPath = "Nome";
+        }
+
+        private void btQuant_Click(object sender, RoutedEventArgs e)
+        {
+            quantidade += 1;
+            tbQuantidade.Text = quantidade.ToString();
+        }
+
+        private void tbQuantidade_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            quantidade = Convert.ToInt32(tbQuantidade.Text);
         }
     }
 }

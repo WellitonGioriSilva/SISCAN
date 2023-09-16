@@ -43,7 +43,8 @@ namespace SISCAN.Models
                         Id = reader.GetInt32("id_prod"),
                         Nome = DAOHelper.GetString(reader, "nome_prod"),
                         Marca = DAOHelper.GetString(reader, "marca_prod"),
-                        Tipo = DAOHelper.GetString(reader, "tipo_prod")
+                        Tipo = DAOHelper.GetString(reader, "tipo_prod"),
+                        Valor = reader.GetInt32("valor_com_prod")
                     });
                 }
 
@@ -63,12 +64,13 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Produto (visivel_prod,nome_prod, marca_prod, tipo_prod)" +
-                    $"VALUES ('Sim',@nome, @marca, @tipo)";
+                query.CommandText = $"INSERT INTO Produto (visivel_prod,nome_prod, marca_prod, tipo_prod, valor_com_prod)" +
+                    $"VALUES ('Sim',@nome, @marca, @tipo, @valor)";
 
                 query.Parameters.AddWithValue("@nome", produto.Nome);
                 query.Parameters.AddWithValue("@marca", produto.Marca);
                 query.Parameters.AddWithValue("@tipo", produto.Tipo);
+                query.Parameters.AddWithValue("@valor", produto.Valor);
 
                 var result = query.ExecuteNonQuery();
 
@@ -96,12 +98,13 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = "UPDATE Produto SET nome_prod = @nome, marca_prod = @marca, tipo_prod = @tipo WHERE id_prod = @id";
+                query.CommandText = "UPDATE Produto SET nome_prod = @nome, marca_prod = @marca, tipo_prod = @tipo, valor_com_prod = @valor WHERE id_prod = @id";
 
                 query.Parameters.AddWithValue("@id", produto.Id);
                 query.Parameters.AddWithValue("@nome", produto.Nome);
                 query.Parameters.AddWithValue("@marca", produto.Marca);
                 query.Parameters.AddWithValue("@tipo", produto.Tipo);
+                query.Parameters.AddWithValue("@valor", produto.Valor);
 
                 var result = query.ExecuteNonQuery();
 

@@ -7,6 +7,8 @@ id_prod int primary key auto_increment,
 nome_prod varchar(45),
 marca_prod varchar(45),
 tipo_prod varchar(45),
+valor_com_prod double,
+valor_ven_prod double,
 visivel_prod varchar(10)
 );
 
@@ -111,11 +113,7 @@ id_vend int primary key auto_increment,
 data_vend date,
 hora_vend time,
 valor_vend double,
-status_vend varchar(45),
-peso_vend double,
 visivel_vend varchar(10),
-id_cid_fk int,
-foreign key (id_cid_fk) references Cidade (id_cid),
 id_func_fk int,
 foreign key (id_func_fk) references Funcionario (id_func) 
 );
@@ -300,22 +298,24 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertCaixa('2023-09-20', '08:00:00', '13:00:00', 150, 750, @ResultCaixa1);
-CALL InsertCaixa('2023-09-20', '14:00:00', '17:30:00', 750, 1250, @ResultCaixa2);
-CALL InsertCaixa('2023-09-20', '18:00:00', '21:00:00', 1250, 3250, @ResultCaixa3);
-SELECT @ResultCaixa1;
-SELECT @ResultCaixa2;
-SELECT @ResultCaixa3;
+#CALL InsertCaixa('2023-09-20', '08:00:00', '13:00:00', 150, 750, @ResultCaixa1);
+#CALL InsertCaixa('2023-09-20', '14:00:00', '17:30:00', 750, 1250, @ResultCaixa2);
+#CALL InsertCaixa('2023-09-20', '18:00:00', '21:00:00', 1250, 3250, @ResultCaixa3);
+#SELECT @ResultCaixa1;
+#SELECT @ResultCaixa2;
+#SELECT @ResultCaixa3;
 
 #Procedimento - Produto
 DELIMITER $$
-CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), out msg varchar(100))
+CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), valorCom double, out msg varchar(100))
 BEGIN
 DECLARE VerificadorProduto int;
-IF ((nome <> '') AND (marca <> '') AND (tipo <> '')) THEN
+DECLARE ValorVen double;
+IF ((nome <> '') AND (marca <> '') AND (tipo <> '') AND (valorCom <> '')) THEN
 	SELECT COUNT(id_prod) into VerificadorProduto from produto where nome = nome_prod;
     IF(VerificadorProduto = 0) THEN 
-		INSERT INTO PRODUTO VALUES (null, nome, marca, tipo, 'Sim');
+		SET valorVen = valorCom + ((valorCom * 60) / 100);
+		INSERT INTO PRODUTO VALUES (null, nome, marca, tipo, valorCom, valorVen, 'Sim');
         SET msg = 'Produto salvo com sucesso!';
     ELSE
 		SET msg = 'O produto já existe no sitema!';
@@ -326,15 +326,22 @@ END IF;
 END;
 $$ DELIMITER ;
 
+#CALL InsertProduto('Coca-Cola 2L', 'Coca-Cola', 'Bebida', 7, @ResultProduto1);
+#CALL InsertProduto('Coxinha de Frango', 'Serve-Bem', 'Salgado', 2.50, @ResultProduto2);
+#CALL InsertProduto('Kit-Kat', 'Kit-Kat', 'Doce', 2, @ResultProduto3);
+#SELECT @ResultProduto1;
+#SELECT @ResultProduto2;
+#SELECT @ResultProduto3;
+
 #Procedimento - Compra
 DELIMITER $$
-CREATE PROCEDURE InsertCompra(valor double, dataCompra date, id_fk int, out msg varchar(100))
+CREATE PROCEDURE InsertCompra(valor double, dataComp date, id_fk int, out msg varchar(100))
 BEGIN
 DECLARE Verificador_fk int;
-IF ((valor <> '') AND (dataCompra <> '') AND (id_fk <> '')) THEN
-	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_fk = id_forn;
+IF ((valor <> '') AND (dataComp <> '') AND (id_fk <> '')) THEN
+	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_forn = id_fk;
 	IF(Verificador_fk = 1) THEN
-		INSERT INTO Compra VALUES (null, valor, dataCompra,'Sim', id_fk);
+		INSERT INTO Compra VALUES(null, valor, dataComp, 'Sim', id_fk);
         SET msg = 'Compra salva com sucesso!'; 
 	ELSE
 		SET msg = 'O fornecedor informado não existe no sistema!';
@@ -344,6 +351,13 @@ ELSE
 END IF;
 END;
 $$ DELIMITER ;
+
+#CALL InsertCompra(750, '2023-10-12', 1, @ResultCompra1);
+#CALL InsertCompra(1050, '2023-11-10', 2, @ResultCompra2);
+#CALL InsertCompra(890, '2023-12-09', 3, @ResultCompra3);
+#SELECT @ResultCompra1;
+#SELECT @ResultCompra2;
+#SELECT @ResultCompra3;
 
 #Procedimento - Função
 DELIMITER $$
@@ -363,6 +377,13 @@ ELSE
 END IF;
 END;
 $$ DELIMITER ;
+
+#CALL InsertFuncao('Gerente', '10000', 'Matutino, Vespertino', 3, @ResultFuncao1);
+#CALL InsertFuncao('Vendedor', '1500', 'Matutino, Vespertino', 1, @ResultFuncao2);
+#CALL InsertFuncao('Estoquista', '2750', 'Matutino, Vespertino', 2, @ResultFuncao3);
+#SELECT @ResultFuncao1;
+#SELECT @ResultFuncao2;
+#SELECT @ResultFuncao3;
 
 #Procedimento - Estoque
 DELIMITER $$
@@ -387,6 +408,13 @@ END IF;
 END;
 $$ DELIMITER ;
 
+#CALL InsertEstoque('20230916CocaCola', 15, '2024-10-12', 1, @ResultEstoque1);
+#CALL InsertEstoque('20430927CocaCola', 20, '2026-10-12', 1, @ResultEstoque2);
+#CALL InsertEstoque('20130510KitKat', 15, '2024-08-25', 3, @ResultEstoque3);
+#SELECT @ResultEstoque1;
+#SELECT @ResultEstoque2;
+#SELECT @ResultEstoque3;
+
 #Procedimento - Despesa
 DELIMITER $$
 CREATE PROCEDURE InsertDespesa(nome varchar(100), parcelas int, valor double, dataDesp date, vencimento date , statusDesp varchar(100), id_fk int, out msg varchar(100))
@@ -404,6 +432,13 @@ END IF;
 END;
 $$ DELIMITER ;
 
+#CALL InsertDespesa('Energia', 3, 750, '2023-09-15', '2023-11-15', 'Aberta', 1, @ResultDespesa1);
+#CALL InsertDespesa('Água', 2, 350, '2023-08-22', '2023-10-22', 'Aberta', 1, @ResultDespesa2);
+#CALL InsertDespesa('Reposição de Estoque', 800, 5, '2023-09-05', '2023-12-05', 'Aberta', 1, @ResultDespesa3);
+#SELECT @ResultDespesa1;
+#SELECT @ResultDespesa2;
+#SELECT @ResultDespesa3;
+
 #Procedimento - Primeiro Usuário
 DELIMITER $$
 CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), out msg varchar(100))
@@ -420,8 +455,8 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertPrimeiroUsuario('Adm', '123', @ResultPmUser);
-SELECT @ResultPmUser;
+#CALL InsertPrimeiroUsuario('Adm', '123', @ResultPmUser);
+#SELECT @ResultPmUser;
 
 #Procedimento - Usuário
 DELIMITER $$
@@ -448,12 +483,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertPrimeiroUsuario('Welliton', '123', 2, 1, @ResultUser1);
-CALL InsertPrimeiroUsuario('Giovana', '123', 3, 1, @ResultUser2);
-CALL InsertPrimeiroUsuario('Milene', '123', 4, 1, @ResultUser3);
-SELECT @ResultUser1;
-SELECT @ResultUser1;
-SELECT @ResultUser1;
+#CALL InsertPrimeiroUsuario('Welliton', '123', 2, 1, @ResultUser1);
+#CALL InsertPrimeiroUsuario('Giovana', '123', 3, 1, @ResultUser2);
+#CALL InsertPrimeiroUsuario('Milene', '123', 4, 1, @ResultUser3);
+#SELECT @ResultUser1;
+#SELECT @ResultUser1;
+#SELECT @ResultUser1;
 
 #Checks
 #select * from Usuario;

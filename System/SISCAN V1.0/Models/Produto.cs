@@ -12,5 +12,6 @@ namespace SISCAN.Models
         public string Nome { get; set; }
         public string Marca { get; set; }
         public string Tipo { get; set; }
+        public double Valor { get; set; }
     }
 }

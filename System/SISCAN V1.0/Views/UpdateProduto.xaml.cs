@@ -63,6 +63,14 @@ namespace SISCAN.Formularios
                 {
                     prod.Tipo = produto.Tipo;
                 }
+                if (tbValor.Text != "")
+                {
+                    prod.Valor = Convert.ToDouble(tbValor.Text);
+                }
+                else
+                {
+                    prod.Valor = produto.Valor;
+                }
 
                 //Inserindo os Dados           
                 ProdutoDAO produtoDAO = new ProdutoDAO();
@@ -106,6 +114,7 @@ namespace SISCAN.Formularios
             lbNome.Content = "Nome: " + produto.Nome;
             lbTipo.Content = "Tipo: " + produto.Tipo;
             lbMarca.Content = "Marca: " + produto.Marca;
+            lbMarca.Content = "Valor de Compra: " + produto.Valor;
         }
     }
 }

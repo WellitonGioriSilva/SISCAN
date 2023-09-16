@@ -72,7 +72,7 @@
             <Button x:Name="btCliente" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btCliente_Click">Cliente</Button>
             <Button x:Name="btProduto" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Cursor="Hand" Click="btProduto_Click">Produto</Button>
             <Button x:Name="btCompra" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century">Compra</Button>
-            <Button x:Name="btVenda" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century">Venda</Button>
+            <Button x:Name="btVenda" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btVenda_Click">Venda</Button>
             <Button x:Name="btFornecedor" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btFornecedor_Click">Fornecedor</Button>
             <Button x:Name="btFuncao" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btFuncao_Click">Função</Button>
             <Button x:Name="btFuncionario" Height="35" Margin="10,0,7,8" Background="White" Foreground="#FF872000" FontFamily="Century" Click="btFuncionario_Click">Funcionário</Button>

@@ -25,7 +25,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="30,150,0,0" Grid.Column="0" HorizontalAlignment="Left">
+        <StackPanel Margin="30,20,0,0" Grid.Column="0" HorizontalAlignment="Left">
 
             <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 50 0 0" >
                 <TextBox
@@ -58,6 +58,19 @@
                     <ComboBoxItem
                      Content="Bebida" />
                 </ComboBox>
+            </Border>
+
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 50 0 0" >
+                <TextBox
+                x:Name="tbValor"
+                materialDesign:HintAssist.Hint="Valor de Compra:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="White" FontFamily="Century">
+                    <TextBox.Text>
+                        <Binding
+                        Path="Name"
+                        UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </Border>
 
         </StackPanel>
@@ -102,7 +115,7 @@
             <Frame x:Name="fmFrame" Content="" Height="506" Visibility="Collapsed"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Margin="0,60,0,0">
+        <StackPanel Grid.Column="2" Margin="0,30,0,0">
             <Label FontFamily="Century" FontSize="16" HorizontalAlignment="Center">
                 Dados Atuais
             </Label>
@@ -111,12 +124,16 @@
                 Nome
             </Label>
 
-            <Label x:Name="lbMarca" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,50,0,0">
+            <Label x:Name="lbMarca" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,30,0,0">
                 Marca
             </Label>
 
-            <Label x:Name="lbTipo" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,50,0,0">
+            <Label x:Name="lbTipo" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,30,0,0">
                 Tipo
+            </Label>
+            
+            <Label x:Name="lbValor" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,30,0,0">
+                Valor de Compra
             </Label>
         </StackPanel>
     </Grid>

@@ -182,5 +182,11 @@ namespace SISCAN.Formularios
                 btRecebimento.Visibility = Visibility.Visible;
             }
         }
+
+        private void btVenda_Click(object sender, RoutedEventArgs e)
+        {
+            lbTitulo.Content = "Vender Produto";
+            Frame.NavigationService.Navigate(new VenderProduto());
+        }
     }
 }

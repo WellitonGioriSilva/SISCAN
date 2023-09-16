@@ -64,6 +64,19 @@
                 </ComboBox>
             </Border>
 
+            <Border BorderThickness="1.5" BorderBrush="White"  CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="20 50 0 0" >
+                <TextBox
+                x:Name="tbValor"
+                materialDesign:HintAssist.Hint="Valor de Compra:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="White" FontFamily="Century">
+                    <TextBox.Text>
+                        <Binding
+                        Path="Name"
+                        UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Border>
+
         </StackPanel>
 
         <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,197,0,0" RenderTransformOrigin="0.5,0.5">

@@ -33,12 +33,13 @@
                 <Button x:Name="btQuant" Margin="0,1,80,0" FontSize="20" Width="43" Click="btQuant_Click">+</Button>
                 <TextBox x:Name="tbQuantidade" Width="58" Margin="0,-33,-40,0" Height="24" FontFamily="Century" TextAlignment="Center" TextChanged="tbQuantidade_TextChanged"/>
             </StackPanel>
-            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <Label FontFamily="Century" Margin="4,4,0,0">Valor Total:</Label>
-            </Border>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <ComboBox x:Name="cbFuncionario" materialDesign:HintAssist.Hint="Funcionário:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+            </Border>
+
+            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <Label x:Name="lbValorTotal" FontFamily="Century" Margin="4,4,0,0">Valor Total:</Label>
             </Border>
 
             <StackPanel Grid.Row="0" Margin="0,-200,50,0" Width="164" HorizontalAlignment="Right" Height="72">
@@ -66,11 +67,9 @@
             <DataGrid x:Name="dgvList" Grid.Row="2" Margin="0,5,0,0" IsReadOnly="true"
                       AutoGenerateColumns="False" HorizontalAlignment="Left" AlternatingRowBackground="#FF1D1D1D" AlternationCount="2" Grid.ColumnSpan="2" Width="801" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Produto" Binding="{Binding Produto.Nome}"/>
                     <DataGridTextColumn Header="Valor" Binding="{Binding Venda.Valor, ConverterCulture='pt-BR', StringFormat=C}"/>
-                    <DataGridTextColumn Header="Funcionário" Binding="{Binding Funcionario.Nome}"/>
-
+                    <DataGridTextColumn Header="Funcionário" Binding="{Binding Venda.Funcionario.Nome}"/>
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

@@ -16,6 +16,7 @@ using MySqlX.XDevAPI;
 using SISCAN.Models;
 using SISCAN.Views;
 using SISCAN.Helpers;
+using System.Globalization;
 
 namespace SISCAN.Formularios
 {
@@ -28,6 +29,7 @@ namespace SISCAN.Formularios
         Venda venda = new Venda();
         VendaProduto vendaProduto = new VendaProduto();
         List<VendaProduto> listVendaProduto = new List<VendaProduto>();
+        double valorTotal;
         public VenderProduto()
         {
             InitializeComponent();
@@ -93,19 +95,24 @@ namespace SISCAN.Formularios
         {
             if((tbQuantidade != null) && (cbFuncionario.SelectedIndex != -1) && (cbProduto.SelectedIndex != -1))
             {
-                
+                vendaProduto.Produto = new Produto();
+                vendaProduto.Venda = new Venda();
+                vendaProduto.Venda.Funcionario = new Funcionario();
+                if (cbProduto.SelectedItem is Produto selectedItemProd)
+                {
+                    vendaProduto.Produto.Nome = selectedItemProd.Nome;
+                    vendaProduto.Produto.ValorVen = selectedItemProd.ValorVen;
+                    vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
+                    valorTotal += vendaProduto.Venda.Valor;
+                    CultureInfo cultura = new CultureInfo("pt-BR");
+                    lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
+                    if (cbFuncionario.SelectedItem is Funcionario selectedItemFunc)
+                    {
+                        vendaProduto.Venda.Funcionario.Nome = selectedItemFunc.Nome;
+                        dgvList.Items.Add(vendaProduto);
+                    }
+                }
             }
-
-            vendaProduto.Produto = new Produto();
-            vendaProduto.Venda = new Venda();
-            if (cbProduto.SelectedItem is Produto selectedItemCai)
-            {
-                vendaProduto.Produto.Nome = selectedItemCai.Nome;
-                vendaProduto.Produto.ValorVen = selectedItemCai.ValorVen;
-                vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
-                dgvList.Items.Add(vendaProduto);
-            }
-
         }
     }
 }

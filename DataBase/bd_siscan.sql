@@ -281,6 +281,7 @@ INSERT INTO Cidade VALUES
 (null, 'Vale do Paraíso',"Sim", 1);
 
 #Procedimentos
+
 #Procedimento - Caixa
 DELIMITER $$
 CREATE PROCEDURE InsertCaixa(dataCad date, horaAbe time, horaFec time, valorIni double, valorFin double, out msg varchar(100))
@@ -299,8 +300,109 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertCaixa('2023-09-11', '13:00:00', '14:00:00', 150, 170, @teste);
+CALL InsertCaixa('2023-09-20', '08:00:00', '13:00:00', 150, 750, @ResultCaixa1);
+CALL InsertCaixa('2023-09-20', '14:00:00', '17:30:00', 750, 1250, @ResultCaixa2);
+CALL InsertCaixa('2023-09-20', '18:00:00', '21:00:00', 1250, 3250, @ResultCaixa3);
+SELECT @ResultCaixa1;
+SELECT @ResultCaixa2;
+SELECT @ResultCaixa3;
 
+#Procedimento - Produto
+DELIMITER $$
+CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), out msg varchar(100))
+BEGIN
+DECLARE VerificadorProduto int;
+IF ((nome <> '') AND (marca <> '') AND (tipo <> '')) THEN
+	SELECT COUNT(id_prod) into VerificadorProduto from produto where nome = nome_prod;
+    IF(VerificadorProduto = 0) THEN 
+		INSERT INTO PRODUTO VALUES (null, nome, marca, tipo, 'Sim');
+        SET msg = 'Produto salvo com sucesso!';
+    ELSE
+		SET msg = 'O produto já existe no sitema!';
+	END IF;
+ELSE
+	SET msg = 'Todos os campos devem estar preenchidos!';
+END IF; 
+END;
+$$ DELIMITER ;
+
+#Procedimento - Compra
+DELIMITER $$
+CREATE PROCEDURE InsertCompra(valor double, dataCompra date, id_fk int, out msg varchar(100))
+BEGIN
+DECLARE Verificador_fk int;
+IF ((valor <> '') AND (dataCompra <> '') AND (id_fk <> '')) THEN
+	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_fk = id_forn;
+	IF(Verificador_fk = 1) THEN
+		INSERT INTO Compra VALUES (null, valor, dataCompra,'Sim', id_fk);
+        SET msg = 'Compra salva com sucesso!'; 
+	ELSE
+		SET msg = 'O fornecedor informado não existe no sistema!';
+	END IF;
+ELSE
+	SET msg = 'Todos os campos devem estar preenchidos!';
+END IF;
+END;
+$$ DELIMITER ;
+
+#Procedimento - Função
+DELIMITER $$
+CREATE PROCEDURE InsertFuncao(nome varchar(100), salario double, turno varchar(100), nivel_acess varchar(100), out msg varchar(100))
+BEGIN
+DECLARE VerificadorFuncao INT;
+IF((nome <> '') AND (salario <> '') AND (turno <> '') AND (nivel_acess <> '')) THEN
+	SELECT COUNT(id_fun) INTO VerificadorFuncao FROM Funcao WHERE nome = nome_fun;
+    IF(VerificadorFuncao = 0) THEN
+		INSERT INTO Funcao VALUES(null, nome, salario, turno, nivel_acess, 'Sim');
+        SET msg = 'Função cadastrada com sucesso!';
+    ELSE
+		SET msg = 'A função já existe no sistema!';
+    END IF;
+ELSE
+	SET msg = 'Todos os campos devem estar preenchidos!';
+END IF;
+END;
+$$ DELIMITER ;
+
+#Procedimento - Estoque
+DELIMITER $$
+CREATE PROCEDURE InsertEstoque(lote varchar(100), quantidade double, validade date, id_fk int, out msg varchar(100))
+BEGIN
+DECLARE VerificadorEstoque INT;
+IF((lote <> '') AND (quantidade <> '') AND (validade <> '') AND (id_fk <> '')) THEN
+	SELECT COUNT(id_est) INTO VerificadorEstoque FROM Estoque WHERE lote = lote_est;
+    IF(VerificadorEstoque = 0) THEN
+		IF(validade > curdate()) THEN
+			INSERT INTO Estoque VALUES(null, lote, quantidade, validade, 'Sim', id_fk);
+			SET msg = 'Estoque cadastrado com sucesso!';
+        ELSE
+			SET msg = 'A data de validade deve ser após hoje!';
+        END IF;
+    ELSE
+		SET msg = 'O lote já existe no sistema!';
+    END IF;
+ELSE
+	SET msg = 'Todos os campos devem estar preenchidos!';
+END IF;
+END;
+$$ DELIMITER ;
+
+#Procedimento - Despesa
+DELIMITER $$
+CREATE PROCEDURE InsertDespesa(nome varchar(100), parcelas int, valor double, dataDesp date, vencimento date , statusDesp varchar(100), id_fk int, out msg varchar(100))
+BEGIN
+IF((nome <> '') AND (parcelas <> '') AND (valor <> '') AND (dataDesp <> '') AND (vencimento <> '') AND (statusDesp <> '') AND (id_fk <> '')) THEN
+	IF(vencimento > curdate()) THEN
+		INSERT INTO Despesa VALUES(null, nome, parcelas, valor, dataDesp, vencimento, statusDesp, 'Sim', id_fk);
+		SET msg = 'Despesa cadastrada com sucesso!';
+	ELSE
+		SET msg = 'A data de validade deve ser após hoje!';
+	END IF;
+ELSE
+	SET msg = 'Todos os campos devem estar preenchidos!';
+END IF;
+END;
+$$ DELIMITER ;
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$
@@ -317,6 +419,9 @@ ELSE
 END IF;
 END;
 $$ DELIMITER ;
+
+CALL InsertPrimeiroUsuario('Adm', '123', @ResultPmUser);
+SELECT @ResultPmUser;
 
 #Procedimento - Usuário
 DELIMITER $$
@@ -343,48 +448,19 @@ END IF;
 END;
 $$ DELIMITER ;
 
-DELIMITER $$
-CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100))
-BEGIN
-DECLARE VerificadorProduto int;
-IF ((nome <> '') AND (marca <> '') AND (tipo <> '')) THEN
-	SELECT COUNT(id_prod) into VerificadorProduto from produto where nome = nome_prod;
-    IF(VerificadorProduto = 0) THEN 
-		INSERT INTO PRODUTO VALUES (null, nome, marca, tipo, 'Sim');
-        SELECT 'Produto salvo com sucesso!'as CONFIRMAÇÃO;
-    ELSE
-		SELECT 'O produto já existe no sitema!' as ERRO;
-	END IF;
-ELSE
-	SELECT 'Todos os campos devem estar preenchidos!' as ERRO;
-END IF; 
-END;
-$$ DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE InsertCompra(valor double, dataCompra date, id_fk int)
-BEGIN
-DECLARE Verificador_fk int;
-IF ((valor <> '') AND (dataCompra <> '') AND (id_fk <> '')) THEN
-	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_fk = id_forn;
-	IF(Verificador_fk = 1) THEN
-		INSERT INTO Compra VALUES (null, valor, dataCompra,'Sim', id_fk);
-        SELECT 'Compra salva com sucesso!' as CONFIRMAÇÃO; 
-	ELSE
-		SELECT 'O fornecedor informado não existe no sistema!' as ERRO;
-	END IF;
-ELSE
-	SELECT 'Todos os campos devem estar preenchidos!' as ERRO;
-END IF;
-END;
-$$ DELIMITER ;
+CALL InsertPrimeiroUsuario('Welliton', '123', 2, 1, @ResultUser1);
+CALL InsertPrimeiroUsuario('Giovana', '123', 3, 1, @ResultUser2);
+CALL InsertPrimeiroUsuario('Milene', '123', 4, 1, @ResultUser3);
+SELECT @ResultUser1;
+SELECT @ResultUser1;
+SELECT @ResultUser1;
 
 #Checks
-select * from Usuario;
+#select * from Usuario;
 #select * from Cidade;
 #select * from Caixa;
 #select * from Cliente;
-select * from Funcionario;
+#select * from Funcionario;
 #select * from Fornecedor;
 #select * from Funcao;
 #select * from Produto;

@@ -439,6 +439,43 @@ $$ DELIMITER ;
 #SELECT @ResultDespesa2;
 #SELECT @ResultDespesa3;
 
+#Procedimento - Venda
+DELIMITER $$
+CREATE PROCEDURE InsertVenda(valor double, id_fk int, out msg varchar(100))
+BEGIN
+DECLARE verificador_fk INT;
+DECLARE dataAutal DATE;
+DECLARE horaAtual TIME;
+IF((valor <> '') AND (id_fk <> '')) THEN
+	SELECT COUNT(id_func) into verificador_fk from funcionario where id_func = id_fk;
+	IF(Verificador_fk = 1) THEN
+		INSERT INTO Venda (id_vend, visivel_vend, data_vend, hora_vend, valor_vend, id_func_fk) VALUES (null, 'Sim', curdate(), curtime(), valor, id_fk);
+		SET msg = 'Venda realizada com sucesso!';
+	ELSE
+		SET msg = 'O funcionário informado não existe no sistema!';
+	END IF;
+ELSE
+    SET msg = 'Todos os campos devem ser preenchidos';
+END IF;
+END;
+$$ DELIMITER ;
+
+#Procedimento - Venda Produto
+DELIMITER $$
+CREATE PROCEDURE InsertVendaProduto(quantidade int, id_fk int, out msg varchar(100))
+BEGIN
+DECLARE verificador_fk INT;
+DECLARE idVenda int;
+IF((quantidade <> '') AND (id_fk <> '')) THEN
+	SELECT MAX(id_vend) into idVenda from Venda;
+	INSERT INTO Venda_produto (id_vend_prod, visivel_vend_prod, id_prod_fk, id_vend_fk , quantidade_vend_prod) VALUES (null, 'Sim', id_fk, idVenda, quantidade);
+	#SET msg = 'Venda realizada com sucesso!';
+ELSE
+    SET msg = 'Todos os campos devem ser preenchidos';
+END IF;
+END;
+$$ DELIMITER ;
+
 #Procedimento - Primeiro Usuário
 DELIMITER $$
 CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), out msg varchar(100))

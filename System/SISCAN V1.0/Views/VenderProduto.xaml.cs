@@ -25,6 +25,9 @@ namespace SISCAN.Formularios
     public partial class VenderProduto : Page
     {
         int quantidade;
+        Venda venda = new Venda();
+        VendaProduto vendaProduto = new VendaProduto();
+        List<VendaProduto> listVendaProduto = new List<VendaProduto>();
         public VenderProduto()
         {
             InitializeComponent();
@@ -84,6 +87,25 @@ namespace SISCAN.Formularios
         private void tbQuantidade_TextChanged(object sender, TextChangedEventArgs e)
         {
             quantidade = Convert.ToInt32(tbQuantidade.Text);
+        }
+
+        private void btAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if((tbQuantidade != null) && (cbFuncionario.SelectedIndex != -1) && (cbProduto.SelectedIndex != -1))
+            {
+                
+            }
+
+            vendaProduto.Produto = new Produto();
+            vendaProduto.Venda = new Venda();
+            if (cbProduto.SelectedItem is Produto selectedItemCai)
+            {
+                vendaProduto.Produto.Nome = selectedItemCai.Nome;
+                vendaProduto.Produto.ValorVen = selectedItemCai.ValorVen;
+                vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
+                dgvList.Items.Add(vendaProduto);
+            }
+
         }
     }
 }

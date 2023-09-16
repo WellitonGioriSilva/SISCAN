@@ -44,7 +44,8 @@ namespace SISCAN.Models
                         Nome = DAOHelper.GetString(reader, "nome_prod"),
                         Marca = DAOHelper.GetString(reader, "marca_prod"),
                         Tipo = DAOHelper.GetString(reader, "tipo_prod"),
-                        Valor = reader.GetInt32("valor_com_prod")
+                        Valor = reader.GetInt32("valor_com_prod"),
+                        ValorVen = DAOHelper.GetDouble(reader, "valor_ven_prod")
                     });
                 }
 
@@ -64,24 +65,20 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Produto (visivel_prod,nome_prod, marca_prod, tipo_prod, valor_com_prod)" +
-                    $"VALUES ('Sim',@nome, @marca, @tipo, @valor)";
+                query.CommandText = $"CALL InsertProduto(@nome, @marca, @tipo, @valor, @result)";
 
                 query.Parameters.AddWithValue("@nome", produto.Nome);
                 query.Parameters.AddWithValue("@marca", produto.Marca);
                 query.Parameters.AddWithValue("@tipo", produto.Tipo);
                 query.Parameters.AddWithValue("@valor", produto.Valor);
 
-                var result = query.ExecuteNonQuery();
+                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
+                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
 
-                if (result == 0)
-                {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
-                }
+                query.ExecuteNonQuery();
+
+                string resultado = (string)query.Parameters["@result"].Value;
+                MessageBox.Show(resultado);
             }
             catch (Exception ex)
             {

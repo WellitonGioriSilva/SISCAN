@@ -48,7 +48,7 @@
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="130" BorderBrush="White" Margin="0,15,0,0">
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="130" BorderBrush="White" Margin="0,15,0,0" Click="btAdd_Click">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#FFFF3D00"/>
@@ -67,6 +67,9 @@
                       AutoGenerateColumns="False" HorizontalAlignment="Left" AlternatingRowBackground="#FF1D1D1D" AlternationCount="2" Grid.ColumnSpan="2" Width="801" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Produto" Binding="{Binding Produto.Nome}"/>
+                    <DataGridTextColumn Header="Valor" Binding="{Binding Venda.Valor, ConverterCulture='pt-BR', StringFormat=C}"/>
+                    <DataGridTextColumn Header="Funcionário" Binding="{Binding Funcionario.Nome}"/>
 
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>

@@ -304,11 +304,13 @@ CALL InsertCaixa('2023-09-11', '13:00:00', '14:00:00', 150, 170, @teste);
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$
-CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), acesso int, out msg varchar(100))
+CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), out msg varchar(100))
 BEGIN
 DECLARE verificador_usu INT;
 IF((usuario <> '') AND (senha <> '')) THEN
-	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, nivel_acess_usu) VALUES (null, 'Sim', usuario, senha, acesso);
+	INSERT INTO funcao (id_fun, visivel_fun, nome_fun, nivel_acess_fun) VALUES (null, 'Não', 'Adm', 4);
+	INSERT INTO funcionario (id_func, visivel_func, nome_func, id_fun_fk, nivel_acess_func) VALUES (null, 'Não', 'Adm', 1, 4);
+	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, nivel_acess_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, 4, 1);
     SET msg = 'Usuário cadastrado com sucesso!';
 ELSE
     SET msg = 'Todos os campos devem ser preenchidos';
@@ -377,14 +379,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-
-
 #Checks
 select * from Usuario;
 #select * from Cidade;
 #select * from Caixa;
 #select * from Cliente;
-#select * from Funcionario;
+select * from Funcionario;
 #select * from Fornecedor;
 #select * from Funcao;
 #select * from Produto;

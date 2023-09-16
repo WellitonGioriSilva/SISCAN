@@ -1,0 +1,34 @@
+Nível 1:
+Caixa
+Venda
+Cliente
+Recebimento
+
+Nível 2:
+Compra
+Despesa
+Pagamento
+Fornecedor
+Caixa
+Produto
+Estoque
+
+Nível 3:
+Funcionário
+Usuário
+Função
+
+Nível 4:
+Compra
+Despesa
+Pagamento
+Fornecedor
+Caixa
+Produto
+Estoque
+Venda
+Cliente
+Recebimento
+Funcionário
+Usuário
+Função

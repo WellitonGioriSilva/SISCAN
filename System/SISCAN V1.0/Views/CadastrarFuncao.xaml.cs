@@ -69,6 +69,7 @@ namespace SISCAN.Formularios
             rbMatutino.IsChecked = false;
             rbNoturno.IsChecked = false;
             rbVespertino.IsChecked = false;
+            cbAcesso.SelectedIndex = -1;
             turnoSelect = "";
         }
 

@@ -50,6 +50,8 @@
                      Content="2" />
                     <ComboBoxItem
                      Content="3" />
+                    <ComboBoxItem
+                     Content="4" />
                 </ComboBox>
             </Border>
 

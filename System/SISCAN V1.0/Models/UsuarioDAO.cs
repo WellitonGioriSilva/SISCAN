@@ -73,7 +73,7 @@ namespace SISCAN.Models
 
                 if (contador == 0)
                 {
-                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha, 3, @result)";
+                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha, @result)";
                 }
                 else
                 {
@@ -186,11 +186,11 @@ namespace SISCAN.Models
 
                 if (user == null && senha == null)
                 {
-                    query.CommandText = "SELECT * FROM Usuario, Funcionario WHERE visivel_usu = 'Sim';";
+                    query.CommandText = "SELECT * FROM Usuario, Funcionario WHERE (Funcionario.id_func = Usuario.id_func_fk) AND visivel_usu = 'Sim';";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Usuario, Funcionario WHERE (usuario_usu = '{user}') AND (visivel_usu = 'Sim') AND (senha_usu = '{senha}');";
+                    query.CommandText = $"SELECT * FROM Usuario, Funcionario WHERE (Funcionario.id_func = Usuario.id_func_fk) AND (usuario_usu = '{user}') AND (visivel_usu = 'Sim') AND (senha_usu = '{senha}');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();

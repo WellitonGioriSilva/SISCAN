@@ -124,17 +124,62 @@ namespace SISCAN.Formularios
 
         private void Acesso()
         {
-            if(usuario.Acesso == 1)
+            btUser.Visibility = Visibility.Collapsed;
+            btProduto.Visibility = Visibility.Collapsed;
+            btCompra.Visibility = Visibility.Collapsed;
+            btFornecedor.Visibility = Visibility.Collapsed;
+            btFuncao.Visibility = Visibility.Collapsed;
+            btFuncionario.Visibility = Visibility.Collapsed;
+            btEstoque.Visibility = Visibility.Collapsed;
+            btPagamento.Visibility = Visibility.Collapsed;
+            btDespesa.Visibility = Visibility.Collapsed;
+            btCaixa.Visibility = Visibility.Collapsed;
+            btVenda.Visibility = Visibility.Collapsed;
+            btCliente.Visibility = Visibility.Collapsed;
+            btRecebimento.Visibility = Visibility.Collapsed;
+
+            if (usuario.Acesso == 1)
             {
-                btUser.Visibility = Visibility.Collapsed;
-                btProduto.Visibility = Visibility.Collapsed;
-                btCompra.Visibility = Visibility.Collapsed;
-                btFornecedor.Visibility = Visibility.Collapsed;
-                btFuncao.Visibility = Visibility.Collapsed;
-                btFuncionario.Visibility = Visibility.Collapsed;
-                btEstoque.Visibility = Visibility.Collapsed;
-                btPagamento.Visibility = Visibility.Collapsed;
-                btDespesa.Visibility = Visibility.Collapsed;
+                btCaixa.Visibility = Visibility.Visible;
+                btVenda.Visibility = Visibility.Visible;
+                btCliente.Visibility = Visibility.Visible;
+                btRecebimento.Visibility = Visibility.Visible;
+            }
+            
+            if (usuario.Acesso == 2)
+            {
+                btProduto.Visibility = Visibility.Visible;
+                btCompra.Visibility = Visibility.Visible;
+                btFornecedor.Visibility = Visibility.Visible;
+                btEstoque.Visibility = Visibility.Visible;
+                btPagamento.Visibility = Visibility.Visible;
+                btDespesa.Visibility = Visibility.Visible;
+                btCaixa.Visibility = Visibility.Visible;
+            }
+
+            if (usuario.Acesso == 3)
+            {
+                btFuncao.Visibility = Visibility.Visible;
+                btFuncionario.Visibility = Visibility.Visible;
+                btUser.Visibility = Visibility.Visible;
+            }
+            
+            if (usuario.Acesso == 4)
+            {
+                btFuncao.Visibility = Visibility.Visible;
+                btFuncionario.Visibility = Visibility.Visible;
+                btUser.Visibility = Visibility.Visible;
+                btProduto.Visibility = Visibility.Visible;
+                btCompra.Visibility = Visibility.Visible;
+                btFornecedor.Visibility = Visibility.Visible;
+                btEstoque.Visibility = Visibility.Visible;
+                btPagamento.Visibility = Visibility.Visible;
+                btDespesa.Visibility = Visibility.Visible;
+                btCaixa.Visibility = Visibility.Visible;
+                btCaixa.Visibility = Visibility.Visible;
+                btVenda.Visibility = Visibility.Visible;
+                btCliente.Visibility = Visibility.Visible;
+                btRecebimento.Visibility = Visibility.Visible;
             }
         }
     }

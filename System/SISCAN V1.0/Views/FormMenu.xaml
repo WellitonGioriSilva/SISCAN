@@ -62,7 +62,7 @@
             <Button x:Name="btUserLogado" Height="116" Width="120" Background="{x:Null}" BorderBrush="{x:Null}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <materialDesign:PackIcon Kind="AccountCircleOutline" Height="93" Width="82" />
-                    <Label HorizontalAlignment="Center" FontFamily="Century" FontSize="18">Usuário</Label>
+                    <Label x:Name="lbUserName" HorizontalAlignment="Center" FontFamily="Century" FontSize="18">Usuário</Label>
                 </StackPanel>
             </Button>
         </StackPanel>

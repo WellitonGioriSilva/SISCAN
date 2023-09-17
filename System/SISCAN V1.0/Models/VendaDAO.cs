@@ -34,10 +34,11 @@ namespace SISCAN.Models
                 string resultado = (string)query.Parameters["@result"].Value;
                 MessageBox.Show(resultado);
 
-                foreach(VendaProduto vendaProd in vendaProduto)
-                {
-                    query.CommandText = $"CALL InsertVendaProduto(@quantidade, @id_fk_prod, @result1)";
+                query.CommandText = $"CALL InsertVendaProduto(@quantidade, @id_fk_prod, @result1)";
 
+                foreach (VendaProduto vendaProd in vendaProduto)
+                {
+                    query.Parameters.Clear();
                     query.Parameters.AddWithValue("@quantidade", vendaProd.Quantidade);
                     query.Parameters.AddWithValue("@id_fk_prod", vendaProd.Produto.Id);
                     query.Parameters.Add(new MySqlParameter("@result1", MySqlDbType.VarChar));
@@ -56,7 +57,7 @@ namespace SISCAN.Models
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
             }
             finally

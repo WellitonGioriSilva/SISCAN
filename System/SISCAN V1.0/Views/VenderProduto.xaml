@@ -35,15 +35,12 @@
                 <TextBox x:Name="tbQuantidade" Width="58" Margin="0,-33,-40,0" Height="24" FontFamily="Century" TextAlignment="Center" TextChanged="tbQuantidade_TextChanged"/>
             </StackPanel>
 
-            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbFuncionario" materialDesign:HintAssist.Hint="Funcionário:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
-            </Border>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <Label x:Name="lbValorTotal" FontFamily="Century" Margin="4,4,0,0">Valor Total:</Label>
             </Border>
 
-            <StackPanel Grid.Row="0" Margin="0,-200,50,0" Width="164" HorizontalAlignment="Right" Height="72">
+            <StackPanel Grid.Row="0" Margin="0,-120,50,0" Width="164" HorizontalAlignment="Right" Height="72">
                 <StackPanel Width="175" Height="78" Margin="0,0,0,0" >
                     <Button x:Name="btAdd"
     Height="40"
@@ -71,13 +68,14 @@
                     <DataGridTextColumn Header="Produto" Binding="{Binding Produto.Nome}"/>
                     <DataGridTextColumn Header="Valor" Binding="{Binding Venda.Valor, ConverterCulture='pt-BR', StringFormat=C}"/>
                     <DataGridTextColumn Header="Funcionário" Binding="{Binding Venda.Funcionario.Nome}"/>
+                    <DataGridTextColumn Header="Quantidade" Binding="{Binding Quantidade}"/>
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Button x:Name="btDelete" Style="{StaticResource MaterialDesignIconForegroundButton}" 
                                         Content="{materialDesign:PackIcon Delete}"
-                                        ToolTip="Excluir Registro" />
+                                        ToolTip="Excluir Registro" Click="btDelete_Click" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

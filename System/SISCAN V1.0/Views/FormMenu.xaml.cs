@@ -32,6 +32,8 @@ namespace SISCAN.Formularios
 
             usuario = usu;
 
+            lbUserName.Content = usuario.UsuarioNome;
+
             Acesso();
         }
 
@@ -186,7 +188,7 @@ namespace SISCAN.Formularios
         private void btVenda_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Vender Produto";
-            Frame.NavigationService.Navigate(new VenderProduto());
+            Frame.NavigationService.Navigate(new VenderProduto(usuario.Funcionario));
         }
     }
 }

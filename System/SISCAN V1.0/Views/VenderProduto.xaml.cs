@@ -30,17 +30,21 @@ namespace SISCAN.Formularios
         Venda venda = new Venda();
         VendaProduto vendaProduto = new VendaProduto();
         List<VendaProduto> listVendaProduto = new List<VendaProduto>();
-        public VenderProduto()
+        Funcionario funcionario;
+        public VenderProduto(Funcionario func)
         {
             InitializeComponent();
             DadosCb();
+            funcionario = func;
+            tbQuantidade.Text = "0";
         }
 
         private void btAdd_Click(object sender, RoutedEventArgs e)
         {
-            if ((tbQuantidade != null) && (cbFuncionario.SelectedIndex != -1) && (cbProduto.SelectedIndex != -1))
+            if ((tbQuantidade != null) && (cbProduto.SelectedIndex != -1))
             {
                 //Instanciando Objetos
+                vendaProduto = new VendaProduto();
                 vendaProduto.Produto = new Produto();
                 vendaProduto.Venda = new Venda();
                 vendaProduto.Venda.Funcionario = new Funcionario();
@@ -60,19 +64,15 @@ namespace SISCAN.Formularios
                     valorTotal += vendaProduto.Venda.Valor;
                     lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
 
-                    //Atribuindo a o cb o objeto Funcionário
-                    if (cbFuncionario.SelectedItem is Funcionario selectedItemFunc)
-                    {
-                        //Atribuindo aos lists e objtos os respectivos valores
-                        vendaProduto.Venda.Funcionario.Nome = selectedItemFunc.Nome;
-                        venda.Funcionario.Id = selectedItemFunc.Id;
-                        venda.Valor = valorTotal;
+                    //Atribuindo aos lists e objtos os respectivos valores
+                    vendaProduto.Venda.Funcionario.Nome = funcionario.Nome;
+                    venda.Funcionario.Id = funcionario.Id;
+                    venda.Valor = valorTotal;
 
-                        dgvList.Items.Add(vendaProduto);
-                        listVendaProduto.Add(vendaProduto);
+                    dgvList.Items.Add(vendaProduto);
+                    listVendaProduto.Add(vendaProduto);
 
-                        ClearAdd();
-                    }
+                    ClearAdd();
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace SISCAN.Formularios
             {
                 VendaDAO vendaDAO = new VendaDAO();
                 vendaDAO.Insert(venda, listVendaProduto);
-                ClearVenda();
+                Clear();
             }
             catch (Exception ex)
             {
@@ -93,13 +93,32 @@ namespace SISCAN.Formularios
 
         private void btCancelar_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Deseja realmente cancelar o cadastro?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Deseja realmente cancelar a venda?", "Pergunta", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                //Clear();
+                Clear();
                 MessageBox.Show("Campos limpos com sucesso!");
             }
+        }
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = this.dgvList.SelectedIndex;
+            listVendaProduto.RemoveAt(selectedIndex);
+            dgvList.Items.RemoveAt(selectedIndex);
+            valorTotal = 0;
+            foreach (var item in dgvList.Items)
+            {
+                if (item is VendaProduto)
+                {
+                    var rowData = (VendaProduto)item;
+
+                    var valor = rowData.Venda.Valor;
+
+                    valorTotal += valor;
+                }
+            }
+            lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
         }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)
@@ -114,21 +133,16 @@ namespace SISCAN.Formularios
             tbQuantidade.Text = "0";
         }
         
-        private void ClearVenda()
+        private void Clear()
         {
             cbProduto.SelectedIndex = -1;
-            cbFuncionario.SelectedIndex = -1;
             tbQuantidade.Text = "0";
             lbValorTotal.Content = "Valor Total:";
             dgvList.Items.Clear();
         }
 
         private void DadosCb()
-        {
-            FuncionarioDAO funcDAO = new FuncionarioDAO();
-            cbFuncionario.ItemsSource = funcDAO.List(null);
-            cbFuncionario.DisplayMemberPath = "Nome";
-            
+        {            
             ProdutoDAO prodDAO = new ProdutoDAO();
             cbProduto.ItemsSource = prodDAO.List(null);
             cbProduto.DisplayMemberPath = "Nome";

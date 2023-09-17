@@ -36,22 +36,27 @@ namespace SISCAN.Models
 
                 foreach(VendaProduto vendaProd in vendaProduto)
                 {
-                    query.CommandText = $"CALL InsertVendaProduto(@quantidade, @id_fk, @result)";
+                    query.CommandText = $"CALL InsertVendaProduto(@quantidade, @id_fk_prod, @result1)";
 
                     query.Parameters.AddWithValue("@quantidade", vendaProd.Quantidade);
-                    query.Parameters.AddWithValue("@id_fk", vendaProd.Produto.Id);
-                    query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
-                    query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
+                    query.Parameters.AddWithValue("@id_fk_prod", vendaProd.Produto.Id);
+                    query.Parameters.Add(new MySqlParameter("@result1", MySqlDbType.VarChar));
+                    query.Parameters["@result1"].Direction = System.Data.ParameterDirection.Output;
 
                     query.ExecuteNonQuery();
 
-                    resultado = (string)query.Parameters["@result"].Value;
-                    MessageBox.Show(resultado);
+                    resultado = (string)query.Parameters["@result1"].Value; 
+                    
+                    if (resultado != "0")
+                    {
+                        MessageBox.Show(resultado);
+                    }
+
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
             }
             finally

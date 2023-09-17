@@ -469,9 +469,9 @@ DECLARE idVenda int;
 IF((quantidade <> '') AND (id_fk <> '')) THEN
 	SELECT MAX(id_vend) into idVenda from Venda;
 	INSERT INTO Venda_produto (id_vend_prod, visivel_vend_prod, id_prod_fk, id_vend_fk , quantidade_vend_prod) VALUES (null, 'Sim', id_fk, idVenda, quantidade);
-	#SET msg = 'Venda realizada com sucesso!';
+    SET msg = '0';
 ELSE
-    SET msg = 'Todos os campos devem ser preenchidos';
+    SET msg = 'Todos os campos devem ser preenchidos!';
 END IF;
 END;
 $$ DELIMITER ;
@@ -537,3 +537,5 @@ $$ DELIMITER ;
 #select * from Funcao;
 #select * from Produto;
 #select * from Pagamento;
+select * from Venda;
+select * from venda_produto;

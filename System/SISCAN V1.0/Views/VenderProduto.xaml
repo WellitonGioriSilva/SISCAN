@@ -20,8 +20,9 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.5*"/>
             <RowDefinition Height="2*"/>
+            <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Margin="0 0 0 0">
@@ -83,54 +84,54 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+        </StackPanel>
 
-            <StackPanel Width="562" Height="53" Margin="0,240,250,0" HorizontalAlignment="Right">
-                <Button x:Name="btBuscar"
+        <StackPanel Grid.Row="3" Width="562" Height="53" Margin="0,0,250,0" HorizontalAlignment="Right">
+            <Button x:Name="btBuscar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
     ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,0,0,0" Click="btBuscar_Click" HorizontalAlignment="Left">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFFF3D00"/>
-                            <GradientStop Color="#FFEDAB00" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <TextBlock
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
       Text="Buscar" FontFamily="Century" FontSize="20" />
-                </Button>
-                <Button x:Name="btCancelar"
+            </Button>
+            <Button x:Name="btCancelar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
     ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,-50,0,0" Click="btCancelar_Click" HorizontalAlignment="Right">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFFF3D00"/>
-                            <GradientStop Color="#FFEDAB00" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <TextBlock
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
       Text="Cancelar" FontFamily="Century" FontSize="20" />
-                </Button>
-                <Button x:Name="btSalvar"
+            </Button>
+            <Button x:Name="btSalvar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
     ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,-49,0,0" Click="btSalvar_Click">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFFF3D00"/>
-                            <GradientStop Color="#FFEDAB00" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <TextBlock
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
       Text="Salvar" FontFamily="Century" FontSize="20" />
-                </Button>
-            </StackPanel>
+            </Button>
         </StackPanel>
 
         <StackPanel Grid.RowSpan="2">

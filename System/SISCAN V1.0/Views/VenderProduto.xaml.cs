@@ -26,21 +26,64 @@ namespace SISCAN.Formularios
     public partial class VenderProduto : Page
     {
         int quantidade;
+        double valorTotal;
         Venda venda = new Venda();
         VendaProduto vendaProduto = new VendaProduto();
         List<VendaProduto> listVendaProduto = new List<VendaProduto>();
-        double valorTotal;
         public VenderProduto()
         {
             InitializeComponent();
             DadosCb();
         }
 
+        private void btAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if ((tbQuantidade != null) && (cbFuncionario.SelectedIndex != -1) && (cbProduto.SelectedIndex != -1))
+            {
+                //Instanciando Objetos
+                vendaProduto.Produto = new Produto();
+                vendaProduto.Venda = new Venda();
+                vendaProduto.Venda.Funcionario = new Funcionario();
+                venda.Funcionario = new Funcionario();
+
+                //Atribuindo a o cb o objeto Produto
+                if (cbProduto.SelectedItem is Produto selectedItemProd)
+                {
+                    //Atribuindo valores aos objetos
+                    vendaProduto.Produto.Id = selectedItemProd.Id;
+                    vendaProduto.Produto.Nome = selectedItemProd.Nome;
+
+                    vendaProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
+
+                    vendaProduto.Produto.ValorVen = selectedItemProd.ValorVen;
+                    vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
+                    valorTotal += vendaProduto.Venda.Valor;
+                    lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
+
+                    //Atribuindo a o cb o objeto Funcionário
+                    if (cbFuncionario.SelectedItem is Funcionario selectedItemFunc)
+                    {
+                        //Atribuindo aos lists e objtos os respectivos valores
+                        vendaProduto.Venda.Funcionario.Nome = selectedItemFunc.Nome;
+                        venda.Funcionario.Id = selectedItemFunc.Id;
+                        venda.Valor = valorTotal;
+
+                        dgvList.Items.Add(vendaProduto);
+                        listVendaProduto.Add(vendaProduto);
+
+                        ClearAdd();
+                    }
+                }
+            }
+        }
+
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-
+                VendaDAO vendaDAO = new VendaDAO();
+                vendaDAO.Insert(venda, listVendaProduto);
+                ClearVenda();
             }
             catch (Exception ex)
             {
@@ -54,19 +97,30 @@ namespace SISCAN.Formularios
 
             if (result == MessageBoxResult.Yes)
             {
-                Clear();
+                //Clear();
                 MessageBox.Show("Campos limpos com sucesso!");
             }
-        }
-        private void Clear()
-        {
-            
         }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)
         {
             //fmFrame.Visibility = Visibility.Visible;
             //fmFrame.NavigationService.Navigate(new ListarCaixa());
+        }
+
+        private void ClearAdd()
+        {
+            cbProduto.SelectedIndex = -1;
+            tbQuantidade.Text = "0";
+        }
+        
+        private void ClearVenda()
+        {
+            cbProduto.SelectedIndex = -1;
+            cbFuncionario.SelectedIndex = -1;
+            tbQuantidade.Text = "0";
+            lbValorTotal.Content = "Valor Total:";
+            dgvList.Items.Clear();
         }
 
         private void DadosCb()
@@ -89,30 +143,6 @@ namespace SISCAN.Formularios
         private void tbQuantidade_TextChanged(object sender, TextChangedEventArgs e)
         {
             quantidade = Convert.ToInt32(tbQuantidade.Text);
-        }
-
-        private void btAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if((tbQuantidade != null) && (cbFuncionario.SelectedIndex != -1) && (cbProduto.SelectedIndex != -1))
-            {
-                vendaProduto.Produto = new Produto();
-                vendaProduto.Venda = new Venda();
-                vendaProduto.Venda.Funcionario = new Funcionario();
-                if (cbProduto.SelectedItem is Produto selectedItemProd)
-                {
-                    vendaProduto.Produto.Nome = selectedItemProd.Nome;
-                    vendaProduto.Produto.ValorVen = selectedItemProd.ValorVen;
-                    vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
-                    valorTotal += vendaProduto.Venda.Valor;
-                    CultureInfo cultura = new CultureInfo("pt-BR");
-                    lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
-                    if (cbFuncionario.SelectedItem is Funcionario selectedItemFunc)
-                    {
-                        vendaProduto.Venda.Funcionario.Nome = selectedItemFunc.Nome;
-                        dgvList.Items.Add(vendaProduto);
-                    }
-                }
-            }
         }
     }
 }

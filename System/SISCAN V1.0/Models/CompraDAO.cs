@@ -13,70 +13,46 @@ namespace SISCAN.Models
     internal class CompraDAO
     {
         private static Conexao conn;
-
         public CompraDAO()
         {
             conn = new Conexao();
         }
 
-        public List<Compra> List(string busca)
-        {
-            try
-            {
-                List<Compra> list = new List<Compra>();
-
-                var query = conn.Query();
-                if (busca == null)
-                {
-                    query.CommandText = "SELECT * FROM Compra;";
-                }
-                else
-                {
-                    query.CommandText = $"SELECT * FROM Compra WHERE (id_com LIKE '%{busca}%');";
-                }
-
-                MySqlDataReader reader = query.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    list.Add(new Compra()
-                    {
-                        Id = reader.GetInt32("id_com"),
-                        Valor = DAOHelper.GetDouble(reader, "valor_com"),
-                        Data = DAOHelper.GetDateTime(reader, "data_com")
-                    });
-                }
-                return list;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-        public void Insert(Compra compra)
+        public void Insert(Compra compra, List<CompraProduto> compraProduto)
         {
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Compra (valor_cai, data_com)" +
-                    $"VALUES (@valor, data)";
+                query.CommandText = $"CALL InsertCompra(@valor, @id_fk, @result)";
 
                 query.Parameters.AddWithValue("@valor", compra.Valor);
-                query.Parameters.AddWithValue("@data", compra.Data?.ToString("yyyy-MM-dd"));
+                query.Parameters.AddWithValue("@id", compra.Fornecedor.Id);
+                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
+                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
+                
+                query.ExecuteNonQuery();
 
-                var result = query.ExecuteNonQuery();
+                string resultado = (string)query.Parameters["result"].Value;
+                MessageBox.Show(resultado);
 
-                if (result == 0)
+                query.CommandText = $"CALL InsertCompraProduto(@quantidade, @id_fk_prod, @result1)";
+
+                foreach (CompraProduto compraProd in compraProduto)
                 {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    query.Parameters.Clear();
+                    query.Parameters.AddWithValue("@quantidade", compraProd.Quantidade);
+                    query.Parameters.AddWithValue("@id_fk_prod", compraProd.Produto.Id);
+                    query.Parameters.Add(new MySqlParameter("@result1", MySqlDbType.VarChar));
+                    query.Parameters["@result1"].Direction = System.Data.ParameterDirection.Output;
+
+                    query.ExecuteNonQuery();
+
+                    resultado = (string)query.Parameters["@result1"].Value;
+
+                    if (resultado != "0")
+                    {
+                        MessageBox.Show(resultado);
+                    }
                 }
             }
             catch (Exception ex)

@@ -20,7 +20,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1.8*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
@@ -29,12 +29,19 @@
             <Border BorderThickness="1.5" Margin="30 40 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <ComboBox x:Name="cbProduto" materialDesign:HintAssist.Hint="Produto:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
             </Border>
+            
+            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbCaixa" materialDesign:HintAssist.Hint="Caixa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+            </Border>
+            
+            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbFormaPag" materialDesign:HintAssist.Hint="Forma de Pagamento:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+            </Border>
 
-            <StackPanel Margin="-20 -34 0 0" Width="120">
+            <StackPanel Margin="-20 -210 0 0" Width="120" Height="36">
                 <Button x:Name="btQuant" Margin="0,1,80,0" FontSize="20" Width="43" Click="btQuant_Click">+</Button>
                 <TextBox x:Name="tbQuantidade" Width="58" Margin="0,-33,-40,0" Height="24" FontFamily="Century" TextAlignment="Center" TextChanged="tbQuantidade_TextChanged"/>
             </StackPanel>
-
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <Label x:Name="lbValorTotal" FontFamily="Century" Margin="4,4,0,0">Valor Total:</Label>
@@ -63,7 +70,7 @@
 
         <StackPanel Grid.Row="1" Margin="30,0,0,0">
             <DataGrid x:Name="dgvList" Grid.Row="2" Margin="0,5,0,0" IsReadOnly="true"
-                      AutoGenerateColumns="False" HorizontalAlignment="Left" AlternatingRowBackground="#FF1D1D1D" AlternationCount="2" Grid.ColumnSpan="2" Width="801" >
+                      AutoGenerateColumns="False" HorizontalAlignment="Left" AlternatingRowBackground="#FF1D1D1D" AlternationCount="2" Grid.ColumnSpan="2" Width="800" Height="220" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Produto" Binding="{Binding Produto.Nome}"/>
                     <DataGridTextColumn Header="Valor" Binding="{Binding Venda.Valor, ConverterCulture='pt-BR', StringFormat=C}"/>

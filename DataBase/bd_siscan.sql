@@ -1,3 +1,9 @@
+#Ana Carolina do Vale
+#Giovana Oliveira Demuner
+#Lara Beatriz de Abreu
+#Milene Silveira Kruguel
+#Welliton Giori Silva
+
 create database bd_siscan;
 use bd_siscan;
 
@@ -85,6 +91,7 @@ rua_cli varchar(45),
 bairro_cli varchar(45),
 numero_cli int,
 visivel_cli varchar(10),
+telefone_cli varchar(30),
 id_cid_fk int,
 foreign key (id_cid_fk) references Cidade (id_cid) 
 );
@@ -105,7 +112,6 @@ id_fun_fk int,
 foreign key (id_fun_fk) references Funcao (id_fun)
 );
 
-SELECT * FROM Funcionario RIGHT JOIN Cidade ON Funcionario.id_cid_fk = Cidade.id_cid INNER JOIN Funcao ON Funcionario.id_fun_fk = Funcao.id_fun;
 
 create table Venda
 (
@@ -363,7 +369,7 @@ SELECT @ResultFuncao3;
 #Procedimento - Cliente
 DELIMITER $$ 
 CREATE PROCEDURE InsertCliente(nome_cli varchar(45), cpf_cli varchar(45), email_cli varchar(45), sexo_cli varchar(45), data_nascimento_cli date, rua_cli varchar(45), bairro_cli varchar(45),
-numero_cli int, visivel_cli varchar(10), id_cid_fk int, telefone_cli varchar(45), out msg varchar(100))
+numero_cli int, id_cid_fk int, telefone_cli varchar(45), out msg varchar(100))
 BEGIN
     DECLARE cpf_existe INT;
     DECLARE telefone_existe INT;
@@ -377,23 +383,23 @@ BEGIN
 			SET msg = 'Telefone já cadastrado.';
 		ELSE
 			INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, id_cid_fk, telefone_cli) VALUES (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli,
-			rua_cli, bairro_cli, numero_cli, visivel_cli, id_cid_fk, telefone_cli);
+			rua_cli, bairro_cli, numero_cli, 'Sim', id_cid_fk, telefone_cli);
 			SET msg = 'Cliente cadastrado com sucesso.';
 		END IF;
     END IF;
 END
 $$ DELIMITER ;
-CALL InsertCliente('Maninho Show', '123.456.789-10', 'maninhoteclados@gmail.com', 'Masculino', '1990-01-01', 'Rua Pelicano', 'Bairro Planalto', 567, 'Sim', 1, '69 99310-1880', @msg1);
-CALL InsertCliente('Maninho Show', '123.456.789-10', 'maninhoteclados@gmail.com', 'Masculino', '1990-01-01', 'Rua Pelicano', 'Bairro Planalto', 567, 'Sim', 1, '69 99310-1880', @msg2);
-CALL InsertCliente('Maninho Show', '123.456.789-10', 'maninhoteclados@gmail.com', 'Masculino', '1990-01-01', 'Rua Pelicano', 'Bairro Planalto', 567, 'Sim', 1, '69 99310-1880', @msg3);
-SELECT @msg1;
-SELECT @msg2;
-SELECT @msg3;
+CALL InsertCliente("Ana Silva", "123.456.789-10", "ana.silva@email.com", "Feminino", "1985-05-12", "Rua das Flores", "Centro", 123, 1, "987654321", @ResultCliente1);
+CALL InsertCliente("José Oliveira", "987.654.321-00", "jose.oliveira@email.com", "Masculino", "1990-08-25", "Rua dos Pinheiros", "Bairro B", 456, 2, "123456789", @ResultCliente2);
+CALL InsertCliente("Paula Souza", "111.222.333-44", "paula.souza@email.com", "Feminino", "1988-12-30", "Rua das Palmeiras", "Bairro C", 789, 3, "555444333", @ResultCliente3);
+SELECT @ResultCliente1;
+SELECT @ResultCliente2;
+SELECT @ResultCliente3;
 
 #Procedimento - Fornecedor
 DELIMITER $$
 CREATE PROCEDURE InsertFornecedor(razao_social_forn varchar(45), cnpj_forn varchar(45), bairro_forn varchar(45), rua_forn varchar(45), nome_fantasia_forn varchar(45), 
-telefone_forn varchar(45), inscricao_estadual_forn varchar(45),  responsavel_forn varchar(45), visivel_forn varchar(10), id_cid_fk int, out msg varchar(100))
+telefone_forn varchar(45), inscricao_estadual_forn varchar(45),  responsavel_forn varchar(45), id_cid_fk int, out msg varchar(100))
 BEGIN
     DECLARE cnpj_existe INT;
     DECLARE telefone_existe INT;
@@ -406,33 +412,41 @@ BEGIN
 			SET msg = 'Telefone já cadastrado.';
 		ELSE
 			INSERT INTO Fornecedor (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn,
-			responsavel_forn, visivel_forn, id_cid_fk) VALUES (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, visivel_forn, id_cid_fk);
+			responsavel_forn, visivel_forn, id_cid_fk) VALUES (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, 'Sim', id_cid_fk);
 			SET msg = 'Fornecedor cadastrado com sucesso.';
 		END IF;
     END IF;
 END
 $$ DELIMITER ;
-CALL InsertFornecedor('ForTest', '123456789', 'Bairro Bandeira', 'Rua das flores', 'TestFor', '69 99345-6789', '123456', 'RespTal', 'Sim', 1, @msg1);
-CALL InsertFornecedor('ForTest1', '123456789', 'Bairro Bandeira', 'Rua das flores', 'TestFor', '69 99345-6789', '123456', 'RespTal', 'Sim', 1, @msg2);
-CALL InsertFornecedor('ForTest2', '123456789', 'Bairro Bandeira', 'Rua das flores', 'TestFor', '69 99345-6789', '123456', 'RespTal', 'Sim', 1, @msg3);
-SELECT @msg1;
-SELECT @msg2;
-SELECT @msg3;
+CALL InsertFornecedor("Fornecedora A", "12345678901234", "Bairro A", "Rua A", "Fantasia A", "1234567890", "789012345678", "João Silva", 1, @ResultFornecedor1);
+CALL InsertFornecedor("Fornecedora B", "98765432109876", "Bairro B", "Rua B", "Fantasia B", "0987654321", "876543210987", "Maria Oliveira", 2, @ResultFornecedor2);
+CALL InsertFornecedor("Fornecedora C", "55555555555555", "Bairro C", "Rua C", "Fantasia C", "5555555555", "555555555555", "José Pereira", 3, @ResultFornecedor3);
+SELECT @ResultFornecedor1;
+SELECT @ResultFornecedor2;
+SELECT @ResultFornecedor3;
 
 #Procedimento - Funcionario
 delimiter $$
-create procedure InserirFuncionario(id int, nome varchar(100), bairro varchar(100), rua varchar(100),
-cpf varchar(50), numero int, sexo varchar(50), cidade_fk int, funcao_fk int)
+create procedure InsertFuncionario(nome varchar(100), bairro varchar(100), rua varchar(100),
+cpf varchar(50), numero int, sexo varchar(50), cidade_fk int, funcao_fk int, out msg varchar(100))
 begin
 declare cpfteste varchar(50);
-set cpfteste = (select cpf_fun from cliente where (cpf_fun = cpf));
-if(cpfteste = '') or (cpftest is null) then
-	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, cidade, funcao, cidade_fk, funcao_fk);
+set cpfteste = (select cpf_func from Funcionario where (cpf_func = cpf));
+if(cpfteste = '') or (cpfteste is null) then
+	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, 0,'Sim', cidade_fk, funcao_fk);
+    SET msg = 'Funcionário cadastrado com sucesso.';
 else
-	select "O cpf informado já existe";
+	SET msg = 'O cpf informado já existe!';
 end if;
 end;
 $$ delimiter ;
+
+CALL InsertFuncionario('Pedro', 'Bairro Teste', 'Rua abc', '04336606277', 252, 'Masculino', 1, 1, @ResultFuncionario1);
+CALL InsertFuncionario("João da Silva", "Centro", "Rua Alegria", "12345678910", 123, "Masculino", 1, 2, @ResultFuncionario2);
+CALL InsertFuncionario("Maria Oliveira", "Bairro ABC", "Rua da Paz", "98765432100", 456, "Feminino", 3, 1, @ResultFuncionario3);
+SELECT @ResultFuncionario1;
+SELECT @ResultFuncionario2;
+SELECT @ResultFuncionario3;
 
 #Procedimento - Compra
 DELIMITER $$
@@ -453,24 +467,49 @@ END IF;
 END;
 $$ DELIMITER ;
 
-#CALL InsertCompra(750, '2023-10-12', 1, @ResultCompra1);
-#CALL InsertCompra(1050, '2023-11-10', 2, @ResultCompra2);
-#CALL InsertCompra(890, '2023-12-09', 3, @ResultCompra3);
-#SELECT @ResultCompra1;
-#SELECT @ResultCompra2;
-#SELECT @ResultCompra3;
+CALL InsertCompra(750, '2023-10-12', 1, @ResultCompra1);
+CALL InsertCompra(1050, '2023-11-10', 2, @ResultCompra2);
+CALL InsertCompra(890, '2023-12-09', 3, @ResultCompra3);
+SELECT @ResultCompra1;
+SELECT @ResultCompra2;
+SELECT @ResultCompra3;
+
+#Procedimento - Compra Produto
+DELIMITER $$
+CREATE PROCEDURE InsertCompraProduto(quantidade int, id_fk int, lote varchar(50), validade date, out msg varchar(100))
+BEGIN
+DECLARE verificador_fk INT;
+DECLARE idCompra int;
+IF((quantidade <> '') AND (id_fk <> '')) THEN
+	SELECT MAX(id_com) into idCompra from Compra;
+	INSERT INTO Compra_produto VALUES(null, quantidade, 'Sim', idCompra, id_fk);
+	INSERT INTO Estoque VALUES(null, lote, quantidade, validade, 'Sim', id_fk);
+    SET msg = '0';
+ELSE
+    SET msg = 'Todos os campos devem ser preenchidos!';
+END IF;
+END;
+$$ DELIMITER ;
+
+CALL InsertCompraProduto(10, 1, "20230920CocaCola2l", '2023-09-20', @ResultCompraProduto1);
+CALL InsertCompraProduto(15, 2, "20230921KitKat", '2023-09-21', @ResultCompraProduto2);
+CALL InsertCompraProduto(20, 2, "20230920KitKat", '2023-09-20', @ResultCompraProduto3);
+SELECT @ResultCompraProduto1;
+SELECT @ResultCompraProduto2;
+SELECT @ResultCompraProduto3;
 
 #Procedimento - Venda
 DELIMITER $$
-CREATE PROCEDURE InsertVenda(valor double, id_fk int, out msg varchar(100))
+CREATE PROCEDURE InsertVenda(valor double, id_fk int, idCaixa int, idFormaPag int, out msg varchar(100))
 BEGIN
 DECLARE verificador_fk INT;
-DECLARE dataAutal DATE;
-DECLARE horaAtual TIME;
+DECLARE idVenda INT;
 IF((valor <> '') AND (id_fk <> '')) THEN
 	SELECT COUNT(id_func) into verificador_fk from funcionario where id_func = id_fk;
 	IF(Verificador_fk = 1) THEN
 		INSERT INTO Venda (id_vend, visivel_vend, data_vend, hora_vend, valor_vend, id_func_fk) VALUES (null, 'Sim', curdate(), curtime(), valor, id_fk);
+        SET idVenda = (SELECT max(id_vend) FROM venda);
+        INSERT INTO Recebimento VALUES(null, curdate(), valor, curtime(), 'Sim', idVenda, idCaixa, idFormaPag);
 		SET msg = 'Venda realizada com sucesso!';
 	ELSE
 		SET msg = 'O funcionário informado não existe no sistema!';
@@ -480,6 +519,13 @@ ELSE
 END IF;
 END;
 $$ DELIMITER ;
+
+CALL InsertVenda(50, 1, 1, 1, @ResultVenda1);
+CALL InsertVenda(25, 2, 1, 1, @ResultVenda2);
+CALL InsertVenda(10, 3, 1, 1, @ResultVenda3);
+SELECT @ResultVenda1;
+SELECT @ResultVenda2;
+SELECT @ResultVenda3;
 
 #Procedimento - Venda Produto
 DELIMITER $$
@@ -496,6 +542,13 @@ ELSE
 END IF;
 END;
 $$ DELIMITER ;
+
+CALL InsertVendaProduto(2, 1, @ResultVendaProduto1);
+CALL InsertVendaProduto(5, 2, @ResultVendaProduto2);
+CALL InsertVendaProduto(10, 3, @ResultVendaProduto3);
+SELECT @ResultVendaProduto1;
+SELECT @ResultVendaProduto2;
+SELECT @ResultVendaProduto3;
 
 #Procedimento - Despesa
 DELIMITER $$
@@ -520,6 +573,64 @@ CALL InsertDespesa('Reposição de Estoque', 800, 5, '2023-09-05', '2023-12-05',
 SELECT @ResultDespesa1;
 SELECT @ResultDespesa2;
 SELECT @ResultDespesa3;
+
+#Procedimento - Pagamento
+DELIMITER $$
+CREATE PROCEDURE InsertPagamento(valor double, data_pag date, id_fk int,  out msg varchar(100))
+BEGIN
+DECLARE verificador_fk int;
+DECLARE data_pag date;
+DECLARE hora_pag time;
+
+IF((valor <>'') AND (id_fk <> '')) THEN 
+	SELECT COUNT(id_desp) into verificador_fk from Despesa where id_desp = id_fk;
+	IF(verificador_fk = 1) THEN 
+        INSERT INTO Pagamento(id_pag, data_pag, visivel_pag, hora_pag, valor_pag,  id_desp_fk) values (null, curdate(), '', curtime(), valor, id_fk);
+        SET msg = "Pagamento realizado com sucesso!";
+	ELSE 
+		SET msg = 'A despesa informada não existe no sistema!';
+	END IF;
+ELSE
+	SET msg = 'Todos os campos devem ser preenchidos';
+END IF;
+END;
+$$ DELIMITER ; 
+
+CALL InsertPagamento(1000.50, "2023-08-15", 1, @ResultPagamento1);
+CALL InsertPagamento(750.20, "2023-07-20", 2, @ResultPagamento2);
+CALL InsertPagamento(1200.00, "2023-09-10", 3, @ResultPagamento3);
+select @ResultPagamento1;
+select @ResultPagamento2;
+select @ResultPagamento3;
+
+#Procedimento - Recebimento
+DELIMITER $$
+CREATE PROCEDURE InsertRecebimento(valor double, data_rec date, id_fk int, out msg varchar(100))
+BEGIN
+DECLARE verificador_fk int;
+DECLARE data_rec date;
+DECLARE hora_rec time;
+
+IF((valor <>'') AND (id_fk <> '')) THEN 
+	SELECT COUNT(id_vend) into verificador_fk from Venda where id_vend = id_fk;
+	IF(verificador_fk = 1) THEN 
+        INSERT INTO Recebimento(id_rec, visivel_rec, hora_rec, valor_rec,  id_vend_fk) values (null, 'Sim', curdate(), curtime(), valor, id_fk);
+        SET msg = "Recebimento realizado com sucesso!";
+	ELSE 
+		SET msg = 'A Venda não existe no sistema!';
+	END IF;
+ELSE
+	SET msg = 'Todos os campos devem ser preenchidos';
+END IF;
+END;
+$$ DELIMITER ;
+
+CALL InsertPagamento(550.80, "2023-08-28", 1, @ResultPagamento1);
+CALL InsertPagamento(900.00, "2023-07-12", 2, @ResultPagamento2);
+CALL InsertPagamento(1350.75, "2023-09-05", 3, @ResultPagamento3);
+select @ResultPagamento1;
+select @ResultPagamento2;
+select @ResultPagamento3;
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$
@@ -581,6 +692,6 @@ $$ DELIMITER ;
 #select * from Fornecedor;
 #select * from Funcao;
 #select * from Produto;
-#select * from Pagamento;
+select * from Recebimento;
 #select * from Venda;
 #select * from venda_produto;

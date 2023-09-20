@@ -23,7 +23,7 @@ namespace SISCAN.Formularios
     /// <summary>
     /// Interação lógica para Compra.xam
     /// </summary>
-    public partial class Compra : Page
+    public partial class ComprarProduto : Page
     {
         int quantidade;
         double valorTotal;
@@ -31,7 +31,7 @@ namespace SISCAN.Formularios
         CompraProduto compraProduto = new CompraProduto();
         List<CompraProduto> listCompraProduto = new List<CompraProduto>();
         Fornecedor fornecedor;
-        public Compra(Fornecedor forn)
+        public ComprarProduto(Fornecedor forn)
         {
             InitializeComponent();
             DadosCb();
@@ -58,13 +58,13 @@ namespace SISCAN.Formularios
 
                     compraProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
 
-                    compraProduto.Produto.ValorCom = selectedItemProd.ValorCom;
-                    compraProduto.Compra.Valor = compraProduto.Produto.ValorCom * Convert.ToDouble(tbQuantidade.Text);
+                    compraProduto.Produto.Valor = selectedItemProd.Valor;
+                    compraProduto.Compra.Valor = compraProduto.Produto.Valor * Convert.ToDouble(tbQuantidade.Text);
                     valorTotal += compraProduto.Compra.Valor;
                     lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
 
                     //Atribuindo aos lists e objtos os respectivos valores
-                    compraProduto.Compra.Fornecedor.Nome = fornecedor.Nome;
+                    compraProduto.Compra.Fornecedor.RazaoSocial = fornecedor.RazaoSocial;
                     compra.Fornecedor.Id = fornecedor.Id;
                     compra.Valor = valorTotal;
 

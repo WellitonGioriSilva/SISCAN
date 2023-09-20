@@ -112,9 +112,9 @@ namespace SISCAN.Formularios
 
         private void DadosCbCom()
         {
-            CompraDAO compraDAO = new CompraDAO();
-            cbStatus.ItemsSource = compraDAO.List(null);
-            cbStatus.DisplayMemberPath = "Data";
+            //CompraDAO compraDAO = new CompraDAO();
+            //cbStatus.ItemsSource = compraDAO.List(null);
+            //cbStatus.DisplayMemberPath = "Data";
         }
         private void ImportDados()
         {

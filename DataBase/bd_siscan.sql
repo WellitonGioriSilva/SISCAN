@@ -282,18 +282,16 @@ INSERT INTO Cidade VALUES
 
 #Procedimento - Produto
 DELIMITER $$
-CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), valorCom double, lote varchar(100), quantidade double, validade date, out msg varchar(100))
+CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), valorCom double, out msg varchar(100))
 BEGIN
 DECLARE VerificadorProduto int;
 DECLARE ValorVen double;
 DECLARE Produto_Fk int;
-IF ((nome <> '') AND (marca <> '') AND (tipo <> '') AND (valorCom <> '') AND (lote <> '') AND (quantidade <> '')) THEN
+IF ((nome <> '') AND (marca <> '') AND (tipo <> '') AND (valorCom <> '')) THEN
 	SELECT COUNT(id_prod) into VerificadorProduto from produto where nome = nome_prod;
     IF(VerificadorProduto = 0) THEN 
 		SET valorVen = valorCom + ((valorCom * 60) / 100);
 		INSERT INTO Produto VALUES (null, nome, marca, tipo, valorCom, valorVen, 'Sim');
-        SELECT max(id_prod) INTO Produto_Fk FROM Produto;
-        INSERT INTO Estoque VALUES (null, lote, quantidade, validade, 'Sim', Produto_Fk);
         SET msg = 'Produto salvo com sucesso!';
     ELSE
 		SET msg = 'O produto já existe no sitema!';
@@ -304,9 +302,9 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertProduto('Coca-Cola 2L', 'Coca-Cola', 'Bebida', 7, '20230510CocaCola2l', 5, '2023-05-10', @ResultProduto1);
-CALL InsertProduto('Coxinha de Frango', 'Serve-Bem', 'Salgado', 2.50, '20230505Coxinha', 10, '2023-05-05', @ResultProduto2);
-CALL InsertProduto('Kit-Kat', 'Kit-Kat', 'Doce', 2, '20230506KitKat', 5, '2023-05-06', @ResultProduto3);
+CALL InsertProduto('Coca-Cola 2L', 'Coca-Cola', 'Bebida', 7, @ResultProduto1);
+CALL InsertProduto('Coxinha de Frango', 'Serve-Bem', 'Salgado', 2.50, @ResultProduto2);
+CALL InsertProduto('Kit-Kat', 'Kit-Kat', 'Doce', 2, @ResultProduto3);
 SELECT @ResultProduto1;
 SELECT @ResultProduto2;
 SELECT @ResultProduto3;

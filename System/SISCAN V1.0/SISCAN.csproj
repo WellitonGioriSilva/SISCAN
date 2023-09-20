@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\CadastrarFuncionario.xaml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Resources\Base Laranja.png" />
     <None Remove="Resources\Bolas.png" />
     <None Remove="Resources\Botão Sair.png" />
@@ -23,10 +19,6 @@
     <None Remove="Resources\Gráfico Mensal.png" />
     <None Remove="Resources\Gráfico Semanal.png" />
     <None Remove="Resources\Logotipo Lanchonete.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="Views\CadastrarFuncionario.xaml" />
   </ItemGroup>
 
   <ItemGroup>

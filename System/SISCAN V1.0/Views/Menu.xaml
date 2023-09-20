@@ -31,8 +31,8 @@
                             <GradientStop Color="#FFEDAA00" Offset="0"/>
                         </LinearGradientBrush>
                     </Border.Background>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Resources/Coxinha Menu.png" Height="114" Width="171" Margin="10,0,0,0" />
+                    <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
+                        <Label x:Name="lbProduto" Content="Produto" Margin="0,15,0,0" Width="158" Height="50" FontFamily="Century" FontSize="20"/>
                         <StackPanel>
                             <Label Content="Despesas:" Margin="0,15,0,0" Width="88" Height="24" FontFamily="Century"/>
                             <Label Content="R$ XX,XX" Margin="0,0,0,0" Width="88" Height="24" FontFamily="Century" Foreground="#FFAF0000"/>

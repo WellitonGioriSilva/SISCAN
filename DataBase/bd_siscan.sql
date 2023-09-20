@@ -683,6 +683,8 @@ $$ DELIMITER ;
 #SELECT @ResultUser1;
 #SELECT @ResultUser1;
 
+CALL ProdutoLucro(@nome);
+
 #Checks
 #select * from Usuario;
 #select * from Cidade;

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace SISCAN.Models
 {
@@ -161,6 +162,33 @@ namespace SISCAN.Models
             }
         }
 
+        public Produto ListLucro()
+        {
+            try
+            {
+                Produto produto = new Produto();
+                var query = conn.Query();
+
+                query.CommandText = $"SELECT Produto.id_prod, Produto.nome_prod, SUM(venda_produto.quantidade_vend_prod) AS total_vendido, Produto.valor_com_prod, Produto.valor_ven_prod, (SUM(venda_produto.quantidade_vend_prod) * Produto.valor_ven_prod - SUM(venda_produto.quantidade_vend_prod) * Produto.valor_com_prod) AS lucro_mensal FROM Produto JOIN Venda_produto venda_produto ON Produto.id_prod = venda_produto.id_prod_fk JOIN Venda venda ON venda_produto.id_vend_fk = venda.id_vend WHERE MONTH(venda.data_vend) = MONTH(CURRENT_DATE()) AND YEAR(venda.data_vend) = YEAR(CURRENT_DATE()) GROUP BY Produto.id_prod, Produto.nome_prod, Produto.valor_com_prod, Produto.valor_ven_prod ORDER BY lucro_mensal DESC LIMIT 1;";
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    produto.Nome = DAOHelper.GetString(reader, "nome_prod");
+                }
+
+                return produto;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
 
     }
 }

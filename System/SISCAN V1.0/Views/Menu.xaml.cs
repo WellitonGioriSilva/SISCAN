@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SISCAN.Models;
 
 namespace SISCAN.Formularios
 {
@@ -23,6 +24,16 @@ namespace SISCAN.Formularios
         public Menu()
         {
             InitializeComponent();
+            CarregarProduto();
+        }
+
+        public void CarregarProduto()
+        {
+            Produto produto = new Produto();
+            ProdutoDAO produtoDAO = new ProdutoDAO();
+            produto = produtoDAO.ListLucro();
+
+            lbProduto.Content = produto.Nome;
         }
     }
 }

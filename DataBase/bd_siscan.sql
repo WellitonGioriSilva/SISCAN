@@ -280,6 +280,37 @@ INSERT INTO Cidade VALUES
 
 #Procedimentos
 
+#Procedimento - Produto
+DELIMITER $$
+CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), valorCom double, lote varchar(100), quantidade double, validade date, out msg varchar(100))
+BEGIN
+DECLARE VerificadorProduto int;
+DECLARE ValorVen double;
+DECLARE Produto_Fk int;
+IF ((nome <> '') AND (marca <> '') AND (tipo <> '') AND (valorCom <> '') AND (lote <> '') AND (quantidade <> '')) THEN
+	SELECT COUNT(id_prod) into VerificadorProduto from produto where nome = nome_prod;
+    IF(VerificadorProduto = 0) THEN 
+		SET valorVen = valorCom + ((valorCom * 60) / 100);
+		INSERT INTO Produto VALUES (null, nome, marca, tipo, valorCom, valorVen, 'Sim');
+        SELECT max(id_prod) INTO Produto_Fk FROM Produto;
+        INSERT INTO Estoque VALUES (null, lote, quantidade, validade, 'Sim', Produto_Fk);
+        SET msg = 'Produto salvo com sucesso!';
+    ELSE
+		SET msg = 'O produto já existe no sitema!';
+	END IF;
+ELSE
+	SET msg = 'Todos os campos devem estar preenchidos!';
+END IF; 
+END;
+$$ DELIMITER ;
+
+CALL InsertProduto('Coca-Cola 2L', 'Coca-Cola', 'Bebida', 7, '20230510CocaCola2l', 5, '2023-05-10', @ResultProduto1);
+CALL InsertProduto('Coxinha de Frango', 'Serve-Bem', 'Salgado', 2.50, '20230505Coxinha', 10, '2023-05-05', @ResultProduto2);
+CALL InsertProduto('Kit-Kat', 'Kit-Kat', 'Doce', 2, '20230506KitKat', 5, '2023-05-06', @ResultProduto3);
+SELECT @ResultProduto1;
+SELECT @ResultProduto2;
+SELECT @ResultProduto3;
+
 #Procedimento - Caixa
 DELIMITER $$
 CREATE PROCEDURE InsertCaixa(dataCad date, horaAbe time, horaFec time, valorIni double, valorFin double, out msg varchar(100))
@@ -298,66 +329,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-#CALL InsertCaixa('2023-09-20', '08:00:00', '13:00:00', 150, 750, @ResultCaixa1);
-#CALL InsertCaixa('2023-09-20', '14:00:00', '17:30:00', 750, 1250, @ResultCaixa2);
-#CALL InsertCaixa('2023-09-20', '18:00:00', '21:00:00', 1250, 3250, @ResultCaixa3);
-#SELECT @ResultCaixa1;
-#SELECT @ResultCaixa2;
-#SELECT @ResultCaixa3;
-
-#Procedimento - Produto
-DELIMITER $$
-CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), valorCom double, out msg varchar(100))
-BEGIN
-DECLARE VerificadorProduto int;
-DECLARE ValorVen double;
-IF ((nome <> '') AND (marca <> '') AND (tipo <> '') AND (valorCom <> '')) THEN
-	SELECT COUNT(id_prod) into VerificadorProduto from produto where nome = nome_prod;
-    IF(VerificadorProduto = 0) THEN 
-		SET valorVen = valorCom + ((valorCom * 60) / 100);
-		INSERT INTO PRODUTO VALUES (null, nome, marca, tipo, valorCom, valorVen, 'Sim');
-        SET msg = 'Produto salvo com sucesso!';
-    ELSE
-		SET msg = 'O produto já existe no sitema!';
-	END IF;
-ELSE
-	SET msg = 'Todos os campos devem estar preenchidos!';
-END IF; 
-END;
-$$ DELIMITER ;
-
-#CALL InsertProduto('Coca-Cola 2L', 'Coca-Cola', 'Bebida', 7, @ResultProduto1);
-#CALL InsertProduto('Coxinha de Frango', 'Serve-Bem', 'Salgado', 2.50, @ResultProduto2);
-#CALL InsertProduto('Kit-Kat', 'Kit-Kat', 'Doce', 2, @ResultProduto3);
-#SELECT @ResultProduto1;
-#SELECT @ResultProduto2;
-#SELECT @ResultProduto3;
-
-#Procedimento - Compra
-DELIMITER $$
-CREATE PROCEDURE InsertCompra(valor double, dataComp date, id_fk int, out msg varchar(100))
-BEGIN
-DECLARE Verificador_fk int;
-IF ((valor <> '') AND (dataComp <> '') AND (id_fk <> '')) THEN
-	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_forn = id_fk;
-	IF(Verificador_fk = 1) THEN
-		INSERT INTO Compra VALUES(null, valor, dataComp, 'Sim', id_fk);
-        SET msg = 'Compra salva com sucesso!'; 
-	ELSE
-		SET msg = 'O fornecedor informado não existe no sistema!';
-	END IF;
-ELSE
-	SET msg = 'Todos os campos devem estar preenchidos!';
-END IF;
-END;
-$$ DELIMITER ;
-
-#CALL InsertCompra(750, '2023-10-12', 1, @ResultCompra1);
-#CALL InsertCompra(1050, '2023-11-10', 2, @ResultCompra2);
-#CALL InsertCompra(890, '2023-12-09', 3, @ResultCompra3);
-#SELECT @ResultCompra1;
-#SELECT @ResultCompra2;
-#SELECT @ResultCompra3;
+CALL InsertCaixa('2023-09-20', '08:00:00', '13:00:00', 150, 750, @ResultCaixa1);
+CALL InsertCaixa('2023-09-20', '14:00:00', '17:30:00', 750, 1250, @ResultCaixa2);
+CALL InsertCaixa('2023-09-20', '18:00:00', '21:00:00', 1250, 3250, @ResultCaixa3);
+SELECT @ResultCaixa1;
+SELECT @ResultCaixa2;
+SELECT @ResultCaixa3;
 
 #Procedimento - Função
 DELIMITER $$
@@ -378,53 +355,99 @@ END IF;
 END;
 $$ DELIMITER ;
 
-#CALL InsertFuncao('Gerente', '10000', 'Matutino, Vespertino', 3, @ResultFuncao1);
-#CALL InsertFuncao('Vendedor', '1500', 'Matutino, Vespertino', 1, @ResultFuncao2);
-#CALL InsertFuncao('Estoquista', '2750', 'Matutino, Vespertino', 2, @ResultFuncao3);
-#SELECT @ResultFuncao1;
-#SELECT @ResultFuncao2;
-#SELECT @ResultFuncao3;
+CALL InsertFuncao('Gerente', '10000', 'Matutino, Vespertino', 3, @ResultFuncao1);
+CALL InsertFuncao('Vendedor', '1500', 'Matutino, Vespertino', 1, @ResultFuncao2);
+CALL InsertFuncao('Estoquista', '2750', 'Matutino, Vespertino', 2, @ResultFuncao3);
+SELECT @ResultFuncao1;
+SELECT @ResultFuncao2;
+SELECT @ResultFuncao3;
 
-#Procedimento - Estoque
-DELIMITER $$
-CREATE PROCEDURE InsertEstoque(lote varchar(100), quantidade double, validade date, id_fk int, out msg varchar(100))
+#Procedimento - Cliente
+DELIMITER $$ 
+CREATE PROCEDURE InsertCliente(nome_cli varchar(45), cpf_cli varchar(45), email_cli varchar(45), sexo_cli varchar(45), data_nascimento_cli date, rua_cli varchar(45), bairro_cli varchar(45),
+numero_cli int, visivel_cli varchar(10), id_cid_fk int, telefone_cli varchar(45), out msg varchar(100))
 BEGIN
-DECLARE VerificadorEstoque INT;
-IF((lote <> '') AND (quantidade <> '') AND (validade <> '') AND (id_fk <> '')) THEN
-	SELECT COUNT(id_est) INTO VerificadorEstoque FROM Estoque WHERE lote = lote_est;
-    IF(VerificadorEstoque = 0) THEN
-		IF(validade > curdate()) THEN
-			INSERT INTO Estoque VALUES(null, lote, quantidade, validade, 'Sim', id_fk);
-			SET msg = 'Estoque cadastrado com sucesso!';
-        ELSE
-			SET msg = 'A data de validade deve ser após hoje!';
-        END IF;
-    ELSE
-		SET msg = 'O lote já existe no sistema!';
-    END IF;
-ELSE
-	SET msg = 'Todos os campos devem estar preenchidos!';
-END IF;
-END;
-$$ DELIMITER ;
-
-#CALL InsertEstoque('20230916CocaCola', 15, '2024-10-12', 1, @ResultEstoque1);
-#CALL InsertEstoque('20430927CocaCola', 20, '2026-10-12', 1, @ResultEstoque2);
-#CALL InsertEstoque('20130510KitKat', 15, '2024-08-25', 3, @ResultEstoque3);
-#SELECT @ResultEstoque1;
-#SELECT @ResultEstoque2;
-#SELECT @ResultEstoque3;
-
-#Procedimento - Despesa
-DELIMITER $$
-CREATE PROCEDURE InsertDespesa(nome varchar(100), parcelas int, valor double, dataDesp date, vencimento date , statusDesp varchar(100), id_fk int, out msg varchar(100))
-BEGIN
-IF((nome <> '') AND (parcelas <> '') AND (valor <> '') AND (dataDesp <> '') AND (vencimento <> '') AND (statusDesp <> '') AND (id_fk <> '')) THEN
-	IF(vencimento > curdate()) THEN
-		INSERT INTO Despesa VALUES(null, nome, parcelas, valor, dataDesp, vencimento, statusDesp, 'Sim', id_fk);
-		SET msg = 'Despesa cadastrada com sucesso!';
+    DECLARE cpf_existe INT;
+    DECLARE telefone_existe INT;
+    
+    SELECT COUNT(*) INTO cpf_existe FROM Cliente WHERE cpf_cli = cpf_cli;
+    IF cpf_existe > 0 THEN
+        SET msg = 'CPF já cadastrado.';
 	ELSE
-		SET msg = 'A data de validade deve ser após hoje!';
+		SELECT COUNT(*) INTO telefone_existe FROM Cliente WHERE telefone_cli = telefone_cli;
+		IF telefone_existe > 0 THEN
+			SET msg = 'Telefone já cadastrado.';
+		ELSE
+			INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, id_cid_fk, telefone_cli) VALUES (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli,
+			rua_cli, bairro_cli, numero_cli, visivel_cli, id_cid_fk, telefone_cli);
+			SET msg = 'Cliente cadastrado com sucesso.';
+		END IF;
+    END IF;
+END
+$$ DELIMITER ;
+CALL InsertCliente('Maninho Show', '123.456.789-10', 'maninhoteclados@gmail.com', 'Masculino', '1990-01-01', 'Rua Pelicano', 'Bairro Planalto', 567, 'Sim', 1, '69 99310-1880', @msg1);
+CALL InsertCliente('Maninho Show', '123.456.789-10', 'maninhoteclados@gmail.com', 'Masculino', '1990-01-01', 'Rua Pelicano', 'Bairro Planalto', 567, 'Sim', 1, '69 99310-1880', @msg2);
+CALL InsertCliente('Maninho Show', '123.456.789-10', 'maninhoteclados@gmail.com', 'Masculino', '1990-01-01', 'Rua Pelicano', 'Bairro Planalto', 567, 'Sim', 1, '69 99310-1880', @msg3);
+SELECT @msg1;
+SELECT @msg2;
+SELECT @msg3;
+
+#Procedimento - Fornecedor
+DELIMITER $$
+CREATE PROCEDURE InsertFornecedor(razao_social_forn varchar(45), cnpj_forn varchar(45), bairro_forn varchar(45), rua_forn varchar(45), nome_fantasia_forn varchar(45), 
+telefone_forn varchar(45), inscricao_estadual_forn varchar(45),  responsavel_forn varchar(45), visivel_forn varchar(10), id_cid_fk int, out msg varchar(100))
+BEGIN
+    DECLARE cnpj_existe INT;
+    DECLARE telefone_existe INT;
+    SELECT COUNT(*) INTO cnpj_existe FROM Fornecedor WHERE cnpj_forn = cnpj_forn;
+    IF cnpj_existe > 0 THEN
+        SET msg = 'CNPJ já cadastrado.';
+	ELSE
+		SELECT COUNT(*) INTO telefone_existe FROM Fornecedor WHERE telefone_forn = telefone_forn;
+		IF telefone_existe > 0 THEN
+			SET msg = 'Telefone já cadastrado.';
+		ELSE
+			INSERT INTO Fornecedor (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn,
+			responsavel_forn, visivel_forn, id_cid_fk) VALUES (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, visivel_forn, id_cid_fk);
+			SET msg = 'Fornecedor cadastrado com sucesso.';
+		END IF;
+    END IF;
+END
+$$ DELIMITER ;
+CALL InsertFornecedor('ForTest', '123456789', 'Bairro Bandeira', 'Rua das flores', 'TestFor', '69 99345-6789', '123456', 'RespTal', 'Sim', 1, @msg1);
+CALL InsertFornecedor('ForTest1', '123456789', 'Bairro Bandeira', 'Rua das flores', 'TestFor', '69 99345-6789', '123456', 'RespTal', 'Sim', 1, @msg2);
+CALL InsertFornecedor('ForTest2', '123456789', 'Bairro Bandeira', 'Rua das flores', 'TestFor', '69 99345-6789', '123456', 'RespTal', 'Sim', 1, @msg3);
+SELECT @msg1;
+SELECT @msg2;
+SELECT @msg3;
+
+#Procedimento - Funcionario
+delimiter $$
+create procedure InserirFuncionario(id int, nome varchar(100), bairro varchar(100), rua varchar(100),
+cpf varchar(50), numero int, sexo varchar(50), cidade_fk int, funcao_fk int)
+begin
+declare cpfteste varchar(50);
+set cpfteste = (select cpf_fun from cliente where (cpf_fun = cpf));
+if(cpfteste = '') or (cpftest is null) then
+	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, cidade, funcao, cidade_fk, funcao_fk);
+else
+	select "O cpf informado já existe";
+end if;
+end;
+$$ delimiter ;
+
+#Procedimento - Compra
+DELIMITER $$
+CREATE PROCEDURE InsertCompra(valor double, dataComp date, id_fk int, out msg varchar(100))
+BEGIN
+DECLARE Verificador_fk int;
+IF ((valor <> '') AND (id_fk <> '')) THEN
+	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_forn = id_fk;
+	IF(Verificador_fk = 1) THEN
+		INSERT INTO Compra VALUES(null, valor, dataComp, 'Sim', id_fk);
+        SET msg = 'Compra salva com sucesso!'; 
+	ELSE
+		SET msg = 'O fornecedor informado não existe no sistema!';
 	END IF;
 ELSE
 	SET msg = 'Todos os campos devem estar preenchidos!';
@@ -432,12 +455,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-#CALL InsertDespesa('Energia', 3, 750, '2023-09-15', '2023-11-15', 'Aberta', 1, @ResultDespesa1);
-#CALL InsertDespesa('Água', 2, 350, '2023-08-22', '2023-10-22', 'Aberta', 1, @ResultDespesa2);
-#CALL InsertDespesa('Reposição de Estoque', 800, 5, '2023-09-05', '2023-12-05', 'Aberta', 1, @ResultDespesa3);
-#SELECT @ResultDespesa1;
-#SELECT @ResultDespesa2;
-#SELECT @ResultDespesa3;
+#CALL InsertCompra(750, '2023-10-12', 1, @ResultCompra1);
+#CALL InsertCompra(1050, '2023-11-10', 2, @ResultCompra2);
+#CALL InsertCompra(890, '2023-12-09', 3, @ResultCompra3);
+#SELECT @ResultCompra1;
+#SELECT @ResultCompra2;
+#SELECT @ResultCompra3;
 
 #Procedimento - Venda
 DELIMITER $$
@@ -475,6 +498,30 @@ ELSE
 END IF;
 END;
 $$ DELIMITER ;
+
+#Procedimento - Despesa
+DELIMITER $$
+CREATE PROCEDURE InsertDespesa(nome varchar(100), parcelas int, valor double, dataDesp date, vencimento date , statusDesp varchar(100), id_fk int, out msg varchar(100))
+BEGIN
+IF((nome <> '') AND (parcelas <> '') AND (valor <> '') AND (statusDesp <> '') AND (id_fk <> '')) THEN
+	IF(vencimento > curdate()) THEN
+		INSERT INTO Despesa VALUES(null, nome, parcelas, valor, dataDesp, vencimento, statusDesp, 'Sim', id_fk);
+		SET msg = 'Despesa cadastrada com sucesso!';
+	ELSE
+		SET msg = 'A data de validade deve ser após hoje!';
+	END IF;
+ELSE
+	SET msg = 'Todos os campos devem estar preenchidos!';
+END IF;
+END;
+$$ DELIMITER ;
+
+CALL InsertDespesa('Energia', 3, 750, '2023-09-15', '2023-11-15', 'Aberta', 1, @ResultDespesa1);
+CALL InsertDespesa('Água', 2, 350, '2023-08-22', '2023-10-22', 'Aberta', 1, @ResultDespesa2);
+CALL InsertDespesa('Reposição de Estoque', 800, 5, '2023-09-05', '2023-12-05', 'Aberta', 1, @ResultDespesa3);
+SELECT @ResultDespesa1;
+SELECT @ResultDespesa2;
+SELECT @ResultDespesa3;
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$
@@ -537,5 +584,5 @@ $$ DELIMITER ;
 #select * from Funcao;
 #select * from Produto;
 #select * from Pagamento;
-select * from Venda;
-select * from venda_produto;
+#select * from Venda;
+#select * from venda_produto;

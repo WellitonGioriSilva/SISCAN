@@ -35,7 +35,7 @@ namespace SISCAN.Models
                 string resultado = (string)query.Parameters["result"].Value;
                 MessageBox.Show(resultado);
 
-                query.CommandText = $"CALL InsertCompraProduto(@quantidade, @id_fk_prod, @result1)";
+                query.CommandText = $"CALL InsertCompraProduto(@quantidade, @id_fk_prod, @lote, @validade, @result1)";
 
                 foreach (CompraProduto compraProd in compraProduto)
                 {

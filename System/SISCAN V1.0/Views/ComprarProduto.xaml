@@ -31,7 +31,12 @@
                 <ComboBox x:Name="cbProduto" materialDesign:HintAssist.Hint="Produto:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
             </Border>
 
-            <StackPanel Margin="-20 -34 0 0" Width="120">
+            <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="30,10,0,0" HorizontalAlignment="Left">
+                <DatePicker Margin="8,0,8,0" x:Name="dtpValidade"
+                    materialDesign:HintAssist.Hint="Validade:" BorderBrush="White" FontFamily="Century" Height="38"/>
+            </Border>
+
+            <StackPanel Margin="-20 -125 0 0" Width="120" Height="35">
                 <Button x:Name="btQuant" Margin="0,1,80,0" FontSize="20" Width="43" Click="btQuant_Click">+</Button>
                 <TextBox x:Name="tbQuantidade" Width="58" Margin="0,-33,-40,0" Height="24" FontFamily="Century" TextAlignment="Center" TextChanged="tbQuantidade_TextChanged"/>
             </StackPanel>

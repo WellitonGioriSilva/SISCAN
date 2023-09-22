@@ -190,5 +190,11 @@ namespace SISCAN.Formularios
             lbTitulo.Content = "Vender Produto";
             Frame.NavigationService.Navigate(new VenderProduto(usuario.Funcionario));
         }
+
+        private void btCompra_Click(object sender, RoutedEventArgs e)
+        {
+            lbTitulo.Content = "Comprar Produto";
+            Frame.NavigationService.Navigate(new ComprarProduto());
+        }
     }
 }

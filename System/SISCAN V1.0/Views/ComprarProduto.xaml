@@ -21,7 +21,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1.8*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
@@ -30,30 +30,44 @@
             <Border BorderThickness="1.5" Margin="30 40 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <ComboBox x:Name="cbProduto" materialDesign:HintAssist.Hint="Produto:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
             </Border>
-
-            <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="30,10,0,0" HorizontalAlignment="Left">
-                <DatePicker Margin="8,0,8,0" x:Name="dtpValidade"
-                    materialDesign:HintAssist.Hint="Validade:" BorderBrush="White" FontFamily="Century" Height="38"/>
+            
+            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbFornecedor" materialDesign:HintAssist.Hint="Fornecedor:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
             </Border>
 
-            <StackPanel Margin="-20 -125 0 0" Width="120" Height="35">
+            <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="30,10,0,0" HorizontalAlignment="Left">
+                <DatePicker Margin="8,0,8,0" x:Name="dtpValidadeProd"
+                    materialDesign:HintAssist.Hint="Validade do Produto:" BorderBrush="White" FontFamily="Century" Height="38"/>
+            </Border>
+
+            <StackPanel Margin="-20 -215 0 0" Width="120" Height="35">
                 <Button x:Name="btQuant" Margin="0,1,80,0" FontSize="20" Width="43" Click="btQuant_Click">+</Button>
                 <TextBox x:Name="tbQuantidade" Width="58" Margin="0,-33,-40,0" Height="24" FontFamily="Century" TextAlignment="Center" TextChanged="tbQuantidade_TextChanged"/>
             </StackPanel>
 
+            <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="370,-120,0,0" HorizontalAlignment="Left">
+                <DatePicker Margin="8,0,8,0" x:Name="dtpValidadeDesp"
+                    materialDesign:HintAssist.Hint="Validade do Pagamento:" BorderBrush="White" FontFamily="Century" Height="38"/>
+            </Border>
+            
+            <Border BorderThickness="1.5" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF" Margin="370,-35,0,0" HorizontalAlignment="Left">
+                <TextBox
+                x:Name="tbParcelas"
+                materialDesign:HintAssist.Hint="Quantidade de Parcelas:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <Label x:Name="lbValorTotal" FontFamily="Century" Margin="4,4,0,0">Valor Total:</Label>
             </Border>
 
-            <StackPanel Grid.Row="0" Margin="0,-120,50,0" Width="164" HorizontalAlignment="Right" Height="72">
-                <StackPanel Width="175" Height="78" Margin="0,0,0,0" >
+            <StackPanel Grid.Row="0" Margin="0,-200,50,0" Width="164" HorizontalAlignment="Right" Height="72">
+                <StackPanel Width="175" Height="78" Margin="0,-40,0,0" >
                     <Button x:Name="btAdd"
 Height="40"
 materialDesign:ButtonAssist.CornerRadius="25"
 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
 Style="{StaticResource MaterialDesignRaisedDarkButton}"
-ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="130" BorderBrush="White" Margin="0,15,0,0" Click="btAdd_Click">
+ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="130" BorderBrush="White" Margin="0,0,0,0" Click="btAdd_Click">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#FFFF3D00"/>
@@ -69,11 +83,11 @@ ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="130" BorderBr
 
         <StackPanel Grid.Row="1" Margin="30,0,0,0">
             <DataGrid x:Name="dgvList" Grid.Row="2" Margin="0,5,0,0" IsReadOnly="true"
-                  AutoGenerateColumns="False" HorizontalAlignment="Left" AlternatingRowBackground="#FF1D1D1D" AlternationCount="2" Grid.ColumnSpan="2" Width="801" >
+                  AutoGenerateColumns="False" HorizontalAlignment="Left" AlternatingRowBackground="#FF1D1D1D" AlternationCount="2" Grid.ColumnSpan="2" Width="800" Height="220">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Produto" Binding="{Binding Produto.Nome}"/>
-                    <DataGridTextColumn Header="Valor" Binding="{Binding Venda.Valor, ConverterCulture='pt-BR', StringFormat=C}"/>
-                    <DataGridTextColumn Header="Fornecedor" Binding="{Binding Venda.Fornecedor.Nome}"/>
+                    <DataGridTextColumn Header="Valor" Binding="{Binding Compra.Valor, ConverterCulture='pt-BR', StringFormat=C}"/>
+                    <DataGridTextColumn Header="Fornecedor" Binding="{Binding Compra.Fornecedor.NomeFantasia}"/>
                     <DataGridTextColumn Header="Quantidade" Binding="{Binding Quantidade}"/>
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>

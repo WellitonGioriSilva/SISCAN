@@ -450,13 +450,18 @@ SELECT @ResultFuncionario3;
 
 #Procedimento - Compra
 DELIMITER $$
-CREATE PROCEDURE InsertCompra(valor double, dataComp date, id_fk int, out msg varchar(100))
+CREATE PROCEDURE InsertCompra(valor double, id_fk int, dataVencimento date, statusDespesa varchar(10), parcelas int, out msg varchar(100))
 BEGIN
 DECLARE Verificador_fk int;
+DECLARE idCompra int;
+DECLARE nomeDespesa varchar(100);
 IF ((valor <> '') AND (id_fk <> '')) THEN
 	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_forn = id_fk;
 	IF(Verificador_fk = 1) THEN
-		INSERT INTO Compra VALUES(null, valor, dataComp, 'Sim', id_fk);
+		INSERT INTO Compra VALUES(null, valor, curdate(), 'Sim', id_fk);
+        SET nomeDespesa = concat(curdate(),' Reposição de Estoque');
+        SELECT MAX(id_com) into idCompra from Compra;
+        INSERT INTO Despesa VALUES(null, nomeDespesa, parcelas, valor, curdate(), dataVencimento, statusDespesa, 'Sim', idCompra);
         SET msg = 'Compra salva com sucesso!'; 
 	ELSE
 		SET msg = 'O fornecedor informado não existe no sistema!';
@@ -467,16 +472,16 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertCompra(750, '2023-10-12', 1, @ResultCompra1);
-CALL InsertCompra(1050, '2023-11-10', 2, @ResultCompra2);
-CALL InsertCompra(890, '2023-12-09', 3, @ResultCompra3);
-SELECT @ResultCompra1;
-SELECT @ResultCompra2;
-SELECT @ResultCompra3;
+#CALL InsertCompra(750, '2023-10-12', 1, @ResultCompra1);
+#CALL InsertCompra(1050, '2023-11-10', 2, @ResultCompra2);
+#CALL InsertCompra(890, '2023-12-09', 3, @ResultCompra3);
+#SELECT @ResultCompra1;
+#SELECT @ResultCompra2;
+#SELECT @ResultCompra3;
 
 #Procedimento - Compra Produto
 DELIMITER $$
-CREATE PROCEDURE InsertCompraProduto(quantidade int, id_fk int, lote varchar(50), validade date, out msg varchar(100))
+CREATE PROCEDURE InsertCompraProduto(lote varchar(100), quantidade int, id_fk int, validade date, out msg varchar(100))
 BEGIN
 DECLARE verificador_fk INT;
 DECLARE idCompra int;
@@ -491,12 +496,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertCompraProduto(10, 1, "20230920CocaCola2l", '2023-09-20', @ResultCompraProduto1);
-CALL InsertCompraProduto(15, 2, "20230921KitKat", '2023-09-21', @ResultCompraProduto2);
-CALL InsertCompraProduto(20, 2, "20230920KitKat", '2023-09-20', @ResultCompraProduto3);
-SELECT @ResultCompraProduto1;
-SELECT @ResultCompraProduto2;
-SELECT @ResultCompraProduto3;
+#CALL InsertCompraProduto(10, 1, "20230920CocaCola2l", '2023-09-20', @ResultCompraProduto1);
+#CALL InsertCompraProduto(15, 2, "20230921KitKat", '2023-09-21', @ResultCompraProduto2);
+#CALL InsertCompraProduto(20, 2, "20230920KitKat", '2023-09-20', @ResultCompraProduto3);
+#SELECT @ResultCompraProduto1;
+#SELECT @ResultCompraProduto2;
+#SELECT @ResultCompraProduto3;
 
 #Procedimento - Venda
 DELIMITER $$
@@ -520,12 +525,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertVenda(50, 1, 1, 1, @ResultVenda1);
-CALL InsertVenda(25, 2, 1, 1, @ResultVenda2);
-CALL InsertVenda(10, 3, 1, 1, @ResultVenda3);
-SELECT @ResultVenda1;
-SELECT @ResultVenda2;
-SELECT @ResultVenda3;
+#CALL InsertVenda(50, 1, 1, 1, @ResultVenda1);
+#CALL InsertVenda(25, 2, 1, 1, @ResultVenda2);
+#CALL InsertVenda(10, 3, 1, 1, @ResultVenda3);
+#SELECT @ResultVenda1;
+#SELECT @ResultVenda2;
+#SELECT @ResultVenda3;
 
 #Procedimento - Venda Produto
 DELIMITER $$
@@ -543,12 +548,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertVendaProduto(2, 1, @ResultVendaProduto1);
-CALL InsertVendaProduto(5, 2, @ResultVendaProduto2);
-CALL InsertVendaProduto(10, 3, @ResultVendaProduto3);
-SELECT @ResultVendaProduto1;
-SELECT @ResultVendaProduto2;
-SELECT @ResultVendaProduto3;
+#CALL InsertVendaProduto(2, 1, @ResultVendaProduto1);
+#CALL InsertVendaProduto(5, 2, @ResultVendaProduto2);
+#CALL InsertVendaProduto(10, 3, @ResultVendaProduto3);
+#SELECT @ResultVendaProduto1;
+#SELECT @ResultVendaProduto2;
+#SELECT @ResultVendaProduto3;
 
 #Procedimento - Despesa
 DELIMITER $$
@@ -567,12 +572,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertDespesa('Energia', 3, 750, '2023-09-15', '2023-11-15', 'Aberta', 1, @ResultDespesa1);
-CALL InsertDespesa('Água', 2, 350, '2023-08-22', '2023-10-22', 'Aberta', 1, @ResultDespesa2);
-CALL InsertDespesa('Reposição de Estoque', 800, 5, '2023-09-05', '2023-12-05', 'Aberta', 1, @ResultDespesa3);
-SELECT @ResultDespesa1;
-SELECT @ResultDespesa2;
-SELECT @ResultDespesa3;
+#CALL InsertDespesa('Energia', 3, 750, '2023-09-15', '2023-11-15', 'Aberta', 1, @ResultDespesa1);
+#CALL InsertDespesa('Água', 2, 350, '2023-08-22', '2023-10-22', 'Aberta', 1, @ResultDespesa2);
+#CALL InsertDespesa('Reposição de Estoque', 800, 5, '2023-09-05', '2023-12-05', 'Aberta', 1, @ResultDespesa3);
+#SELECT @ResultDespesa1;
+#SELECT @ResultDespesa2;
+#SELECT @ResultDespesa3;
 
 #Procedimento - Pagamento
 DELIMITER $$
@@ -596,12 +601,12 @@ END IF;
 END;
 $$ DELIMITER ; 
 
-CALL InsertPagamento(1000.50, "2023-08-15", 1, @ResultPagamento1);
-CALL InsertPagamento(750.20, "2023-07-20", 2, @ResultPagamento2);
-CALL InsertPagamento(1200.00, "2023-09-10", 3, @ResultPagamento3);
-select @ResultPagamento1;
-select @ResultPagamento2;
-select @ResultPagamento3;
+#CALL InsertPagamento(1000.50, "2023-08-15", 1, @ResultPagamento1);
+#CALL InsertPagamento(750.20, "2023-07-20", 2, @ResultPagamento2);
+#CALL InsertPagamento(1200.00, "2023-09-10", 3, @ResultPagamento3);
+#select @ResultPagamento1;
+#select @ResultPagamento2;
+#select @ResultPagamento3;
 
 #Procedimento - Recebimento
 DELIMITER $$
@@ -625,12 +630,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertPagamento(550.80, "2023-08-28", 1, @ResultPagamento1);
-CALL InsertPagamento(900.00, "2023-07-12", 2, @ResultPagamento2);
-CALL InsertPagamento(1350.75, "2023-09-05", 3, @ResultPagamento3);
-select @ResultPagamento1;
-select @ResultPagamento2;
-select @ResultPagamento3;
+#CALL InsertPagamento(550.80, "2023-08-28", 1, @ResultPagamento1);
+#CALL InsertPagamento(900.00, "2023-07-12", 2, @ResultPagamento2);
+#CALL InsertPagamento(1350.75, "2023-09-05", 3, @ResultPagamento3);
+#select @ResultPagamento1;
+#select @ResultPagamento2;
+#select @ResultPagamento3;
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$
@@ -683,8 +688,6 @@ $$ DELIMITER ;
 #SELECT @ResultUser1;
 #SELECT @ResultUser1;
 
-CALL ProdutoLucro(@nome);
-
 #Checks
 #select * from Usuario;
 #select * from Cidade;
@@ -695,5 +698,7 @@ CALL ProdutoLucro(@nome);
 #select * from Funcao;
 #select * from Produto;
 select * from Recebimento;
+select * from Compra_produto;
+select * from Compra;
 #select * from Venda;
 #select * from venda_produto;

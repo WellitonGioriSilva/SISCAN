@@ -27,51 +27,73 @@ namespace SISCAN.Formularios
     {
         int quantidade;
         double valorTotal;
+        Despesa despesa = new Despesa();
+        Estoque estoque = new Estoque();
         Compra compra = new Compra();
         CompraProduto compraProduto = new CompraProduto();
         List<CompraProduto> listCompraProduto = new List<CompraProduto>();
-        Fornecedor fornecedor;
-        public ComprarProduto(Fornecedor forn)
+        Fornecedor fornecedor = new Fornecedor();
+        public ComprarProduto()
         {
             InitializeComponent();
             DadosCb();
-            fornecedor = forn;
             tbQuantidade.Text = "0";
         }
         private void btAdd_Click(object sender, RoutedEventArgs e)
         {
-            if ((tbQuantidade != null) && (cbProduto.SelectedIndex != -1))
+            quantidade = Convert.ToInt32(tbQuantidade.Text);
+
+            if ((tbQuantidade.Text != null) && (cbProduto.SelectedIndex != -1))
             {
-                //Instanciando Objetos
-                compraProduto = new CompraProduto();
-                compraProduto.Produto = new Produto();
-                compraProduto.Compra = new Compra();
-                compraProduto.Compra.Fornecedor = new Fornecedor();
-                compra.Fornecedor = new Fornecedor();
-
-                //Atribuindo a o cb o objeto Produto
-                if (cbProduto.SelectedItem is Produto selectedItemProd)
+                if (cbFornecedor.SelectedItem is Fornecedor selectedItemForn)
                 {
-                    //Atribuindo valores aos objetos
-                    compraProduto.Produto.Id = selectedItemProd.Id;
-                    compraProduto.Produto.Nome = selectedItemProd.Nome;
+                    //Instanciando Objetos
+                    compraProduto = new CompraProduto();
+                    compraProduto.Produto = new Produto();
+                    compraProduto.Compra = new Compra();
+                    compraProduto.Compra.Fornecedor = new Fornecedor();
+                    compra.Fornecedor = new Fornecedor();
+                    despesa = new Despesa();
+                    estoque = new Estoque();
 
-                    compraProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
+                    //Atribuindo a o cb o objeto Produto
+                    if (cbProduto.SelectedItem is Produto selectedItemProd)
+                    {
+                        //Atribuindo valores aos objetos
+                        compra.Fornecedor.Id = selectedItemForn.Id;
 
-                    compraProduto.Produto.Valor = selectedItemProd.Valor;
-                    compraProduto.Compra.Valor = compraProduto.Produto.Valor * Convert.ToDouble(tbQuantidade.Text);
-                    valorTotal += compraProduto.Compra.Valor;
-                    lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
+                        compraProduto.Produto.Id = selectedItemProd.Id;
+                        compraProduto.Produto.Nome = selectedItemProd.Nome;
 
-                    //Atribuindo aos lists e objtos os respectivos valores
-                    compraProduto.Compra.Fornecedor.RazaoSocial = fornecedor.RazaoSocial;
-                    compra.Fornecedor.Id = fornecedor.Id;
-                    compra.Valor = valorTotal;
+                        compraProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
 
-                    dgvList.Items.Add(compraProduto);
-                    listCompraProduto.Add(compraProduto);
+                        compraProduto.Produto.Valor = selectedItemProd.Valor;
+                        compraProduto.Compra.Valor = compraProduto.Produto.Valor * Convert.ToDouble(tbQuantidade.Text);
+                        valorTotal += compraProduto.Compra.Valor;
+                        lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
 
-                    ClearAdd();
+                        //Atribuindo aos lists e objtos os respectivos valores
+                        compra.Valor = valorTotal;
+                        despesa.Valor = valorTotal;
+                        despesa.Data = dtpValidadeDesp.SelectedDate;
+                        despesa.Parcelas = Convert.ToInt32(tbParcelas.Text);
+                        if (tbParcelas.Text != "")
+                        {
+                            despesa.Status = "Aberta";
+                        }
+                        else
+                        {
+                            despesa.Status = "Fechada";
+                        }
+                        estoque.Validade = dtpValidadeProd.SelectedDate;
+                        DateTime dataAtual = DateTime.Now;
+                        estoque.Lote = $"{dataAtual.ToShortDateString()}" + $"{compraProduto.Produto.Nome}";
+
+                        dgvList.Items.Add(compraProduto);
+                        listCompraProduto.Add(compraProduto);
+
+                        ClearAdd();
+                    }
                 }
             }
         }
@@ -80,7 +102,7 @@ namespace SISCAN.Formularios
             try
             {
                 CompraDAO compraDAO = new CompraDAO();
-                compraDAO.Insert(compra, listCompraProduto);
+                compraDAO.Insert(compra, listCompraProduto, despesa, estoque);
                 Clear();
             }
             catch (Exception ex)
@@ -144,6 +166,10 @@ namespace SISCAN.Formularios
             ProdutoDAO prodDAO = new ProdutoDAO();
             cbProduto.ItemsSource = prodDAO.List(null);
             cbProduto.DisplayMemberPath = "Nome";
+            
+            FornecedorDAO fornecedorDAO = new FornecedorDAO();
+            cbFornecedor.ItemsSource = fornecedorDAO.List(null);
+            cbFornecedor.DisplayMemberPath = "NomeFantasia";
         }
 
         private void btQuant_Click(object sender, RoutedEventArgs e)
@@ -154,7 +180,7 @@ namespace SISCAN.Formularios
 
         private void tbQuantidade_TextChanged(object sender, TextChangedEventArgs e)
         {
-            quantidade = Convert.ToInt32(tbQuantidade.Text);
+            
         }
     }
 }

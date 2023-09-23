@@ -173,6 +173,7 @@ id_desp int primary key auto_increment,
 nome_desp varchar(45),
 parcelas_desp int,
 valor_desp double,
+valor_parcela_desp double,
 data_desp varchar(45),
 vencimento_desp varchar(45),
 status_desp varchar(45),
@@ -559,9 +560,11 @@ $$ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE InsertDespesa(nome varchar(100), parcelas int, valor double, dataDesp date, vencimento date , statusDesp varchar(100), id_fk int, out msg varchar(100))
 BEGIN
+DECLARE valor_parcela double;
 IF((nome <> '') AND (parcelas <> '') AND (valor <> '') AND (statusDesp <> '') AND (id_fk <> '')) THEN
 	IF(vencimento > curdate()) THEN
-		INSERT INTO Despesa VALUES(null, nome, parcelas, valor, dataDesp, vencimento, statusDesp, 'Sim', id_fk);
+		SET valor_parcela = (valor / parcelas);
+		INSERT INTO Despesa VALUES(null, nome, parcelas, valor, valor_parcela, dataDesp, vencimento, statusDesp, 'Sim', id_fk);
 		SET msg = 'Despesa cadastrada com sucesso!';
 	ELSE
 		SET msg = 'A data de validade deve ser após hoje!';
@@ -700,5 +703,7 @@ $$ DELIMITER ;
 select * from Recebimento;
 select * from Compra_produto;
 select * from Compra;
+select * from Estoque;
+select * from Despesa;
 #select * from Venda;
 #select * from venda_produto;

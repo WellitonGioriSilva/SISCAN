@@ -90,6 +90,7 @@ namespace SISCAN.Models
                         Status = DAOHelper.GetString(reader, "status_desp"),
                         Data = DAOHelper.GetDateTime(reader, "data_desp"),
                         Vencimento = DAOHelper.GetDateTime(reader, "vencimento_desp"),
+                        ValorParcela = DAOHelper.GetDouble(reader, "valor_parcela_desp"),
                         //Estado = DAOHelper.IsNull(reader, "id_est_fk") ? null : new Estado() { Id = reader.GetInt32("id_est"), Nome = reader.GetString("nome_est") }
                     });
                 }

@@ -23,6 +23,7 @@ namespace SISCAN.Views
     /// </summary>
     public partial class CadastrarPagamento : Page
     {
+        int parcelas;
         public CadastrarPagamento()
         {
             InitializeComponent();
@@ -36,31 +37,36 @@ namespace SISCAN.Views
         {
             try
             {
-                //Setando informações na tabela cliente
-                Pagamento pagamento = new Pagamento();
-                pagamento.Valor = Convert.ToDouble(tbValor.Text);
-                pagamento.Hora = DAOHelper.DateTimeToTimeSpan(tmHora.SelectedTime);
-                pagamento.Data = dtpData.SelectedDate;
-                pagamento.Caixa = new Caixa();
-                if (cbCaixa.SelectedItem is Caixa selectedItemCai)
+                if(cbDespesa.SelectedItem is Despesa selectedItemDespesa)
                 {
-                    pagamento.Caixa.id = selectedItemCai.id;
-                }
-                pagamento.FormaPagamento = new FormaPagamento();
-                if (cbFormapag.SelectedItem is FormaPagamento selectedItemForm)
-                {
-                    pagamento.FormaPagamento.Id = selectedItemForm.Id;
-                }
-                pagamento.Despesa = new Despesa();
-                if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
-                {
-                    pagamento.Despesa.Id = selectedItemDesp.Id;
-                }
-                //Inserindo os Dados           
-                PagamentoDAO pagamentoDAO = new PagamentoDAO();
-                pagamentoDAO.Insert(pagamento);
+                    //Setando informações na tabela cliente
+                    Pagamento pagamento = new Pagamento();
+                    Despesa despesa = new Despesa();
 
-                Clear();
+                    //          
+                    pagamento.Caixa = new Caixa();
+                    if (cbCaixa.SelectedItem is Caixa selectedItemCai)
+                    {
+                        pagamento.Caixa.id = selectedItemCai.id;
+                    }
+                    pagamento.FormaPagamento = new FormaPagamento();
+                    if (cbFormapag.SelectedItem is FormaPagamento selectedItemForm)
+                    {
+                        pagamento.FormaPagamento.Id = selectedItemForm.Id;
+                    }
+                    pagamento.Despesa = new Despesa();
+                    if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
+                    {
+                        pagamento.Despesa.Id = selectedItemDesp.Id;
+                        pagamento.Valor = Convert.ToDouble(tbValor.Text);
+                        despesa.Data = dtpData.SelectedDate;
+                    }
+                    //Inserindo os Dados           
+                    PagamentoDAO pagamentoDAO = new PagamentoDAO();
+                    pagamentoDAO.Insert(pagamento, despesa, parcelas);
+
+                    Clear();
+                }
             }
             catch (Exception ex)
             {
@@ -112,6 +118,29 @@ namespace SISCAN.Views
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarPagamento());
+        }
+
+        private void cbDespesa_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(cbDespesa.SelectedItem is Despesa selectedItemDesp)
+            {
+                parcelas = 0;
+                parcelas = selectedItemDesp.Parcelas;
+                cbParcelas.Items.Clear();
+
+                for (int i = 1; i <= parcelas; i++)
+                {
+                    cbParcelas.Items.Add(i);
+                }
+            }
+        }
+
+        private void cbParcelas_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
+            {
+                tbValor.Text = (selectedItemDesp.ValorParcela * parcelas).ToString("C");
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ namespace SISCAN.Models
         public string Nome { get; set; }
         public int Parcelas { get; set;}
         public double Valor { get; set; }
+        public double ValorParcela { get; set; }
         public string Status { get; set; }
         public DateTime? Data { get; set; }
         public DateTime? Vencimento { get; set; }

@@ -456,13 +456,15 @@ BEGIN
 DECLARE Verificador_fk int;
 DECLARE idCompra int;
 DECLARE nomeDespesa varchar(100);
+DECLARE valorParcela double;
 IF ((valor <> '') AND (id_fk <> '')) THEN
 	SELECT COUNT(id_forn) into Verificador_fk from fornecedor where id_forn = id_fk;
 	IF(Verificador_fk = 1) THEN
 		INSERT INTO Compra VALUES(null, valor, curdate(), 'Sim', id_fk);
         SET nomeDespesa = concat(curdate(),' Reposição de Estoque');
         SELECT MAX(id_com) into idCompra from Compra;
-        INSERT INTO Despesa VALUES(null, nomeDespesa, parcelas, valor, curdate(), dataVencimento, statusDespesa, 'Sim', idCompra);
+        SET valorParcela = (valor / parcelas);
+        INSERT INTO Despesa VALUES(null, nomeDespesa, parcelas, valor, valorParcela, curdate(), dataVencimento, statusDespesa, 'Sim', idCompra);
         SET msg = 'Compra salva com sucesso!'; 
 	ELSE
 		SET msg = 'O fornecedor informado não existe no sistema!';
@@ -584,16 +586,23 @@ $$ DELIMITER ;
 
 #Procedimento - Pagamento
 DELIMITER $$
-CREATE PROCEDURE InsertPagamento(valor double, data_pag date, id_fk int,  out msg varchar(100))
+CREATE PROCEDURE InsertPagamento(valor double, id_caixa int, id_despesa int, id_form int, parcela int, dataNova date, out msg varchar(100))
 BEGIN
 DECLARE verificador_fk int;
 DECLARE data_pag date;
 DECLARE hora_pag time;
+DECLARE verificacaoParcelas int;
 
-IF((valor <>'') AND (id_fk <> '')) THEN 
-	SELECT COUNT(id_desp) into verificador_fk from Despesa where id_desp = id_fk;
+IF((valor <>'') AND (id_despesa <> '')) THEN 
+	SELECT COUNT(id_desp) into verificador_fk from Despesa where id_desp = id_despesa;
 	IF(verificador_fk = 1) THEN 
-        INSERT INTO Pagamento(id_pag, data_pag, visivel_pag, hora_pag, valor_pag,  id_desp_fk) values (null, curdate(), '', curtime(), valor, id_fk);
+        INSERT INTO Pagamento(id_pag, data_pag, visivel_pag, hora_pag, valor_pag, id_desp_fk, id_cai_fk, id_form_pag_fk) values (null, curdate(), 'Sim', curtime(), valor, id_despesa, id_caixa, id_form);
+        SELECT (parcelas_desp - parcela) INTO verificacaoParcelas FROM Despesa;
+        IF(verificacaoParcelas = 0) THEN
+			UPDATE Despesa SET parcelas_desp = parcelas_desp - parcela, vencimento_desp = dataNova, status_desp = 'Fechada' WHERE id_desp = id_despesa;
+		ELSE
+			UPDATE Despesa SET parcelas_desp = parcelas_desp - parcela, vencimento_desp = dataNova WHERE id_desp = id_despesa;
+		END IF;
         SET msg = "Pagamento realizado com sucesso!";
 	ELSE 
 		SET msg = 'A despesa informada não existe no sistema!';
@@ -700,7 +709,7 @@ $$ DELIMITER ;
 #select * from Fornecedor;
 #select * from Funcao;
 #select * from Produto;
-select * from Recebimento;
+select * from Pagamento;
 select * from Compra_produto;
 select * from Compra;
 select * from Estoque;

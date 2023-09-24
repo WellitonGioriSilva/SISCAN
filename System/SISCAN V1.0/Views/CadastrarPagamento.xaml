@@ -27,7 +27,7 @@
         <StackPanel Margin="0,0,0,0" Grid.Column="0">
 
             <Border BorderThickness="1.5" Margin="30 50 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbDespesa" materialDesign:HintAssist.Hint="Despesa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+                <ComboBox x:Name="cbDespesa" materialDesign:HintAssist.Hint="Despesa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top" SelectionChanged="cbDespesa_SelectionChanged"/>
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
@@ -39,19 +39,18 @@
             </Border>
             
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbParcelas" materialDesign:HintAssist.Hint="Parcela:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top" SelectionChanged="cbParcelas_SelectionChanged"/>
+            </Border>
+            
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <TextBox
                 x:Name="tbValor"
                 materialDesign:HintAssist.Hint="Valor:" BorderBrush="{x:Null}"  Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
+            
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <DatePicker Margin="8,0,8,0" x:Name="dtpData"
-                    materialDesign:HintAssist.Hint="Data:" BorderBrush="White" FontFamily="Century" Height="34"/>
-
-            </Border>
-
-            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <materialDesign:TimePicker Margin="8,0,8,0" x:Name="tmHora"
-                    materialDesign:HintAssist.Hint="Hora do pagamento:" BorderBrush="White" FontFamily="Century" Height="34"/>
+                    materialDesign:HintAssist.Hint="Data de Validade:" BorderBrush="White" FontFamily="Century" Height="34"/>
 
             </Border>
         </StackPanel>

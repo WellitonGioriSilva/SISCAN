@@ -19,33 +19,28 @@ namespace SISCAN.Models
             conn = new Conexao();
         }
 
-        public void Insert(Pagamento pagamento)
+        public void Insert(Pagamento pagamento, Despesa despesa, int parcela)
         {
             try
             {
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Pagamento (visivel_pag, data_pag, valor_pag, hora_pag, id_cai_fk, id_form_pag_fk, id_desp_fk) " +
-                    $"VALUES ('Sim',@data, @valor, @hora, @id_cai, @id_form_pag, @id_desp)";
+                query.CommandText = $"CALL InsertPagamento(@valor, @id_desp, @id_cai, @id_form_pag, @parcela, @dataNova, @result)";
 
-                query.Parameters.AddWithValue("@data", pagamento.Data?.ToString("yyyy-MM-dd"));
                 query.Parameters.AddWithValue("@valor", pagamento.Valor);
-                query.Parameters.AddWithValue("@hora", pagamento.Hora);
                 query.Parameters.AddWithValue("@id_cai", pagamento.Caixa.id);
                 query.Parameters.AddWithValue("@id_form_pag", pagamento.FormaPagamento.Id);
                 query.Parameters.AddWithValue("@id_desp", pagamento.Despesa.Id);
+                query.Parameters.AddWithValue("@parcela", parcela);
+                query.Parameters.AddWithValue("@dataNova", despesa.Data?.ToString("yyyy-MM-dd"));
+                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
+                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
 
-                var result = query.ExecuteNonQuery();
+                query.ExecuteNonQuery();
 
-                if (result == 0)
-                {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
-                }
+                string resultado = (string)query.Parameters["@result"].Value;
+                MessageBox.Show(resultado);
             }
             catch (Exception ex)
             {

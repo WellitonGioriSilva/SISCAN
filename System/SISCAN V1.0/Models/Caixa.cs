@@ -14,5 +14,6 @@ namespace SISCAN.Models
         public TimeSpan? HoraFechamento { get; set; }
         public double ValorIncial { get; set;}
         public double ValorFinal { get; set; }
+        public Funcionario funcionario { get; set; }
     }
 }

@@ -36,12 +36,9 @@ namespace SISCAN.Formularios
                 //Setando informações na tabela cliente
                 Caixa caixa = new Caixa();
                 caixa.ValorIncial = Convert.ToInt32(tbValorInicial.Text);
-                caixa.ValorFinal = Convert.ToInt32(tbValorFinal.Text);
                 caixa.Data = dtpData.SelectedDate;
                 DateTime? aber = tmAbertura.SelectedTime;
-                DateTime? fec = tmFechamento.SelectedTime;
                 caixa.HoraAbertura = DAOHelper.DateTimeToTimeSpan(aber);
-                caixa.HoraFechamento = DAOHelper.DateTimeToTimeSpan(fec);
 
                 //Inserindo os Dados           
                 CaixaDAO caixaDAO = new CaixaDAO();
@@ -68,7 +65,6 @@ namespace SISCAN.Formularios
         private void Clear()
         {
             tbValorInicial.Clear();
-            tbValorFinal.Clear();
         }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)

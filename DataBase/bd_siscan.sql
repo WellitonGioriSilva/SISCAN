@@ -18,17 +18,6 @@ valor_ven_prod double,
 visivel_prod varchar(10)
 );
 
-create table Caixa
-(
-id_cai int primary key auto_increment,
-data_cai date,
-hora_abertura_cai time,
-hora_fechamento_cai time,
-valor_inicial_cai double,
-valor_final_cai double,
-visivel_cai varchar(10)
-);
-
 create table Funcao(
 id_fun int primary key auto_increment,
 nome_fun varchar(45),
@@ -112,6 +101,18 @@ id_fun_fk int,
 foreign key (id_fun_fk) references Funcao (id_fun)
 );
 
+create table Caixa
+(
+id_cai int primary key auto_increment,
+data_cai date,
+hora_abertura_cai time,
+hora_fechamento_cai time,
+valor_inicial_cai double,
+valor_final_cai double,
+visivel_cai varchar(10),
+id_func_fk int,
+foreign key(id_func_fk) references Funcionario(id_func)
+);
 
 create table Venda
 (
@@ -318,12 +319,12 @@ SELECT @ResultProduto3;
 
 #Procedimento - Caixa
 DELIMITER $$
-CREATE PROCEDURE InsertCaixa(dataCad date, horaAbe time, horaFec time, valorIni double, valorFin double, out msg varchar(100))
+CREATE PROCEDURE InsertCaixa(valorIni double, id_func int, out msg varchar(100))
 BEGIN
 DECLARE dataAtual date;
 IF(dataCad = CURDATE()) THEN
 	IF(horaFec > horaAbe) THEN
-		INSERT INTO caixa VALUES(null, dataCad, horaAbe, horaFec, valorIni, valorFin, 'Sim');
+		INSERT INTO caixa (id_cai, data_cai, hora_abertura_cai, valor_inicial_cai, visivel_cai, id_func_fk) VALUES(null, curdate(), curtime(), valorIni, 'Sim', id_func);
         SET msg = 'Dados inseridos com sucesso!';
 	ELSE
 		SET msg = 'O horário de fechamento deve ser após o de abertura!';
@@ -334,12 +335,12 @@ END IF;
 END;
 $$ DELIMITER ;
 
-CALL InsertCaixa('2023-09-20', '08:00:00', '13:00:00', 150, 750, @ResultCaixa1);
-CALL InsertCaixa('2023-09-20', '14:00:00', '17:30:00', 750, 1250, @ResultCaixa2);
-CALL InsertCaixa('2023-09-20', '18:00:00', '21:00:00', 1250, 3250, @ResultCaixa3);
-SELECT @ResultCaixa1;
-SELECT @ResultCaixa2;
-SELECT @ResultCaixa3;
+#CALL InsertCaixa(150, @ResultCaixa1);
+#CALL InsertCaixa(750, @ResultCaixa2);
+#CALL InsertCaixa(1250, @ResultCaixa3);
+#SELECT @ResultCaixa1;
+#SELECT @ResultCaixa2;
+#SELECT @ResultCaixa3;
 
 #Procedimento - Função
 DELIMITER $$

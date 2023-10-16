@@ -67,25 +67,17 @@ namespace SISCAN.Models
                 //var caixaId = new CaixaDao().Insert(caixa.Caixa);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Caixa (visivel_cai ,data_cai, hora_abertura_cai, hora_fechamento_cai, valor_inicial_cai, valor_final_cai)" +
-                    $"VALUES ('Sim',@data, @hora_abertura, @hora_fechamento, @valor_inicial, @valor_final)";
+                query.CommandText = $"CALL InsertCaixa(@valor_inicial, @id_func)";
 
-                query.Parameters.AddWithValue("@data", caixa.Data?.ToString("yyyy-MM-dd"));
-                query.Parameters.AddWithValue("@hora_abertura", caixa.HoraAbertura);
-                query.Parameters.AddWithValue("@hora_fechamento", caixa.HoraFechamento);
                 query.Parameters.AddWithValue("@valor_inicial", caixa.ValorIncial);
-                query.Parameters.AddWithValue("@valor_final", caixa.ValorFinal);
+                query.Parameters.AddWithValue("@id_func", caixa.funcionario.Id);
+                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
+                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
 
-                var result = query.ExecuteNonQuery();
+                query.ExecuteNonQuery();
 
-                if (result == 0)
-                {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente");
-                }
-                else
-                {
-                    MessageBox.Show("Dados atualizados com sucesso!");
-                }
+                string resultado = (string)query.Parameters["@result"].Value;
+                MessageBox.Show(resultado);
             }
             catch (Exception ex)
             {

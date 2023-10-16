@@ -48,7 +48,7 @@
                 materialDesign:HintAssist.Hint="Valor:" BorderBrush="{x:Null}"  Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
             
-            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+            <Border x:Name="borderDtp" BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <DatePicker Margin="8,0,8,0" x:Name="dtpData"
                     materialDesign:HintAssist.Hint="Data de Validade:" BorderBrush="White" FontFamily="Century" Height="34"/>
 

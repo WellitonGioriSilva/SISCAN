@@ -140,6 +140,11 @@ namespace SISCAN.Views
             if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
             {
                 tbValor.Text = (selectedItemDesp.ValorParcela * parcelas).ToString("C");
+                if (cbParcelas.SelectedIndex.ToString() == parcelas.ToString())
+                {
+                    dtpData.Visibility = Visibility.Visible;
+                    borderDtp.Visibility = Visibility.Visible;
+                }
             }
         }
     }

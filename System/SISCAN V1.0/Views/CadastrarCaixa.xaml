@@ -34,12 +34,6 @@
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <TextBox
-                x:Name="tbValorFinal"
-                materialDesign:HintAssist.Hint="Valor Final:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-            </Border>
-
-            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <DatePicker Margin="8,0,8,0" x:Name="dtpData"
                     materialDesign:HintAssist.Hint=" Data de Abertura:" BorderBrush="White" FontFamily="Century" Height="34"/>
             </Border>
@@ -49,7 +43,7 @@
             </Border>
             
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <materialDesign:TimePicker x:Name="tmFechamento" Margin="8,0,8,0" Height="34" materialDesign:HintAssist.Hint=" Hora de Fechamento:" FontFamily="Century"/>
+                <ComboBox x:Name="cbFuncionario" materialDesign:HintAssist.Hint="Funcionário:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
             </Border>
 
         </StackPanel>

@@ -322,16 +322,8 @@ DELIMITER $$
 CREATE PROCEDURE InsertCaixa(valorIni double, id_func int, out msg varchar(100))
 BEGIN
 DECLARE dataAtual date;
-IF(dataCad = CURDATE()) THEN
-	IF(horaFec > horaAbe) THEN
-		INSERT INTO caixa (id_cai, data_cai, hora_abertura_cai, valor_inicial_cai, visivel_cai, id_func_fk) VALUES(null, curdate(), curtime(), valorIni, 'Sim', id_func);
-        SET msg = 'Dados inseridos com sucesso!';
-	ELSE
-		SET msg = 'O horário de fechamento deve ser após o de abertura!';
-	END IF;
-ELSE
-	SET msg = 'A data de abertura deve ser a data atual!';
-END IF;
+INSERT INTO caixa (id_cai, data_cai, hora_abertura_cai, valor_inicial_cai, visivel_cai, id_func_fk) VALUES(null, curdate(), curtime(), valorIni, 'Sim', id_func);
+SET msg = 'Dados inseridos com sucesso!';
 END;
 $$ DELIMITER ;
 

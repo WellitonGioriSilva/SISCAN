@@ -24,9 +24,11 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class CadastrarCaixa : Page
     {
-        public CadastrarCaixa()
+        Funcionario funcionario;
+        public CadastrarCaixa(Funcionario func)
         {
             InitializeComponent();
+            funcionario = func;
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -39,7 +41,8 @@ namespace SISCAN.Formularios
                 caixa.Data = dtpData.SelectedDate;
                 DateTime? aber = tmAbertura.SelectedTime;
                 caixa.HoraAbertura = DAOHelper.DateTimeToTimeSpan(aber);
-
+                caixa.funcionario = new Funcionario();
+                caixa.funcionario.Id = funcionario.Id;
                 //Inserindo os Dados           
                 CaixaDAO caixaDAO = new CaixaDAO();
                 caixaDAO.Insert(caixa);

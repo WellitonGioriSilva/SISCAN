@@ -42,9 +42,7 @@ namespace SISCAN.Models
                         id = reader.GetInt32("id_cai"),
                         Data = DAOHelper.GetDateTime(reader, "data_cai"),
                         HoraAbertura = reader.GetTimeSpan("hora_abertura_cai"),
-                        HoraFechamento = reader.GetTimeSpan("hora_fechamento_cai"),
-                        ValorIncial = DAOHelper.GetDouble(reader, "valor_inicial_cai"),
-                        ValorFinal = DAOHelper.GetDouble(reader, "valor_final_cai")
+                        ValorIncial = DAOHelper.GetDouble(reader, "valor_inicial_cai")
                     });
                 }
 
@@ -67,7 +65,7 @@ namespace SISCAN.Models
                 //var caixaId = new CaixaDao().Insert(caixa.Caixa);
 
                 var query = conn.Query();
-                query.CommandText = $"CALL InsertCaixa(@valor_inicial, @id_func)";
+                query.CommandText = $"CALL InsertCaixa(@valor_inicial, @id_func, @result)";
 
                 query.Parameters.AddWithValue("@valor_inicial", caixa.ValorIncial);
                 query.Parameters.AddWithValue("@id_func", caixa.funcionario.Id);

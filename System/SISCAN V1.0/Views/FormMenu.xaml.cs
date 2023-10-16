@@ -103,7 +103,7 @@ namespace SISCAN.Formularios
         private void btCaixa_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Cadastrar Caixa";
-            Frame.NavigationService.Navigate(new CadastrarCaixa());
+            Frame.NavigationService.Navigate(new CadastrarCaixa(usuario.Funcionario));
         }
 
         private void btEstoque_Click(object sender, RoutedEventArgs e)

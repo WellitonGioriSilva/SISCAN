@@ -22,6 +22,7 @@ namespace SISCAN.Formularios
     public partial class FormMenu : Window
     {
         Usuario usuario;
+        CaixaDAO caixaDAO;
         public FormMenu(MainWindow main, Usuario usu)
         {
             InitializeComponent();
@@ -188,13 +189,20 @@ namespace SISCAN.Formularios
         private void btVenda_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Vender Produto";
-            Frame.NavigationService.Navigate(new VenderProduto(usuario.Funcionario));
+            caixaDAO = new CaixaDAO();
+            Frame.NavigationService.Navigate(new VenderProduto(usuario.Funcionario, caixaDAO.GetById()));
         }
 
         private void btCompra_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Comprar Produto";
             Frame.NavigationService.Navigate(new ComprarProduto());
+        }
+
+        private void btFechar_Click(object sender, RoutedEventArgs e)
+        {
+            lbTitulo.Content = "Fechar Caixa";
+            Frame.NavigationService.Navigate(new FechamentoCaixa());
         }
     }
 }

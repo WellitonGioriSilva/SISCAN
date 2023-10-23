@@ -35,19 +35,29 @@ namespace SISCAN.Formularios
         {
             try
             {
-                //Setando informações na tabela cliente
-                Caixa caixa = new Caixa();
-                caixa.ValorIncial = Convert.ToInt32(tbValorInicial.Text);
-                caixa.Data = dtpData.SelectedDate;
-                DateTime? aber = tmAbertura.SelectedTime;
-                caixa.HoraAbertura = DAOHelper.DateTimeToTimeSpan(aber);
-                caixa.funcionario = new Funcionario();
-                caixa.funcionario.Id = funcionario.Id;
-                //Inserindo os Dados           
+                //Verificando caixa aberto
                 CaixaDAO caixaDAO = new CaixaDAO();
-                caixaDAO.Insert(caixa);
+                if(caixaDAO.GetById() == 0)
+                {
+                    //Setando informações na tabela cliente
+                    Caixa caixa = new Caixa();
+                    caixa.ValorIncial = Convert.ToInt32(tbValorInicial.Text);
+                    caixa.Data = dtpData.SelectedDate;
+                    DateTime? aber = tmAbertura.SelectedTime;
+                    caixa.HoraAbertura = DAOHelper.DateTimeToTimeSpan(aber);
+                    caixa.funcionario = new Funcionario();
+                    caixa.funcionario.Id = funcionario.Id;
 
-                Clear();
+                    //Inserindo os Dados           
+                    caixaDAO.Insert(caixa);
+                    MessageBox.Show(caixaDAO.result);
+
+                    Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Já existe um caixa aberto no sistema!");
+                }
             }
             catch (Exception ex)
             {

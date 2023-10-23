@@ -2,8 +2,10 @@
 using SISCAN.Database;
 using SISCAN.Helpers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -85,7 +87,7 @@ namespace SISCAN.Models
                         Data = DAOHelper.GetDateTime(reader, "data_rec"),
                         Hora = reader.GetTimeSpan("hora_rec"),
                         Caixa = DAOHelper.IsNull(reader, "id_cai_fk") ? null : new Caixa() { id = reader.GetInt32("id_cai"), Data = DAOHelper.GetDateTime(reader, "data_cai") },
-                        Venda = DAOHelper.IsNull(reader, "id_vend_fk") ? null : new Venda() { Id = reader.GetInt32("id_desp"), Data = DAOHelper.GetDateTime(reader, "nome_desp") },
+                        Venda = DAOHelper.IsNull(reader, "id_vend_fk") ? null : new Venda() { Id = reader.GetInt32("id_vend")},
                         FormaPagamento = DAOHelper.IsNull(reader, "id_form_pag_fk") ? null : new FormaPagamento() { Id = reader.GetInt32("id_form_pag"), Nome = reader.GetString("nome_form_pag") }
                     });
                 }
@@ -170,6 +172,27 @@ namespace SISCAN.Models
                 {
                     conn.Close();
                 }
+            }
+        }
+
+        public double ValorTotal(int id)
+        {
+            try
+            {
+                var query = conn.Query();
+
+                query.CommandText = $"CALL ValorTotalRecebimento({id}, @valor)";
+
+                query.Parameters.Add(new MySqlParameter("@valor", MySqlDbType.VarChar));
+                query.Parameters["@valor"].Direction = System.Data.ParameterDirection.Output;
+
+                query.ExecuteNonQuery();
+
+                return Convert.ToDouble(query.Parameters["@valor"].Value);
+            }
+            catch (Exception ex)
+            {
+                return 0;
             }
         }
 

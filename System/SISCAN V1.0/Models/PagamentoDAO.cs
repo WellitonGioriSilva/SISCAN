@@ -171,5 +171,26 @@ namespace SISCAN.Models
             }
         }
 
+        public double ValorTotal(int id)
+        {
+            try
+            {
+                var query = conn.Query();
+
+                query.CommandText = $"CALL ValorTotalPagamento({id}, @valor)";
+
+                query.Parameters.Add(new MySqlParameter("@valor", MySqlDbType.VarChar));
+                query.Parameters["@valor"].Direction = System.Data.ParameterDirection.Output;
+
+                query.ExecuteNonQuery();
+
+                return Convert.ToDouble(query.Parameters["@valor"].Value);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
     }
 }

@@ -110,6 +110,7 @@ hora_fechamento_cai time,
 valor_inicial_cai double,
 valor_final_cai double,
 visivel_cai varchar(10),
+status_cai varchar(10),
 id_func_fk int,
 foreign key(id_func_fk) references Funcionario(id_func)
 );
@@ -322,7 +323,7 @@ DELIMITER $$
 CREATE PROCEDURE InsertCaixa(valorIni double, id_func int, out msg varchar(100))
 BEGIN
 DECLARE dataAtual date;
-INSERT INTO caixa (id_cai, data_cai, hora_abertura_cai, valor_inicial_cai, visivel_cai, id_func_fk) VALUES(null, curdate(), curtime(), valorIni, 'Sim', id_func);
+INSERT INTO caixa (id_cai, data_cai, hora_abertura_cai, valor_inicial_cai, visivel_cai, status_cai, id_func_fk) VALUES(null, curdate(), curtime(), valorIni, 'Sim', 'Aberto', id_func);
 SET msg = 'Dados inseridos com sucesso!';
 END;
 $$ DELIMITER ;
@@ -693,10 +694,44 @@ $$ DELIMITER ;
 #SELECT @ResultUser1;
 #SELECT @ResultUser1;
 
+#Procedimento - GetByIdCaixa
+DELIMITER $$
+CREATE PROCEDURE GetByIdCaixa(out valor double, out id int)
+BEGIN
+	SELECT id_cai INTO id FROM Caixa WHERE (status_cai = "Aberto");
+	SELECT valor_inicial_cai INTO valor FROM Caixa WHERE (status_cai = "Aberto");
+END;
+$$ DELIMITER ;
+
+#Procedimento - Fechamento Caixa
+DELIMITER $$
+CREATE PROCEDURE FechamentoCaixa(id int, valor_final double, out msg varchar(100))
+BEGIN
+	UPDATE Caixa SET hora_fechamento_cai = curtime(), valor_final_cai = valor_final, status_cai = "Fechado" WHERE id_cai = id;
+    SET msg = "Caixa fechado com sucesso!";
+END;
+$$ DELIMITER ;
+
+#Procedimento - Valor Total Pagamento
+DELIMITER $$
+CREATE PROCEDURE ValorTotalPagamento(id int, out valor_final double)
+BEGIN
+	SELECT SUM(valor_pag) INTO valor_final FROM Pagamento WHERE (id_cai_fk = id);
+END;
+$$ DELIMITER ;
+
+#Procedimento - Valor Total Recebimento
+DELIMITER $$
+CREATE PROCEDURE ValorTotalRecebimento(id int, out valor_final double)
+BEGIN
+	SELECT SUM(valor_rec) INTO valor_final FROM Recebimento WHERE (id_cai_fk = id);
+END;
+$$ DELIMITER ;
+
 #Checks
 #select * from Usuario;
 #select * from Cidade;
-#select * from Caixa;
+select * from Caixa;
 #select * from Cliente;
 #select * from Funcionario;
 #select * from Fornecedor;
@@ -707,5 +742,5 @@ select * from Compra_produto;
 select * from Compra;
 select * from Estoque;
 select * from Despesa;
-#select * from Venda;
+select * from Recebimento;
 #select * from venda_produto;

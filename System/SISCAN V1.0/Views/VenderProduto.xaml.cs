@@ -32,17 +32,19 @@ namespace SISCAN.Formularios
         VendaProduto vendaProduto = new VendaProduto();
         List<VendaProduto> listVendaProduto = new List<VendaProduto>();
         Funcionario funcionario;
-        public VenderProduto(Funcionario func)
+        int idCaixa;
+        public VenderProduto(Funcionario func, int idCaix)
         {
             InitializeComponent();
             DadosCb();
             funcionario = func;
+            idCaixa = idCaix;
             tbQuantidade.Text = "0";
         }
 
         private void btAdd_Click(object sender, RoutedEventArgs e)
         {
-            if ((tbQuantidade != null) && (cbFormaPag.SelectedIndex != -1) && (cbCaixa.SelectedIndex != -1) && (cbProduto.SelectedIndex != -1))
+            if ((tbQuantidade != null) && (cbFormaPag.SelectedIndex != -1) && (cbProduto.SelectedIndex != -1))
             {
                 //Instanciando Objetos
                 recebimento = new Recebimento();
@@ -55,9 +57,9 @@ namespace SISCAN.Formularios
                 vendaProduto.Venda.Funcionario = new Funcionario();
                 venda.Funcionario = new Funcionario();
 
-                if (cbFormaPag.SelectedItem is FormaPagamento selectedItemPag)
+                if(idCaixa > 0)
                 {
-                    if (cbCaixa.SelectedItem is Caixa selectedItemCaixa)
+                    if (cbFormaPag.SelectedItem is FormaPagamento selectedItemPag)
                     {
                         //Atribuindo a o cb o objeto Produto
                         if (cbProduto.SelectedItem is Produto selectedItemProd)
@@ -65,7 +67,7 @@ namespace SISCAN.Formularios
                             //Atribuindo valores aos objetos
                             vendaProduto.Produto.Id = selectedItemProd.Id;
                             vendaProduto.Produto.Nome = selectedItemProd.Nome;
-                            recebimento.Caixa.id = selectedItemCaixa.id;
+                            recebimento.Caixa.id = idCaixa;
                             recebimento.FormaPagamento.Id = selectedItemPag.Id;
 
                             vendaProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
@@ -86,6 +88,10 @@ namespace SISCAN.Formularios
                             ClearAdd();
                         }
                     }
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum caixa registrado no sistema!");
                 }
             }
         }

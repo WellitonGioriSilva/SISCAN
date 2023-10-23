@@ -13,6 +13,8 @@ namespace SISCAN.Models
     internal class CaixaDAO
     {
         private static Conexao conn;
+        public string result;
+        public double valorIni;
         public CaixaDAO()
         {
             conn = new Conexao();
@@ -74,8 +76,7 @@ namespace SISCAN.Models
 
                 query.ExecuteNonQuery();
 
-                string resultado = (string)query.Parameters["@result"].Value;
-                MessageBox.Show(resultado);
+                result = (string)query.Parameters["@result"].Value;
             }
             catch (Exception ex)
             {
@@ -158,6 +159,61 @@ namespace SISCAN.Models
                 {
                     conn.Close();
                 }
+            }
+        }
+
+        public int GetById()
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = $"CALL GetByIdCaixa(@valor, @result)";
+                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
+                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
+                
+                query.Parameters.Add(new MySqlParameter("@valor", MySqlDbType.VarChar));
+                query.Parameters["@valor"].Direction = System.Data.ParameterDirection.Output;
+
+                query.ExecuteNonQuery();
+
+                valorIni = Convert.ToDouble(query.Parameters["@valor"].Value);
+
+                int id = Convert.ToInt32(query.Parameters["@result"].Value);
+                return id;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return 0;
+            } 
+        }
+
+        public void CaixaFechamento(Caixa caixa)
+        {
+            try
+            {
+                //var caixaId = new CaixaDao().Insert(caixa.Caixa);
+
+                var query = conn.Query();
+                query.CommandText = $"CALL FechamentoCaixa(@id, @valorFinal, @result)";
+
+                query.Parameters.AddWithValue("@valorFinal", caixa.ValorFinal);
+                query.Parameters.AddWithValue("@id", caixa.id);
+                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
+                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
+
+                query.ExecuteNonQuery();
+
+                result = (string)query.Parameters["@result"].Value;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show("Erro 3007 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
             }
         }
     }

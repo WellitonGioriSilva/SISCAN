@@ -24,13 +24,14 @@ namespace SISCAN.Views
     public partial class CadastrarPagamento : Page
     {
         int parcelas;
-        public CadastrarPagamento()
+        int idCaixa;
+        public CadastrarPagamento(int idCai)
         {
             InitializeComponent();
 
             DadosCbForm();
-            DadosCbCai();
             DadosCbDesp();
+            idCaixa = idCai;
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -45,10 +46,7 @@ namespace SISCAN.Views
 
                     //          
                     pagamento.Caixa = new Caixa();
-                    if (cbCaixa.SelectedItem is Caixa selectedItemCai)
-                    {
-                        pagamento.Caixa.id = selectedItemCai.id;
-                    }
+                    pagamento.Caixa.id = idCaixa;
                     pagamento.FormaPagamento = new FormaPagamento();
                     if (cbFormapag.SelectedItem is FormaPagamento selectedItemForm)
                     {
@@ -77,7 +75,6 @@ namespace SISCAN.Views
         private void Clear()
         {
             tbValor.Clear();
-            cbCaixa.SelectedIndex = -1;
             cbFormapag.SelectedIndex = -1;
             cbDespesa.SelectedIndex = -1;
         }
@@ -87,13 +84,6 @@ namespace SISCAN.Views
             FormaPagamentoDAO formaPagamentoDAO = new FormaPagamentoDAO();
             cbFormapag.ItemsSource = formaPagamentoDAO.List();
             cbFormapag.DisplayMemberPath = "Nome";
-        }
-
-        private void DadosCbCai()
-        {
-            CaixaDAO caixaDAO = new CaixaDAO();
-            cbCaixa.ItemsSource = caixaDAO.List(null);
-            cbCaixa.DisplayMemberPath = "Data";
         }
         
         private void DadosCbDesp()

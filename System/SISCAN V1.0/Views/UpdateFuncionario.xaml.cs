@@ -58,7 +58,14 @@ namespace SISCAN.Formularios
                 }
                 if (tbCpf.Text != "")
                 {
-                    func.Cpf = tbCpf.Text;
+                    if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
+                    {
+                        MessageBox.Show("Cpf digitado é inválido!");
+                    }
+                    else
+                    {
+                        func.Cpf = tbCpf.Text;
+                    }
                 }
                 else
                 {

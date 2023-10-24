@@ -16,6 +16,7 @@ using MaterialDesignThemes.Wpf;
 using MySqlX.XDevAPI;
 using SISCAN.Models;
 using SISCAN.Views;
+using SISCAN.Helpers;
 
 namespace SISCAN.Formularios
 {
@@ -34,27 +35,34 @@ namespace SISCAN.Formularios
         {
             try
             {
-                //Setando informações na tabela cliente
-                Cliente cliente = new Cliente();
-                cliente.Nome = tbNome.Text;
-                cliente.Cpf = tbCpf.Text;
-                cliente.Email = tbEmail.Text;
-                cliente.Sexo = cbSexo.SelectionBoxItem.ToString();
-                cliente.DataNascimento = dtpData.SelectedDate;
-                cliente.Rua = tbRua.Text;
-                cliente.Bairro = tbBairro.Text;
-                cliente.Numero = Convert.ToInt16(tbNumero.Text);
-                cliente.Cidade = new Cidade();
-                if (cbCidade.SelectedItem is Cidade selectedItem)
+                if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
                 {
-                    cliente.Cidade.ID = selectedItem.ID;
+                    MessageBox.Show("Cpf digitado é inválido!");
                 }
+                else
+                {
+                    //Setando informações na tabela cliente
+                    Cliente cliente = new Cliente();
+                    cliente.Nome = tbNome.Text;
+                    cliente.Cpf = tbCpf.Text;
+                    cliente.Email = tbEmail.Text;
+                    cliente.Sexo = cbSexo.SelectionBoxItem.ToString();
+                    cliente.DataNascimento = dtpData.SelectedDate;
+                    cliente.Rua = tbRua.Text;
+                    cliente.Bairro = tbBairro.Text;
+                    cliente.Numero = Convert.ToInt16(tbNumero.Text);
+                    cliente.Cidade = new Cidade();
+                    if (cbCidade.SelectedItem is Cidade selectedItem)
+                    {
+                        cliente.Cidade.ID = selectedItem.ID;
+                    }
 
-                //Inserindo os Dados           
-                ClienteDAO clienteDAO = new ClienteDAO();
-                clienteDAO.Insert(cliente);
+                    //Inserindo os Dados           
+                    ClienteDAO clienteDAO = new ClienteDAO();
+                    clienteDAO.Insert(cliente);
 
-                Clear();
+                    Clear();
+                }
             }
             catch (Exception ex)
             {
@@ -96,6 +104,11 @@ namespace SISCAN.Formularios
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarCliente());
+        }
+
+        private void tbCpf_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MaskCPFeCNPJ.MaskCPF(tbCpf);
         }
     }
 }

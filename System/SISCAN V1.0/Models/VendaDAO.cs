@@ -22,10 +22,11 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"CALL InsertVenda(@valor, @id_fk, @idCaixa, @idFormPag, @result)";
+                query.CommandText = $"CALL InsertVenda(@valor, @id_fk, @idCaixa, @idFormPag, @idCliente, @result)";
 
                 query.Parameters.AddWithValue("@valor", venda.Valor);
                 query.Parameters.AddWithValue("@id_fk", venda.Funcionario.Id);
+                query.Parameters.AddWithValue("@idCliente", venda.Cliente.Id);
                 query.Parameters.AddWithValue("@idCaixa", recebimento.Caixa.id);
                 query.Parameters.AddWithValue("@idFormPag", recebimento.FormaPagamento.Id);
                 query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));

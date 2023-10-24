@@ -123,7 +123,9 @@ hora_vend time,
 valor_vend double,
 visivel_vend varchar(10),
 id_func_fk int,
-foreign key (id_func_fk) references Funcionario (id_func) 
+foreign key (id_func_fk) references Funcionario (id_func),
+id_cli_fk int,
+foreign key (id_cli_fk) references Cliente (id_cli) 
 );
 
 create table Venda_produto
@@ -502,14 +504,14 @@ $$ DELIMITER ;
 
 #Procedimento - Venda
 DELIMITER $$
-CREATE PROCEDURE InsertVenda(valor double, id_fk int, idCaixa int, idFormaPag int, out msg varchar(100))
+CREATE PROCEDURE InsertVenda(valor double, id_fk int, idCaixa int, idFormaPag int, idCliente int, out msg varchar(100))
 BEGIN
 DECLARE verificador_fk INT;
 DECLARE idVenda INT;
 IF((valor <> '') AND (id_fk <> '')) THEN
 	SELECT COUNT(id_func) into verificador_fk from funcionario where id_func = id_fk;
 	IF(Verificador_fk = 1) THEN
-		INSERT INTO Venda (id_vend, visivel_vend, data_vend, hora_vend, valor_vend, id_func_fk) VALUES (null, 'Sim', curdate(), curtime(), valor, id_fk);
+		INSERT INTO Venda (id_vend, visivel_vend, data_vend, hora_vend, valor_vend, id_func_fk, id_cli_fk) VALUES (null, 'Sim', curdate(), curtime(), valor, id_fk, idCliente);
         SET idVenda = (SELECT max(id_vend) FROM venda);
         INSERT INTO Recebimento VALUES(null, curdate(), valor, curtime(), 'Sim', idVenda, idCaixa, idFormaPag);
 		SET msg = 'Venda realizada com sucesso!';
@@ -731,7 +733,7 @@ $$ DELIMITER ;
 #Checks
 #select * from Usuario;
 #select * from Cidade;
-select * from Caixa;
+#select * from Caixa;
 #select * from Cliente;
 #select * from Funcionario;
 #select * from Fornecedor;

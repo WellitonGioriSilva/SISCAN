@@ -19,44 +19,17 @@
     </Page.Background>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="4*"/>
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Margin="0 0 0 0" Grid.Column="0">
-
-
-            <Border BorderThickness="1.5" Margin="30 50 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <TextBox
-                x:Name="tbValorInicial"
-                materialDesign:HintAssist.Hint="Valor Inicial:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-            </Border>
-
-            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <DatePicker Margin="8,0,8,0" x:Name="dtpData"
-                    materialDesign:HintAssist.Hint=" Data de Abertura:" BorderBrush="White" FontFamily="Century" Height="34"/>
-            </Border>
-
-            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <materialDesign:TimePicker x:Name="tmAbertura" Margin="8,0,8,0" Height="34" materialDesign:HintAssist.Hint=" Hora de Abertura:" FontFamily="Century"/>
-            </Border>
-
-            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbFuncionario" materialDesign:HintAssist.Hint="Funcionário:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
-            </Border>
-
-        </StackPanel>
+        <StackPanel Margin="0 0 0 0" Grid.Column="0"/>
 
         <StackPanel Grid.Column="1" Margin="0,283,20,0">
 
-            <StackPanel Grid.Column="2" Width="175" Height="219" Margin="0,20,0,0" HorizontalAlignment="Right">
+            <StackPanel Grid.Column="2" Width="858" Height="219" Margin="0,20,0,0" HorizontalAlignment="Right">
                 <Button x:Name="btBuscar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0">
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="424" BorderBrush="White" Margin="0,15,0,0">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFFF3D00"/>
@@ -66,27 +39,12 @@
                     <TextBlock
       Text="Buscar" FontFamily="Century" FontSize="20" />
                 </Button>
-                <Button x:Name="btCancelar"
-    Height="48"
-    materialDesign:ButtonAssist.CornerRadius="25"
-    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFFF3D00"/>
-                            <GradientStop Color="#FFEDAB00" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <TextBlock
-      Text="Cancelar" FontFamily="Century" FontSize="20" />
-                </Button>
                 <Button x:Name="btFechar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
-    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="0,15,0,0" Click="btFechar_Click">
+    ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="424" BorderBrush="White" Margin="0,15,0,0" Click="btFechar_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFFF3D00"/>

@@ -156,6 +156,8 @@ namespace SISCAN.Formularios
         private void Clear()
         {
             cbProduto.SelectedIndex = -1;
+            cbFornecedor.SelectedIndex = -1;
+            tbParcelas.Text = "0";
             tbQuantidade.Text = "0";
             lbValorTotal.Content = "Valor Total:";
             dgvList.Items.Clear();

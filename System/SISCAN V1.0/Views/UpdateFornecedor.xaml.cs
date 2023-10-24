@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SISCAN.Models;
 using SISCAN.Views;
+using SISCAN.Helpers;
 
 namespace SISCAN.Formularios
 {
@@ -47,7 +48,14 @@ namespace SISCAN.Formularios
                 else
                 if (tbCnpj.Text != "")
                 {
-                    fornecedor.Cnpj = tbCnpj.Text;
+                    if (ValidacaoCPFeCNPJ.ValidateCNPJ(tbCnpj.Text) == "Erro")
+                    {
+                        MessageBox.Show("Cpf digitado é inválido!");
+                    }
+                    else
+                    {
+                        fornecedor.Cnpj = tbCnpj.Text;
+                    }
                 }
                 else
                 if (tbBairro.Text != "")

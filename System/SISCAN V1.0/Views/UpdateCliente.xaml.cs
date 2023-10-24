@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
 using MySqlX.XDevAPI;
+using SISCAN.Helpers;
 using SISCAN.Models;
 using SISCAN.Views;
 
@@ -47,7 +48,14 @@ namespace SISCAN.Formularios
                 else
                 if (tbCpf.Text != "")
                 {
-                    cliente.Cpf = tbCpf.Text;
+                    if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
+                    {
+                        MessageBox.Show("Cpf digitado é inválido!");
+                    }
+                    else
+                    {
+                        cliente.Cpf = tbCpf.Text;
+                    }
                 }
                 else
                 if (tbEmail.Text != "")

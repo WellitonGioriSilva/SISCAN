@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SISCAN.Models;
 using SISCAN.Views;
+using SISCAN.Helpers;
 
 namespace SISCAN.Formularios
 {
@@ -33,27 +34,34 @@ namespace SISCAN.Formularios
         {
             try
             {
-                //Setando informações na tabela fornecedor
-                Fornecedor fornecedor = new Fornecedor();
-                fornecedor.RazaoSocial = tbRazaoSocial.Text;
-                fornecedor.Cnpj = tbCnpj.Text;
-                fornecedor.Bairro = tbBairro.Text;
-                fornecedor.Rua = tbRua.Text;
-                fornecedor.NomeFantasia = tbFantasia.Text;
-                fornecedor.Telefone = tbTelefone.Text;
-                fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
-                fornecedor.Responsavel = tbResponsavel.Text;
-                fornecedor.Cidade = new Cidade();
-                if (cbCidade.SelectedItem is Cidade selectedItem)
+                if (ValidacaoCPFeCNPJ.ValidateCNPJ(tbCnpj.Text) == "Erro")
                 {
-                    fornecedor.Cidade.ID = selectedItem.ID;
+                    MessageBox.Show("Cpf digitado é inválido!");
                 }
+                else
+                {
+                    //Setando informações na tabela fornecedor
+                    Fornecedor fornecedor = new Fornecedor();
+                    fornecedor.RazaoSocial = tbRazaoSocial.Text;
+                    fornecedor.Cnpj = tbCnpj.Text;
+                    fornecedor.Bairro = tbBairro.Text;
+                    fornecedor.Rua = tbRua.Text;
+                    fornecedor.NomeFantasia = tbFantasia.Text;
+                    fornecedor.Telefone = tbTelefone.Text;
+                    fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
+                    fornecedor.Responsavel = tbResponsavel.Text;
+                    fornecedor.Cidade = new Cidade();
+                    if (cbCidade.SelectedItem is Cidade selectedItem)
+                    {
+                        fornecedor.Cidade.ID = selectedItem.ID;
+                    }
 
-                //Inserindo os Dados           
-                FornecedorDAO fornecedorDAO = new FornecedorDAO();
-                fornecedorDAO.Insert(fornecedor);
+                    //Inserindo os Dados           
+                    FornecedorDAO fornecedorDAO = new FornecedorDAO();
+                    fornecedorDAO.Insert(fornecedor);
 
-                Clear();
+                    Clear();
+                }
             }
             catch (Exception ex)
             {

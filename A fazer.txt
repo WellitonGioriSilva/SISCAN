@@ -1,6 +1,3 @@
-Arrumar grid view;
-Adicionar cliente a venda;
-Adicionar caixa automático a pagamento;
-Verificar se cpf e cnpj são válidos;
+Arrumar cursor da máscara cpf
 Máscara em cpf, telefone e cnpj;
 API de cep

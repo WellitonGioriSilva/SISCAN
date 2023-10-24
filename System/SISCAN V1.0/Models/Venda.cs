@@ -13,5 +13,6 @@ namespace SISCAN.Models
         public DateTime? Hora { get; set; }
         public double Valor { get; set; }
         public Funcionario Funcionario { get; set; }
+        public Cliente Cliente { get; set; }
     }
 }

@@ -39,7 +39,7 @@
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <TextBox
                 x:Name="tbCpf"
-                materialDesign:HintAssist.Hint="CPF:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                materialDesign:HintAssist.Hint="CPF:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbCpf_TextChanged"/>
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">

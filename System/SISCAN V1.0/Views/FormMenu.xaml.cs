@@ -116,7 +116,7 @@ namespace SISCAN.Formularios
         private void btPagamento_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Pagar Despesa";
-            Frame.NavigationService.Navigate(new CadastrarPagamento());
+            Frame.NavigationService.Navigate(new CadastrarPagamento(caixaDAO.GetById()));
         }
 
         private void btUser_Click(object sender, RoutedEventArgs e)

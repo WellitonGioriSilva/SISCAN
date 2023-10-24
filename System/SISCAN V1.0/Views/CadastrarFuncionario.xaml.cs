@@ -1,4 +1,5 @@
 ﻿using MySqlX.XDevAPI;
+using SISCAN.Helpers;
 using SISCAN.Models;
 using SISCAN.Views;
 using System;
@@ -33,30 +34,37 @@ namespace SISCAN.Formularios
         {
             try
             {
-                //Setando informações na tabela funcionário
-                Funcionario funcionario = new Funcionario();
-                funcionario.Nome = tbNome.Text;
-                funcionario.Cpf = tbCpf.Text;
-                funcionario.Bairro = tbBairro.Text;
-                funcionario.Sexo = cbSexo.SelectionBoxItem.ToString();
-                funcionario.Numero = Convert.ToInt16(tbNumero.Text);
-                funcionario.Rua = tbRua.Text;
-                funcionario.Funcao = new Funcao();
-                if (cbFuncao.SelectedItem is Funcao selectedItem)
+                if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
                 {
-                    funcionario.Funcao.Id = selectedItem.Id;
-                    funcionario.Acesso = selectedItem.Acesso;
+                    MessageBox.Show("Cpf digitado é inválido!");
                 }
-                funcionario.Cidade = new Cidade();
-                if (cbCidade.SelectedItem is Cidade selectedItemCid)
+                else
                 {
-                    funcionario.Cidade.ID = selectedItemCid.ID;
-                }
-                //Inserindo os Dados           
-                FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-                funcionarioDAO.Insert(funcionario);
+                    //Setando informações na tabela funcionário
+                    Funcionario funcionario = new Funcionario();
+                    funcionario.Nome = tbNome.Text;
+                    funcionario.Cpf = tbCpf.Text;
+                    funcionario.Bairro = tbBairro.Text;
+                    funcionario.Sexo = cbSexo.SelectionBoxItem.ToString();
+                    funcionario.Numero = Convert.ToInt16(tbNumero.Text);
+                    funcionario.Rua = tbRua.Text;
+                    funcionario.Funcao = new Funcao();
+                    if (cbFuncao.SelectedItem is Funcao selectedItem)
+                    {
+                        funcionario.Funcao.Id = selectedItem.Id;
+                        funcionario.Acesso = selectedItem.Acesso;
+                    }
+                    funcionario.Cidade = new Cidade();
+                    if (cbCidade.SelectedItem is Cidade selectedItemCid)
+                    {
+                        funcionario.Cidade.ID = selectedItemCid.ID;
+                    }
+                    //Inserindo os Dados           
+                    FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+                    funcionarioDAO.Insert(funcionario);
 
-                Clear();
+                    Clear();
+                }
             }
             catch (Exception ex)
             {

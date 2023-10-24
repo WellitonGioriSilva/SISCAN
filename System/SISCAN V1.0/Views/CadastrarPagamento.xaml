@@ -35,10 +35,6 @@
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbCaixa" materialDesign:HintAssist.Hint="Caixa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
-            </Border>
-            
-            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <ComboBox x:Name="cbParcelas" materialDesign:HintAssist.Hint="Parcela:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top" SelectionChanged="cbParcelas_SelectionChanged"/>
             </Border>
             

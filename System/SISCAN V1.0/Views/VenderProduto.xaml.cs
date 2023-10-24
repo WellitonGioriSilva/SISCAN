@@ -64,28 +64,32 @@ namespace SISCAN.Formularios
                         //Atribuindo a o cb o objeto Produto
                         if (cbProduto.SelectedItem is Produto selectedItemProd)
                         {
-                            //Atribuindo valores aos objetos
-                            vendaProduto.Produto.Id = selectedItemProd.Id;
-                            vendaProduto.Produto.Nome = selectedItemProd.Nome;
-                            recebimento.Caixa.id = idCaixa;
-                            recebimento.FormaPagamento.Id = selectedItemPag.Id;
+                            if (cbCliente.SelectedItem is Cliente selectedItemCli)
+                            {
+                                //Atribuindo valores aos objetos
+                                vendaProduto.Produto.Id = selectedItemProd.Id;
+                                vendaProduto.Produto.Nome = selectedItemProd.Nome;
+                                recebimento.Caixa.id = idCaixa;
+                                recebimento.FormaPagamento.Id = selectedItemPag.Id;
 
-                            vendaProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
+                                vendaProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
 
-                            vendaProduto.Produto.ValorVen = selectedItemProd.ValorVen;
-                            vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
-                            valorTotal += vendaProduto.Venda.Valor;
-                            lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
+                                vendaProduto.Produto.ValorVen = selectedItemProd.ValorVen;
+                                vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
+                                valorTotal += vendaProduto.Venda.Valor;
+                                lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
 
-                            //Atribuindo aos lists e objtos os respectivos valores
-                            vendaProduto.Venda.Funcionario.Nome = funcionario.Nome;
-                            venda.Funcionario.Id = funcionario.Id;
-                            venda.Valor = valorTotal;
+                                //Atribuindo aos lists e objtos os respectivos valores
+                                vendaProduto.Venda.Funcionario.Nome = funcionario.Nome;
+                                venda.Funcionario.Id = funcionario.Id;
+                                venda.Valor = valorTotal;
+                                venda.Cliente.Id = selectedItemCli.Id;
 
-                            dgvList.Items.Add(vendaProduto);
-                            listVendaProduto.Add(vendaProduto);
+                                dgvList.Items.Add(vendaProduto);
+                                listVendaProduto.Add(vendaProduto);
 
-                            ClearAdd();
+                                ClearAdd();
+                            }
                         }
                     }
                 }
@@ -149,7 +153,7 @@ namespace SISCAN.Formularios
         private void ClearAdd()
         {
             cbProduto.SelectedIndex = -1;
-            cbCaixa.SelectedIndex = -1;
+            cbCliente.SelectedIndex = -1;
             cbFormaPag.SelectedIndex = -1;
             tbQuantidade.Text = "0";
         }
@@ -157,7 +161,7 @@ namespace SISCAN.Formularios
         private void Clear()
         {
             cbProduto.SelectedIndex = -1;
-            cbCaixa.SelectedIndex = -1;
+            cbCliente.SelectedIndex = -1;
             cbFormaPag.SelectedIndex = -1;
             tbQuantidade.Text = "0";
             lbValorTotal.Content = "Valor Total:";
@@ -170,9 +174,9 @@ namespace SISCAN.Formularios
             cbProduto.ItemsSource = prodDAO.List(null);
             cbProduto.DisplayMemberPath = "Nome";
             
-            CaixaDAO caixaDAO = new CaixaDAO();
-            cbCaixa.ItemsSource = caixaDAO.List(null);
-            cbCaixa.DisplayMemberPath = "Data";
+            ClienteDAO clienteDAO = new ClienteDAO();
+            cbCliente.ItemsSource = clienteDAO.List(null);
+            cbCliente.DisplayMemberPath = "Nome";
             
             FormaPagamentoDAO formaPagamentoDAO = new FormaPagamentoDAO();
             cbFormaPag.ItemsSource = formaPagamentoDAO.List();

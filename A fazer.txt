@@ -1,4 +1,4 @@
-Implementar máscara ao cnpj e o de cpf em funcionário;
-Máscara em cpf, telefone e cnpj;
 API de cep;
-Só criar estoque do produto se ele não existir, se existir só atualizar quantidade e validade.
+
+Funcionário
+Fornecedor

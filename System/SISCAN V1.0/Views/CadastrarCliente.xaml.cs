@@ -17,6 +17,9 @@ using MySqlX.XDevAPI;
 using SISCAN.Models;
 using SISCAN.Views;
 using SISCAN.Helpers;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Windows.Media.TextFormatting;
 
 namespace SISCAN.Formularios
 {
@@ -28,8 +31,8 @@ namespace SISCAN.Formularios
         public CadastrarCliente()
         {
             InitializeComponent();
-            DadosCb();
             MaskCPF mascarador = new MaskCPF(tbCpf);
+            MaskCEP mascaradorCEP = new MaskCEP(tbCep);
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -53,10 +56,6 @@ namespace SISCAN.Formularios
                     cliente.Bairro = tbBairro.Text;
                     cliente.Numero = Convert.ToInt16(tbNumero.Text);
                     cliente.Cidade = new Cidade();
-                    if (cbCidade.SelectedItem is Cidade selectedItem)
-                    {
-                        cliente.Cidade.ID = selectedItem.ID;
-                    }
 
                     //Inserindo os Dados           
                     ClienteDAO clienteDAO = new ClienteDAO();
@@ -68,7 +67,7 @@ namespace SISCAN.Formularios
             catch (Exception ex)
             {
                 MessageBox.Show("Erro 3008 : Contate o suporte");
-            }  
+            }
         }
 
         private void btCancelar_Click(object sender, RoutedEventArgs e)
@@ -91,14 +90,6 @@ namespace SISCAN.Formularios
             tbBairro.Clear();
             tbNumero.Clear();
             cbSexo.SelectedIndex = -1;
-            cbCidade.SelectedIndex = -1;
-        }
-
-        private void DadosCb()
-        {
-            CidadeDAO cidDAO = new CidadeDAO();
-            cbCidade.ItemsSource = cidDAO.List();
-            cbCidade.DisplayMemberPath = "Nome";
         }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)
@@ -107,9 +98,56 @@ namespace SISCAN.Formularios
             fmFrame.NavigationService.Navigate(new ListarCliente());
         }
 
-        private void tbCpf_TextChanged(object sender, TextChangedEventArgs e)
+        private async void tbCep_LostFocus(object sender, RoutedEventArgs e)
         {
-            //MaskCPFeCNPJ.MaskCPF(tbCpf);
+            Buscar();
+        }
+
+        public async void Buscar()
+        {
+            string cep = tbCep.Text;
+            if (!string.IsNullOrEmpty(cep))
+            {
+                string url = $"https://viacep.com.br/ws/{cep}/json/";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    if (cep.Length == 9)
+                    {
+                        try
+                        {
+                            string response = await client.GetStringAsync(url);
+                            var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+
+                            if (endereco != null)
+                            {
+                                tbRua.Text = endereco.Logradouro;
+                                tbBairro.Text = endereco.Bairro;
+                            }
+                            else
+                            {
+                                MessageBox.Show("CEP não encontrado.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, insira um CEP válido.");
+            }
+        }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if(tbCep.Text != "")
+            {
+                Buscar();
+            }
         }
     }
 }

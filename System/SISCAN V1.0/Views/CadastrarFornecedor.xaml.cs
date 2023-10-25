@@ -28,6 +28,9 @@ namespace SISCAN.Formularios
         {
             InitializeComponent();
             DadosCb();
+
+            MaskCNPJ mascarador = new MaskCNPJ(tbCnpj);
+            MaskTelefone mascaradorTel = new MaskTelefone(tbTelefone);
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)

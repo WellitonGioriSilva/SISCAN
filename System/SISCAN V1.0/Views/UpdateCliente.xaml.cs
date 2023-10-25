@@ -32,6 +32,7 @@ namespace SISCAN.Formularios
             user = cliente;
             DadosCb();
             ImportDados();
+            MaskCPF mascarador = new MaskCPF(tbCpf);
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)

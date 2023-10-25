@@ -31,6 +31,7 @@ namespace SISCAN.Formularios
             DadosCb();
             funcionario = func;
             ImportDados();
+            MaskCPF mascarador = new MaskCPF(tbCpf);
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)

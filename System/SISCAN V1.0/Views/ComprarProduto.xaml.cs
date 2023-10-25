@@ -87,7 +87,7 @@ namespace SISCAN.Formularios
                         }
                         estoque.Validade = dtpValidadeProd.SelectedDate;
                         DateTime dataAtual = DateTime.Now;
-                        estoque.Lote = $"{dataAtual.ToShortDateString()}" + $"{compraProduto.Produto.Nome}";
+                        estoque.Lote = compraProduto.Produto.Nome;
 
                         dgvList.Items.Add(compraProduto);
                         listCompraProduto.Add(compraProduto);

@@ -31,6 +31,8 @@ namespace SISCAN.Formularios
             user = fornecedor;
             DadosCb();
             ImportDados();
+            MaskCNPJ mascarador = new MaskCNPJ(tbCnpj);
+            MaskTelefone mascaradorTel = new MaskTelefone(tbTelefone);
 
         }
 

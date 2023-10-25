@@ -22,7 +22,7 @@ namespace SISCAN.Formularios
     public partial class FormMenu : Window
     {
         Usuario usuario;
-        CaixaDAO caixaDAO;
+        CaixaDAO caixaDAO = new CaixaDAO();
         public FormMenu(MainWindow main, Usuario usu)
         {
             InitializeComponent();
@@ -116,7 +116,14 @@ namespace SISCAN.Formularios
         private void btPagamento_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Pagar Despesa";
-            Frame.NavigationService.Navigate(new CadastrarPagamento(caixaDAO.GetById()));
+            if(caixaDAO.GetById() != null)
+            {
+                Frame.NavigationService.Navigate(new CadastrarPagamento(caixaDAO.GetById()));
+            }
+            else
+            {
+                Frame.NavigationService.Navigate(new CadastrarPagamento(0));
+            }
         }
 
         private void btUser_Click(object sender, RoutedEventArgs e)

@@ -4,50 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SISCAN.Helpers
 {
-    internal class MaskCPFeCNPJ
+    internal class MaskCPF
     {
-        public static void MaskCPF(TextBox textBox)
+        private TextBox textBox;
+
+        public MaskCPF(TextBox textBox)
         {
-            int cursorPosition = 0; // Salvar a posição do cursor
+            this.textBox = textBox;
+            this.textBox.PreviewTextInput += TextBox_PreviewTextInput;
+            this.textBox.TextChanged += TextBox_TextChanged;
+        }
 
-            textBox.TextChanged += (sender, e) =>
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Impede a entrada de caracteres não numéricos
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
             {
-                if (!string.IsNullOrEmpty(textBox.Text))
+                e.Handled = true;
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string textoSemMascara = new string(textBox.Text.Where(char.IsDigit).ToArray());
+
+            if (textoSemMascara.Length > 11)
+            {
+                // Se o CPF digitado for muito longo, limite-o a 11 dígitos
+                textoSemMascara = textoSemMascara.Substring(0, 11);
+            }
+
+            string cpfMascarado = string.Empty;
+            for (int i = 0; i < textoSemMascara.Length; i++)
+            {
+                if (i == 3 || i == 6)
                 {
-                    // Remove caracteres não numéricos
-                    string cpf = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-                    // Salvar a posição atual do cursor
-                    cursorPosition = textBox.SelectionStart;
-
-                    if (cpf.Length <= 3)
-                    {
-                        // Insere apenas os primeiros 3 dígitos
-                        textBox.Text = cpf;
-                    }
-                    else if (cpf.Length <= 6)
-                    {
-                        // Insere pontos após o terceiro dígito
-                        textBox.Text = cpf.Insert(3, ".");
-                    }
-                    else if (cpf.Length <= 9)
-                    {
-                        // Insere pontos e traço após o sexto dígito
-                        textBox.Text = cpf.Insert(3, ".").Insert(7, ".");
-                    }
-                    else
-                    {
-                        // Insere todos os pontos e o traço
-                        textBox.Text = cpf.Insert(3, ".").Insert(7, ".").Insert(11, "-");
-                    }
-
-                    // Definir a posição do cursor de volta para onde estava
-                    textBox.SelectionStart = cursorPosition;
+                    cpfMascarado += ".";
                 }
-            };
+                else if (i == 9)
+                {
+                    cpfMascarado += "-";
+                }
+                cpfMascarado += textoSemMascara[i];
+            }
+
+            textBox.Text = cpfMascarado;
+            textBox.CaretIndex = cpfMascarado.Length;
         }
     }
 }

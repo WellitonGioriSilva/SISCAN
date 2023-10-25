@@ -23,7 +23,8 @@ namespace SISCAN.Views
     /// </summary>
     public partial class CadastrarPagamento : Page
     {
-        int parcelas;
+        int parcelas = 0;
+        int parcelasSelecionadas = 0;
         int idCaixa;
         public CadastrarPagamento(int idCai)
         {
@@ -32,6 +33,9 @@ namespace SISCAN.Views
             DadosCbForm();
             DadosCbDesp();
             idCaixa = idCai;
+
+            dtpData.Visibility = Visibility.Collapsed;
+            borderDtp.Visibility = Visibility.Collapsed;
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -114,7 +118,6 @@ namespace SISCAN.Views
         {
             if(cbDespesa.SelectedItem is Despesa selectedItemDesp)
             {
-                parcelas = 0;
                 parcelas = selectedItemDesp.Parcelas;
                 cbParcelas.Items.Clear();
 
@@ -129,8 +132,9 @@ namespace SISCAN.Views
         {
             if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
             {
-                tbValor.Text = (selectedItemDesp.ValorParcela * parcelas).ToString("C");
-                if (cbParcelas.SelectedIndex.ToString() == parcelas.ToString())
+                parcelasSelecionadas = Convert.ToInt32(cbParcelas.SelectedValue.ToString());
+                tbValor.Text = (selectedItemDesp.ValorParcela * parcelasSelecionadas).ToString("C");
+                if (cbParcelas.SelectedValue.ToString() != parcelas.ToString())
                 {
                     dtpData.Visibility = Visibility.Visible;
                     borderDtp.Visibility = Visibility.Visible;

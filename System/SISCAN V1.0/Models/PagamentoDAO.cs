@@ -190,6 +190,10 @@ namespace SISCAN.Models
             {
                 return 0;
             }
+            finally
+            {
+                conn.Close();
+            }
         }
 
     }

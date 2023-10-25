@@ -29,6 +29,7 @@ namespace SISCAN.Formularios
         {
             InitializeComponent();
             DadosCb();
+            MaskCPF mascarador = new MaskCPF(tbCpf);
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -108,7 +109,7 @@ namespace SISCAN.Formularios
 
         private void tbCpf_TextChanged(object sender, TextChangedEventArgs e)
         {
-            MaskCPFeCNPJ.MaskCPF(tbCpf);
+            //MaskCPFeCNPJ.MaskCPF(tbCpf);
         }
     }
 }

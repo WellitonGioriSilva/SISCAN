@@ -179,13 +179,18 @@ namespace SISCAN.Models
                 valorIni = Convert.ToDouble(query.Parameters["@valor"].Value);
 
                 int id = Convert.ToInt32(query.Parameters["@result"].Value);
+
                 return id;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 return 0;
-            } 
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         public void CaixaFechamento(Caixa caixa)

@@ -90,12 +90,6 @@ namespace SISCAN.Formularios
                 {
                     fornecedor.Responsavel = tbResponsavel.Text;
                 }
-                else
-                if (cbCidade.SelectedIndex != 1)
-                {
-                    fornecedor.Cidade = new Cidade();
-                    fornecedor.Cidade.ID = cbCidade.SelectedIndex + 1;
-                }
 
                 //Inserindo os Dados           
                 FornecedorDAO fornecedorDAO = new FornecedorDAO();

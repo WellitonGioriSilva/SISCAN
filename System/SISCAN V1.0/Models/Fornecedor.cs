@@ -17,6 +17,7 @@ namespace SISCAN.Models
         public string Telefone { get; set; }
         public string InscricaoEstadual { get; set; }
         public string Responsavel { get; set; }
-        public Cidade Cidade { get; set; }
+        public string cidade { get; set; }
+        public string estado { get; set; }
     }
 }

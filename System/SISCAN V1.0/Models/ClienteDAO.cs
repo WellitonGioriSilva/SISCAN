@@ -29,11 +29,11 @@ namespace SISCAN.Models
 
                 if(busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Cliente LEFT JOIN Cidade ON Cliente.id_cid_fk = Cidade.id_cid WHERE visivel_cli = 'Sim';";
+                    query.CommandText = "SELECT * FROM Cliente WHERE (visivel_cli = 'Sim');";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Cliente, Cidade WHERE (Cliente.id_cid_fk = Cidade.id_cid) AND (nome_cli LIKE '%{busca}%') AND (visivel_cli = 'Sim');";
+                    query.CommandText = $"SELECT * FROM Cliente WHERE (nome_cli LIKE '%{busca}%') AND (visivel_cli = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -51,7 +51,8 @@ namespace SISCAN.Models
                         Rua = DAOHelper.GetString(reader, "rua_cli"),
                         Bairro = DAOHelper.GetString(reader, "bairro_cli"),
                         Numero = reader.GetInt32("numero_cli"),
-                        Cidade = DAOHelper.IsNull(reader, "id_cid_fk") ? null : new Cidade() { ID = reader.GetInt32("id_cid"), Nome = reader.GetString("nome_cid") }
+                        cidade = DAOHelper.GetString(reader, "cidade_cli"),
+                        estado = DAOHelper.GetString(reader, "estado_cli"),
                     }) ;                    
                 }
 
@@ -75,7 +76,7 @@ namespace SISCAN.Models
 
                 var query = conn.Query();
                 query.CommandText = $"INSERT INTO Cliente (visivel_cli, nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, id_cid_fk) " +
-                    $"VALUES ('Sim',@nome, @cpf, @email, @sexo, @data_nasc, @rua, @bairro, @numero, @id_cid)";
+                    $"VALUES ('Sim',@nome, @cpf, @email, @sexo, @data_nasc, @rua, @bairro, @numero, @cidade, @estado)";
 
                 query.Parameters.AddWithValue("@nome", cliente.Nome);
                 query.Parameters.AddWithValue("@cpf", cliente.Cpf);
@@ -85,7 +86,8 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@rua", cliente.Rua);
                 query.Parameters.AddWithValue("@bairro", cliente.Bairro);
                 query.Parameters.AddWithValue("@numero", cliente.Numero);
-                query.Parameters.AddWithValue("@id_cid", cliente.Cidade.ID);
+                query.Parameters.AddWithValue("@cidade", cliente.cidade);
+                query.Parameters.AddWithValue("@estado", cliente.estado);
 
                 var result = query.ExecuteNonQuery();
 
@@ -115,7 +117,7 @@ namespace SISCAN.Models
             {
                 var query = conn.Query();
                 query.CommandText = "UPDATE Cliente SET nome_cli = @nome, cpf_cli = @cpf, email_cli = @email, sexo_cli = @sexo, data_nascimento_cli = @data_nascimento, " +
-                    "rua_cli = @rua, bairro_cli = @bairro, numero_cli = @numero, id_cid_fk = @id_cid WHERE id_cli = @id";
+                    "rua_cli = @rua, bairro_cli = @bairro, numero_cli = @numero, cidade_cli = @cidade, estado_cli = @estado WHERE id_cli = @id";
 
                 query.Parameters.AddWithValue("@nome", cliente.Nome);
                 query.Parameters.AddWithValue("@cpf", cliente.Cpf);
@@ -125,7 +127,8 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@rua", cliente.Rua);
                 query.Parameters.AddWithValue("@bairro", cliente.Bairro);
                 query.Parameters.AddWithValue("@numero", cliente.Numero);
-                query.Parameters.AddWithValue("@id_cid", cliente.Cidade.ID);
+                query.Parameters.AddWithValue("@cidade", cliente.cidade);
+                query.Parameters.AddWithValue("@estado", cliente.cidade);
 
                 var result = query.ExecuteNonQuery();
 

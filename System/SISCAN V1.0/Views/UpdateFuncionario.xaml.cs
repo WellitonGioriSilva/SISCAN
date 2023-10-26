@@ -98,16 +98,6 @@ namespace SISCAN.Formularios
                     func.Funcao = new Funcao();
                     func.Funcao.Id = funcionario.Funcao.Id;
                 }
-                if (cbCidade.SelectedIndex != -1)
-                {
-                    func.Cidade = new Cidade();
-                    func.Cidade.ID = cbCidade.SelectedIndex + 1;
-                }
-                else
-                {
-                    func.Cidade = new Cidade();
-                    func.Cidade.ID = funcionario.Cidade.ID;
-                }
                 if (cbSexo.SelectedIndex != -1)
                 {
                     func.Sexo = cbSexo.SelectionBoxItem.ToString();
@@ -180,7 +170,6 @@ namespace SISCAN.Formularios
             lbCpf.Content = "Cpf: " + funcionario.Cpf;
             lbNumero.Content = "Número: " + funcionario.Numero;
             lbSexo.Content = "Sexo: " + funcionario.Sexo;
-            lbCidade.Content = "Cidade: " + funcionario.Cidade.Nome;
             lbFuncao.Content = "Função: " + funcionario.Funcao.Nome;
         }
     }

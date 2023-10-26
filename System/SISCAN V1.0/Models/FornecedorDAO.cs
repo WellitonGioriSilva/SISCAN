@@ -27,7 +27,7 @@ namespace SISCAN.Models
 
                 var query = conn.Query();
                 query.CommandText = $"INSERT INTO Fornecedor (visivel_forn, razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, id_cid_fk) " +
-                    $"VALUES ('Sim', @razaoSocial, @cnpj, @bairro, @rua, @nomeFantasia, @telefone, @inscricaoEstadual, @responsavel, @id_cid)";
+                    $"VALUES ('Sim', @razaoSocial, @cnpj, @bairro, @rua, @nomeFantasia, @telefone, @inscricaoEstadual, @responsavel, @cidade, @estado)";
 
                 query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
                 query.Parameters.AddWithValue("@cnpj", fornecedor.Cnpj);
@@ -37,7 +37,8 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
                 query.Parameters.AddWithValue("@inscricaoEstadual", fornecedor.InscricaoEstadual);
                 query.Parameters.AddWithValue("@responsavel", fornecedor.Responsavel);
-                query.Parameters.AddWithValue("@id_cid", fornecedor.Cidade.ID);
+                query.Parameters.AddWithValue("@cidade", fornecedor.cidade);
+                query.Parameters.AddWithValue("@estado", fornecedor.estado);
 
                 var result = query.ExecuteNonQuery();
 
@@ -71,11 +72,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Fornecedor LEFT JOIN Cidade ON Fornecedor.id_cid_fk = Cidade.id_cid LEFT JOIN Estado ON Cidade.id_est_fk = Estado.id_est WHERE visivel_forn = 'Sim';";
+                    query.CommandText = "SELECT * FROM Fornecedor WHERE (visivel_forn = 'Sim');";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Fornecedor, Cidade, Estado WHERE (Fornecedor.id_cid_fk = Cidade.id_cid) AND (Cidade.id_est_fk = Estado.id_est) AND (razao_social_forn LIKE '%{busca}%') AND (visivel_forn = 'Sim');";
+                    query.CommandText = $"SELECT * FROM Fornecedor WHERE (razao_social_forn LIKE '%{busca}%') AND (visivel_forn = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -93,7 +94,8 @@ namespace SISCAN.Models
                         Telefone = DAOHelper.GetString(reader, "telefone_forn"),
                         InscricaoEstadual = DAOHelper.GetString(reader, "inscricao_estadual_forn"),
                         Responsavel = DAOHelper.GetString(reader, "responsavel_forn"),
-                        Cidade = DAOHelper.IsNull(reader, "id_cid_fk") ? null : new Cidade() { ID = reader.GetInt32("id_cid"), Nome = reader.GetString("nome_cid"), Estado = DAOHelper.IsNull(reader, "id_est_fk") ? null : new Estado() { Id = reader.GetInt32("id_est"), Nome = reader.GetString("nome_est") } }
+                        cidade = DAOHelper.GetString(reader, "cidade_forn"),
+                        estado = DAOHelper.GetString(reader, "estado_forn"),
                     });
                 }
 
@@ -115,7 +117,7 @@ namespace SISCAN.Models
             {
                 var query = conn.Query();
                 query.CommandText = "UPDATE Fornecedor SET razao_social_forn = @razao_social, cnpj_forn = @cnpj, bairro_forn = @bairro, rua_forn = @rua, nome_fantasia_forn = @nome_fantasia, telefone_forn = @telefone" +
-                    "inscricao_estadual_forn = @incricao_estadual, responsavel_forn = @responsavel, id_cid_fk = @id_cid WHERE id_forn = @id";
+                    "inscricao_estadual_forn = @incricao_estadual, responsavel_forn = @responsavel, cidade_forn = @cidade, estado_forn = @estado WHERE id_forn = @id";
 
                 query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
                 query.Parameters.AddWithValue("@cnpj", fornecedor.Cnpj);
@@ -125,8 +127,8 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
                 query.Parameters.AddWithValue("@inscricaoEstadual", fornecedor.InscricaoEstadual);
                 query.Parameters.AddWithValue("@responsavel", fornecedor.Responsavel);
-                query.Parameters.AddWithValue("@id_cid", fornecedor.Cidade.ID);
-
+                query.Parameters.AddWithValue("@cidade", fornecedor.cidade);
+                query.Parameters.AddWithValue("@estado", fornecedor.cidade);
                 var result = query.ExecuteNonQuery();
 
                 if (result == 0)

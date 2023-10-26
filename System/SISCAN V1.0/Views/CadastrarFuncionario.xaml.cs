@@ -1,10 +1,12 @@
 ﻿using MySqlX.XDevAPI;
+using Newtonsoft.Json;
 using SISCAN.Helpers;
 using SISCAN.Models;
 using SISCAN.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,11 +26,14 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class CadastrarFuncionario : Page
     {
+        string cidade;
+        string estado;
         public CadastrarFuncionario()
         {
             InitializeComponent();
             DadosCb();
             MaskCPF mascarador = new MaskCPF(tbCpf);
+            MaskCEP mascaradorCep = new MaskCEP(tbCep);
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -41,6 +46,7 @@ namespace SISCAN.Formularios
                 }
                 else
                 {
+                    Buscar();
                     //Setando informações na tabela funcionário
                     Funcionario funcionario = new Funcionario();
                     funcionario.Nome = tbNome.Text;
@@ -54,11 +60,6 @@ namespace SISCAN.Formularios
                     {
                         funcionario.Funcao.Id = selectedItem.Id;
                         funcionario.Acesso = selectedItem.Acesso;
-                    }
-                    funcionario.Cidade = new Cidade();
-                    if (cbCidade.SelectedItem is Cidade selectedItemCid)
-                    {
-                        funcionario.Cidade.ID = selectedItemCid.ID;
                     }
                     //Inserindo os Dados           
                     FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
@@ -81,16 +82,12 @@ namespace SISCAN.Formularios
             tbBairro.Clear();
             tbNumero.Clear();
             cbSexo.SelectedIndex = -1;
-            cbCidade.SelectedIndex = -1;
             cbFuncao.SelectedIndex = -1;
+            tbCep.Clear();
         }
 
         private void DadosCb()
         {
-            //Setando dados no combobox de cidade
-            CidadeDAO cidDAO = new CidadeDAO();
-            cbCidade.ItemsSource = cidDAO.List();
-            cbCidade.DisplayMemberPath = "Nome";
 
             //Setando dados no combobox de função
             FuncaoDAO funDAO = new FuncaoDAO();
@@ -113,6 +110,60 @@ namespace SISCAN.Formularios
         {
             fmFrame.Visibility = Visibility.Visible;
             fmFrame.NavigationService.Navigate(new ListarFuncionario());
+        }
+
+        private void tbCep_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Buscar();
+        }
+
+        public async void Buscar()
+        {
+            string cep = tbCep.Text;
+            if (!string.IsNullOrEmpty(cep))
+            {
+                string url = $"https://viacep.com.br/ws/{cep}/json/";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    if (cep.Length == 9)
+                    {
+                        try
+                        {
+                            string response = await client.GetStringAsync(url);
+                            var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+
+                            if (endereco != null)
+                            {
+                                tbRua.Text = endereco.Logradouro;
+                                tbBairro.Text = endereco.Bairro;
+                                cidade = endereco.Localidade;
+                                estado = endereco.Uf;
+                            }
+                            else
+                            {
+                                MessageBox.Show("CEP não encontrado.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, insira um CEP válido.");
+            }
+        }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if(tbCep.Text != "")
+            {
+                Buscar();
+            }
         }
     }
 }

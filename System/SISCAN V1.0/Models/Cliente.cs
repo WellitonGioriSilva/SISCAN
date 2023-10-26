@@ -17,6 +17,7 @@ namespace SISCAN.Models
         public string Rua { get; set; }
         public string Bairro { get; set; }
         public int Numero { get; set; }
-        public Cidade Cidade { get; set; }
+        public string cidade { get; set; }
+        public string estado { get; set; }
     }
 }

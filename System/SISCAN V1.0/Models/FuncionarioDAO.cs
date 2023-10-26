@@ -29,11 +29,11 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Funcionario RIGHT JOIN Cidade ON Funcionario.id_cid_fk = Cidade.id_cid INNER JOIN Funcao ON Funcionario.id_fun_fk = Funcao.id_fun WHERE visivel_func = 'Sim';";
+                    query.CommandText = "SELECT * FROM Funcionario, Funcao WHERE (Funcionario.id_fun_fk = Funcao.id_fun) AND (visivel_func = 'Sim');";
                 }
                 else
                 {
-                    query.CommandText = $"SELECT * FROM Funcionario, Funcao, Cidade WHERE (Funcionario.id_cid_fk = Cidade.id_cid) AND (Funcionario.id_fun_fk = Funcao.id_fun) AND (nome_func LIKE '%{busca}%') AND (visivel_func = 'Sim');";
+                    query.CommandText = $"SELECT * FROM Funcionario, Funcao WHERE (Funcionario.id_fun_fk = Funcao.id_fun) AND (nome_func LIKE '%{busca}%') AND (visivel_func = 'Sim');";
                 }
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -50,7 +50,8 @@ namespace SISCAN.Models
                         Bairro = DAOHelper.GetString(reader, "bairro_func"),
                         Numero = reader.GetInt32("numero_func"),
                         Acesso = reader.GetInt32("nivel_acess_func"),
-                        Cidade = DAOHelper.IsNull(reader, "id_cid_fk") ? null : new Cidade() { ID = reader.GetInt32("id_cid"), Nome = reader.GetString("nome_cid") },
+                        cidade = DAOHelper.GetString(reader, "cidade_func"),
+                        estado = DAOHelper.GetString(reader, "estado_func"),
                         Funcao = DAOHelper.IsNull(reader, "id_fun_fk") ? null : new Funcao() { Id = reader.GetInt32("id_fun"), Nome = reader.GetString("nome_fun") }
                     });
                 }
@@ -76,7 +77,7 @@ namespace SISCAN.Models
                 var query = conn.Query();
 
                 query.CommandText = $"INSERT INTO Funcionario (visivel_func,nome_func, bairro_func, rua_func, cpf_func, numero_func, sexo_func, nivel_acess_func, id_cid_fk, id_fun_fk) " +
-                    $"VALUES ('Sim',@nome, @bairro, @rua, @cpf, @numero, @sexo, @acesso, @id_cid, @id_fun)";
+                    $"VALUES ('Sim',@nome, @bairro, @rua, @cpf, @numero, @sexo, @acesso, @cidade, @estado, @id_fun)";
 
                 query.Parameters.AddWithValue("@nome", funcionario.Nome);
                 query.Parameters.AddWithValue("@bairro", funcionario.Bairro);
@@ -86,7 +87,8 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@sexo", funcionario.Sexo);
                 query.Parameters.AddWithValue("@acesso", funcionario.Acesso);
                 query.Parameters.AddWithValue("@id_fun", funcionario.Funcao.Id);
-                query.Parameters.AddWithValue("@id_cid", funcionario.Cidade.ID);
+                query.Parameters.AddWithValue("@cidade", funcionario.cidade);
+                query.Parameters.AddWithValue("@estado", funcionario.estado);
 
                 var result = query.ExecuteNonQuery();
 
@@ -115,7 +117,7 @@ namespace SISCAN.Models
             {
                 var query = conn.Query();
                 query.CommandText = "UPDATE Funcionario SET nome_func = @nome, bairro_func = @bairro, rua_func = @rua, cpf_func = @cpf, " +
-                    "numero_func = @numero, sexo_func = @sexo, id_cid_fk = @id_cid, id_fun_fk = @id_fun WHERE id_func = @id";
+                    "numero_func = @numero, sexo_func = @sexo, cidade_func = @cidade, estado_func = @estado, id_fun_fk = @id_fun WHERE id_func = @id";
 
                 query.Parameters.AddWithValue("@id", funcionario.Id);
                 query.Parameters.AddWithValue("@nome", funcionario.Nome);
@@ -124,7 +126,8 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@numero", funcionario.Numero);
                 query.Parameters.AddWithValue("@sexo", funcionario.Sexo);
                 query.Parameters.AddWithValue("@cpf", funcionario.Cpf);
-                query.Parameters.AddWithValue("@id_cid", funcionario.Cidade.ID);
+                query.Parameters.AddWithValue("@cidade", funcionario.cidade);
+                query.Parameters.AddWithValue("@estado", funcionario.cidade);
                 query.Parameters.AddWithValue("@id_fun", funcionario.Funcao.Id);
 
                 var result = query.ExecuteNonQuery();

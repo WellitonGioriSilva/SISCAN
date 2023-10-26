@@ -90,8 +90,7 @@ namespace SISCAN.Formularios
                 }
                 else
                 {
-                    cliente.Cidade = new Cidade();
-                    cliente.Cidade.ID = cbCidade.SelectedIndex + 1;
+
                 }
 
                 //Inserindo os Dados           

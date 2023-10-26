@@ -21,8 +21,8 @@ namespace SISCAN.Helpers
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Impede a entrada de caracteres não numéricos
-            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            // Permite apenas a entrada de caracteres numéricos e o caractere de adição (+)
+            if (!char.IsDigit(e.Text, e.Text.Length - 1) && e.Text != "+")
             {
                 e.Handled = true;
             }
@@ -34,28 +34,26 @@ namespace SISCAN.Helpers
 
             if (textoSemMascara.Length > 11)
             {
-                // Se o número de telefone digitado for muito longo, limite-o a 11 dígitos
+                // Se o número de telefone digitado for muito longo, limite-o a 15 dígitos
                 textoSemMascara = textoSemMascara.Substring(0, 11);
             }
 
             string telefoneMascarado = string.Empty;
-            if (textoSemMascara.Length >= 2)
+            for (int i = 0; i < textoSemMascara.Length; i++)
             {
-                telefoneMascarado += "(" + textoSemMascara.Substring(0, 2) + ")";
-                if (textoSemMascara.Length > 2)
+                if (i == 0)
                 {
-                    telefoneMascarado += " ";
+                    telefoneMascarado += "(";
                 }
-            }
-
-            if (textoSemMascara.Length >= 7)
-            {
-                telefoneMascarado += textoSemMascara.Substring(2, 4) + "-";
-            }
-
-            if (textoSemMascara.Length > 6)
-            {
-                telefoneMascarado += textoSemMascara.Substring(6);
+                else if (i == 2)
+                {
+                    telefoneMascarado += ") ";
+                }
+                else if (i == 7)
+                {
+                    telefoneMascarado += "-";
+                }
+                telefoneMascarado += textoSemMascara[i];
             }
 
             textBox.Text = telefoneMascarado;

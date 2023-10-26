@@ -1,0 +1,34 @@
+Nível de Acesso 1:
+Cliente
+Venda
+Recebimento
+Caixa
+
+Nível de Acesso 2:
+Compra
+Fornecedor
+Produto
+Estoque
+Despesa
+Pagamento
+Caixa
+
+Nível de Acesso 3:
+Usuário
+Funcionário
+Função
+
+Nível de Acesso 4:
+Cliente
+Venda
+Recebimento
+Compra
+Fornecedor
+Produto
+Estoque
+Despesa
+Pagamento
+Caixa
+Usuário
+Funcionário
+Função

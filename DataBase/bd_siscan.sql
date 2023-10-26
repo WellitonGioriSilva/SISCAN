@@ -64,8 +64,8 @@ telefone_forn varchar(45),
 inscricao_estadual_forn varchar(45),
 responsavel_forn varchar(45),
 visivel_forn varchar(10),
-id_cid_fk int,
-foreign key (id_cid_fk) references Cidade (id_cid) 
+cidade_forn varchar(100),
+estado_forn varchar(100)
 );
 
 create table Cliente
@@ -81,8 +81,8 @@ bairro_cli varchar(45),
 numero_cli int,
 visivel_cli varchar(10),
 telefone_cli varchar(30),
-id_cid_fk int,
-foreign key (id_cid_fk) references Cidade (id_cid) 
+cidade_cli varchar(100),
+estado_cli varchar(100)
 );
 
 create table Funcionario(
@@ -95,8 +95,8 @@ numero_func int,
 sexo_func varchar(45),
 nivel_acess_func int,
 visivel_func varchar(10),
-id_cid_fk int,
-foreign key (id_cid_fk) references Cidade (id_cid),
+cidade_func varchar(100),
+estado_func varchar(100),
 id_fun_fk int,
 foreign key (id_fun_fk) references Funcao (id_fun)
 );
@@ -345,7 +345,7 @@ $$ DELIMITER ;
 #Procedimento - Cliente
 DELIMITER $$ 
 CREATE PROCEDURE InsertCliente(nome_cli varchar(45), cpf_cli varchar(45), email_cli varchar(45), sexo_cli varchar(45), data_nascimento_cli date, rua_cli varchar(45), bairro_cli varchar(45),
-numero_cli int, id_cid_fk int, telefone_cli varchar(45), out msg varchar(100))
+numero_cli int, cidade varchar(100), estado varchar(100), telefone_cli varchar(45), out msg varchar(100))
 BEGIN
     DECLARE cpf_existe INT;
     DECLARE telefone_existe INT;
@@ -358,8 +358,8 @@ BEGIN
 		IF telefone_existe > 0 THEN
 			SET msg = 'Telefone já cadastrado.';
 		ELSE
-			INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, id_cid_fk, telefone_cli) VALUES (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli,
-			rua_cli, bairro_cli, numero_cli, 'Sim', id_cid_fk, telefone_cli);
+			INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, cidade_cli, estado_cli) VALUES (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli,
+			rua_cli, bairro_cli, numero_cli, 'Sim', cidade, estado);
 			SET msg = 'Cliente cadastrado com sucesso.';
 		END IF;
     END IF;
@@ -369,7 +369,7 @@ END;
 #Procedimento - Fornecedor
 DELIMITER $$
 CREATE PROCEDURE InsertFornecedor(razao_social_forn varchar(45), cnpj_forn varchar(45), bairro_forn varchar(45), rua_forn varchar(45), nome_fantasia_forn varchar(45), 
-telefone_forn varchar(45), inscricao_estadual_forn varchar(45),  responsavel_forn varchar(45), id_cid_fk int, out msg varchar(100))
+telefone_forn varchar(45), inscricao_estadual_forn varchar(45),  responsavel_forn varchar(45), cidade varchar(100), estado varchar(100), out msg varchar(100))
 BEGIN
     DECLARE cnpj_existe INT;
     DECLARE telefone_existe INT;
@@ -382,7 +382,7 @@ BEGIN
 			SET msg = 'Telefone já cadastrado.';
 		ELSE
 			INSERT INTO Fornecedor (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn,
-			responsavel_forn, visivel_forn, id_cid_fk) VALUES (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, 'Sim', id_cid_fk);
+			responsavel_forn, visivel_forn, cidade_forn, estado_forn) VALUES (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, 'Sim', cidade, estado);
 			SET msg = 'Fornecedor cadastrado com sucesso.';
 		END IF;
     END IF;
@@ -392,12 +392,12 @@ $$ DELIMITER ;
 #Procedimento - Funcionario
 delimiter $$
 create procedure InsertFuncionario(nome varchar(100), bairro varchar(100), rua varchar(100),
-cpf varchar(50), numero int, sexo varchar(50), cidade_fk int, funcao_fk int, out msg varchar(100))
+cpf varchar(50), numero int, sexo varchar(50),cidade varchar(100), estado varchar(100), funcao_fk int, out msg varchar(100))
 begin
 declare cpfteste varchar(50);
 set cpfteste = (select cpf_func from Funcionario where (cpf_func = cpf));
 if(cpfteste = '') or (cpfteste is null) then
-	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, 0,'Sim', cidade_fk, funcao_fk);
+	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, 0,'Sim', cidade, estado, funcao_fk);
     SET msg = 'Funcionário cadastrado com sucesso.';
 else
 	SET msg = 'O cpf informado já existe!';

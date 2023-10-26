@@ -1,8 +1,4 @@
-API de cep;
-
-Funcionário
-Fornecedor
-
 Bloquear text box de rua e bairro;
-Passar cidade e estado da api nos cadastros;
-Arrumar bd transformando cidade e estado em atributos.
+Selecionar estado e cidade nos selects de cliente, fornecedor e funcionário;
+Arrumar update para passar cidade e bairro de acordo com o cep;
+Arrumar updates pq está com problemas nos if e else.

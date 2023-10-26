@@ -55,7 +55,6 @@ namespace SISCAN.Formularios
                     cliente.Rua = tbRua.Text;
                     cliente.Bairro = tbBairro.Text;
                     cliente.Numero = Convert.ToInt16(tbNumero.Text);
-                    cliente.Cidade = new Cidade();
 
                     //Inserindo os Dados           
                     ClienteDAO clienteDAO = new ClienteDAO();
@@ -90,6 +89,7 @@ namespace SISCAN.Formularios
             tbBairro.Clear();
             tbNumero.Clear();
             cbSexo.SelectedIndex = -1;
+            tbCep.Clear();
         }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)

@@ -293,7 +293,7 @@ INSERT INTO Cidade VALUES
 
 #Procedimento - Produto
 DELIMITER $$
-CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), valorCom double, out msg varchar(100))
+CREATE PROCEDURE InsertProduto(nome varchar(100), marca varchar(100), tipo varchar(100), valorCom double)
 BEGIN
 DECLARE VerificadorProduto int;
 DECLARE ValorVen double;
@@ -303,41 +303,41 @@ IF ((nome <> '') AND (marca <> '') AND (tipo <> '') AND (valorCom <> '')) THEN
     IF(VerificadorProduto = 0) THEN 
 		SET valorVen = valorCom + ((valorCom * 60) / 100);
 		INSERT INTO Produto VALUES (null, nome, marca, tipo, valorCom, valorVen, 'Sim');
-        SET msg = 'Produto salvo com sucesso!';
+        SELECT "Produto salvo com sucesso!", true as SUCESSO;
     ELSE
-		SET msg = 'O produto já existe no sitema!';
+        SELECT "O produto já existe no sitema!", false as ERRO;
 	END IF;
 ELSE
-	SET msg = 'Todos os campos devem estar preenchidos!';
+    SELECT "Todos os campos devem estar preenchidos!", false as ERRO;
 END IF; 
 END;
 $$ DELIMITER ;
 
 #Procedimento - Caixa
 DELIMITER $$
-CREATE PROCEDURE InsertCaixa(valorIni double, id_func int, out msg varchar(100))
+CREATE PROCEDURE InsertCaixa(valorIni double, id_func int)
 BEGIN
 DECLARE dataAtual date;
 INSERT INTO caixa (id_cai, data_cai, hora_abertura_cai, valor_inicial_cai, visivel_cai, status_cai, id_func_fk) VALUES(null, curdate(), curtime(), valorIni, 'Sim', 'Aberto', id_func);
-SET msg = 'Dados inseridos com sucesso!';
+SELECT "Caixa salvo com sucesso!", true as SUCESSO;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Função
 DELIMITER $$
-CREATE PROCEDURE InsertFuncao(nome varchar(100), salario double, turno varchar(100), nivel_acess varchar(100), out msg varchar(100))
+CREATE PROCEDURE InsertFuncao(nome varchar(100), salario double, turno varchar(100), nivel_acess varchar(100))
 BEGIN
 DECLARE VerificadorFuncao INT;
 IF((nome <> '') AND (salario <> '') AND (turno <> '') AND (nivel_acess <> '')) THEN
 	SELECT COUNT(id_fun) INTO VerificadorFuncao FROM Funcao WHERE nome = nome_fun;
     IF(VerificadorFuncao = 0) THEN
 		INSERT INTO Funcao VALUES(null, nome, salario, turno, nivel_acess, 'Sim');
-        SET msg = 'Função cadastrada com sucesso!';
+        SELECT "Função salva com sucesso!", true as SUCESSO;
     ELSE
-		SET msg = 'A função já existe no sistema!';
+        SELECT "A função já existe no sistema!", false as ERRO;
     END IF;
 ELSE
-	SET msg = 'Todos os campos devem estar preenchidos!';
+    SELECT "Todos os campos devem estar preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
@@ -345,22 +345,22 @@ $$ DELIMITER ;
 #Procedimento - Cliente
 DELIMITER $$ 
 CREATE PROCEDURE InsertCliente(nome_cli varchar(45), cpf_cli varchar(45), email_cli varchar(45), sexo_cli varchar(45), data_nascimento_cli date, rua_cli varchar(45), bairro_cli varchar(45),
-numero_cli int, cidade varchar(100), estado varchar(100), telefone_cli varchar(45), out msg varchar(100))
+numero_cli int, cidade varchar(100), estado varchar(100), telefone_cli varchar(45))
 BEGIN
     DECLARE cpf_existe INT;
     DECLARE telefone_existe INT;
     
     SELECT COUNT(*) INTO cpf_existe FROM Cliente WHERE cpf_cli = cpf_cli;
     IF cpf_existe > 0 THEN
-        SET msg = 'CPF já cadastrado.';
+        SELECT "CPF já cadastrado!", false as ERRO;
 	ELSE
 		SELECT COUNT(*) INTO telefone_existe FROM Cliente WHERE telefone_cli = telefone_cli;
 		IF telefone_existe > 0 THEN
-			SET msg = 'Telefone já cadastrado.';
+            SELECT "Telefone já cadastrado!", false as ERRO;
 		ELSE
 			INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, cidade_cli, estado_cli) VALUES (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli,
 			rua_cli, bairro_cli, numero_cli, 'Sim', cidade, estado);
-			SET msg = 'Cliente cadastrado com sucesso.';
+            SELECT "Cliente cadastrado com sucesso!", true as SUCESSO;
 		END IF;
     END IF;
 END;
@@ -369,21 +369,21 @@ END;
 #Procedimento - Fornecedor
 DELIMITER $$
 CREATE PROCEDURE InsertFornecedor(razao_social_forn varchar(45), cnpj_forn varchar(45), bairro_forn varchar(45), rua_forn varchar(45), nome_fantasia_forn varchar(45), 
-telefone_forn varchar(45), inscricao_estadual_forn varchar(45),  responsavel_forn varchar(45), cidade varchar(100), estado varchar(100), out msg varchar(100))
+telefone_forn varchar(45), inscricao_estadual_forn varchar(45),  responsavel_forn varchar(45), cidade varchar(100), estado varchar(100))
 BEGIN
     DECLARE cnpj_existe INT;
     DECLARE telefone_existe INT;
     SELECT COUNT(*) INTO cnpj_existe FROM Fornecedor WHERE cnpj_forn = cnpj_forn;
     IF cnpj_existe > 0 THEN
-        SET msg = 'CNPJ já cadastrado.';
+        SELECT "CNPJ já cadastrado!", false as ERRO;
 	ELSE
 		SELECT COUNT(*) INTO telefone_existe FROM Fornecedor WHERE telefone_forn = telefone_forn;
 		IF telefone_existe > 0 THEN
-			SET msg = 'Telefone já cadastrado.';
+            SELECT "Telefone já cadastrado!", false as ERRO;
 		ELSE
 			INSERT INTO Fornecedor (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn,
 			responsavel_forn, visivel_forn, cidade_forn, estado_forn) VALUES (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, 'Sim', cidade, estado);
-			SET msg = 'Fornecedor cadastrado com sucesso.';
+            SELECT "Fornecedor cadastrado com sucesso!", true as SUCESSO;
 		END IF;
     END IF;
 END
@@ -392,22 +392,22 @@ $$ DELIMITER ;
 #Procedimento - Funcionario
 delimiter $$
 create procedure InsertFuncionario(nome varchar(100), bairro varchar(100), rua varchar(100),
-cpf varchar(50), numero int, sexo varchar(50),cidade varchar(100), estado varchar(100), funcao_fk int, out msg varchar(100))
+cpf varchar(50), numero int, sexo varchar(50),cidade varchar(100), estado varchar(100), funcao_fk int)
 begin
 declare cpfteste varchar(50);
 set cpfteste = (select cpf_func from Funcionario where (cpf_func = cpf));
 if(cpfteste = '') or (cpfteste is null) then
 	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, 0,'Sim', cidade, estado, funcao_fk);
-    SET msg = 'Funcionário cadastrado com sucesso.';
+    SELECT "Funcionário cadastrado com sucesso!", true as SUCESSO;
 else
-	SET msg = 'O cpf informado já existe!';
+    SELECT "O cpf informado já cadastrado!", false as ERRO;
 end if;
 end;
 $$ delimiter ;
 
 #Procedimento - Compra
 DELIMITER $$
-CREATE PROCEDURE InsertCompra(valor double, id_fk int, dataVencimento date, statusDespesa varchar(10), parcelas int, out msg varchar(100))
+CREATE PROCEDURE InsertCompra(valor double, id_fk int, dataVencimento date, statusDespesa varchar(10), parcelas int)
 BEGIN
 DECLARE Verificador_fk int;
 DECLARE idCompra int;
@@ -421,19 +421,19 @@ IF ((valor <> '') AND (id_fk <> '')) THEN
         SELECT MAX(id_com) into idCompra from Compra;
         SET valorParcela = (valor / parcelas);
         INSERT INTO Despesa VALUES(null, nomeDespesa, parcelas, valor, valorParcela, curdate(), dataVencimento, statusDespesa, 'Sim', idCompra);
-        SET msg = 'Compra salva com sucesso!'; 
+        SELECT "Compra salva com sucesso!", true as SUCESSO;
 	ELSE
-		SET msg = 'O fornecedor informado não existe no sistema!';
+        SELECT "O fornecedor informado não existe no sistema!", false as ERRO;
 	END IF;
 ELSE
-	SET msg = 'Todos os campos devem estar preenchidos!';
+    SELECT "Todos os campos devem estar preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Compra Produto
 DELIMITER $$
-CREATE PROCEDURE InsertCompraProduto(lote varchar(100), quantidade int, id_fk int, validade date, out msg varchar(100))
+CREATE PROCEDURE InsertCompraProduto(lote varchar(100), quantidade int, id_fk int, validade date)
 BEGIN
 DECLARE verificador_fk INT;
 DECLARE idCompra int;
@@ -447,16 +447,16 @@ IF((quantidade <> '') AND (id_fk <> '')) THEN
 	ELSE
 		UPDATE Estoque SET quantidade_est = quantidade_est + quantidade, validade_est = validade, visivel_est = "Sim";
 	END IF;
-    SET msg = '0';
+    SELECT "0", true as SUCESSO;
 ELSE
-    SET msg = 'Todos os campos devem ser preenchidos!';
+    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Venda
 DELIMITER $$
-CREATE PROCEDURE InsertVenda(valor double, id_fk int, idCaixa int, idFormaPag int, idCliente int, out msg varchar(100))
+CREATE PROCEDURE InsertVenda(valor double, id_fk int, idCaixa int, idFormaPag int, idCliente int)
 BEGIN
 DECLARE verificador_fk INT;
 DECLARE idVenda INT;
@@ -466,19 +466,19 @@ IF((valor <> '') AND (id_fk <> '')) THEN
 		INSERT INTO Venda (id_vend, visivel_vend, data_vend, hora_vend, valor_vend, id_func_fk, id_cli_fk) VALUES (null, 'Sim', curdate(), curtime(), valor, id_fk, idCliente);
         SET idVenda = (SELECT max(id_vend) FROM venda);
         INSERT INTO Recebimento VALUES(null, curdate(), valor, curtime(), 'Sim', idVenda, idCaixa, idFormaPag);
-		SET msg = 'Venda realizada com sucesso!';
+        SELECT "Venda realizada com sucesso!", true as SUCESSO;
 	ELSE
-		SET msg = 'O funcionário informado não existe no sistema!';
+        SELECT "O funcionário informado não existe no sistema!", false as ERRO;
 	END IF;
 ELSE
-    SET msg = 'Todos os campos devem ser preenchidos';
+    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Venda Produto
 DELIMITER $$
-CREATE PROCEDURE InsertVendaProduto(quantidade int, id_fk int, out msg varchar(100))
+CREATE PROCEDURE InsertVendaProduto(quantidade int, id_fk int)
 BEGIN
 DECLARE verificador_fk INT;
 DECLARE idVenda int;
@@ -493,40 +493,40 @@ IF((quantidade <> '') AND (id_fk <> '')) THEN
     IF(verQuantidade >= quantidade) THEN
 		UPDATE Estoque SET quantidade_est = quantidade_est - quantidade WHERE id_est = idEstoque;
 		INSERT INTO Venda_produto (id_vend_prod, visivel_vend_prod, id_prod_fk, id_vend_fk , quantidade_vend_prod) VALUES (null, 'Sim', id_fk, idVenda, quantidade);
+		SELECT "0", true as SUCESSO;
     ELSE
-		SET msg = concat('Só existem ', verQuantidade, ' ', nomeProd, ' no estoque!');
+		SELECT concat('Só existem ', verQuantidade, ' ', nomeProd, ' no estoque!'), true as SUCESSO;
         UPDATE Estoque SET quantidade_est = quantidade_est - verQuantidade WHERE id_est = idEstoque;
 		INSERT INTO Venda_produto (id_vend_prod, visivel_vend_prod, id_prod_fk, id_vend_fk , quantidade_vend_prod) VALUES (null, 'Sim', id_fk, idVenda, quantidade);
     END IF;
-    SET msg = '0';
 ELSE
-    SET msg = 'Todos os campos devem ser preenchidos!';
+    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Despesa
 DELIMITER $$
-CREATE PROCEDURE InsertDespesa(nome varchar(100), parcelas int, valor double, dataDesp date, vencimento date , statusDesp varchar(100), id_fk int, out msg varchar(100))
+CREATE PROCEDURE InsertDespesa(nome varchar(100), parcelas int, valor double, dataDesp date, vencimento date , statusDesp varchar(100), id_fk int)
 BEGIN
 DECLARE valor_parcela double;
 IF((nome <> '') AND (parcelas <> '') AND (valor <> '') AND (statusDesp <> '') AND (id_fk <> '')) THEN
 	IF(vencimento > curdate()) THEN
 		SET valor_parcela = (valor / parcelas);
 		INSERT INTO Despesa VALUES(null, nome, parcelas, valor, valor_parcela, dataDesp, vencimento, statusDesp, 'Sim', id_fk);
-		SET msg = 'Despesa cadastrada com sucesso!';
+        SELECT "Despesa cadastrada com sucesso!", true as SUCESSO;
 	ELSE
-		SET msg = 'A data de validade deve ser após hoje!';
+        SELECT "A data de validade deve ser após hoje!", false as ERRO;
 	END IF;
 ELSE
-	SET msg = 'Todos os campos devem estar preenchidos!';
+    SELECT "Todos os campos devem estar preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Pagamento
 DELIMITER $$
-CREATE PROCEDURE InsertPagamento(valor double, id_caixa int, id_despesa int, id_form int, parcela int, dataNova date, out msg varchar(100))
+CREATE PROCEDURE InsertPagamento(valor double, id_caixa int, id_despesa int, id_form int, parcela int, dataNova date)
 BEGIN
 DECLARE verificador_fk int;
 DECLARE data_pag date;
@@ -543,19 +543,19 @@ IF((valor <>'') AND (id_despesa <> '')) THEN
 		ELSE
 			UPDATE Despesa SET parcelas_desp = parcelas_desp - parcela, vencimento_desp = dataNova WHERE id_desp = id_despesa;
 		END IF;
-        SET msg = "Pagamento realizado com sucesso!";
+        SELECT "Pagamento realizado com sucesso!", true as SUCESSO;
 	ELSE 
-		SET msg = 'A despesa informada não existe no sistema!';
+		SELECT "A despesa informada não existe no sistema!", false as ERRO;
 	END IF;
 ELSE
-	SET msg = 'Todos os campos devem ser preenchidos';
+	SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ; 
 
 #Procedimento - Recebimento
 DELIMITER $$
-CREATE PROCEDURE InsertRecebimento(valor double, data_rec date, id_fk int, out msg varchar(100))
+CREATE PROCEDURE InsertRecebimento(valor double, data_rec date, id_fk int)
 BEGIN
 DECLARE verificador_fk int;
 DECLARE data_rec date;
@@ -565,35 +565,35 @@ IF((valor <>'') AND (id_fk <> '')) THEN
 	SELECT COUNT(id_vend) into verificador_fk from Venda where id_vend = id_fk;
 	IF(verificador_fk = 1) THEN 
         INSERT INTO Recebimento(id_rec, visivel_rec, hora_rec, valor_rec,  id_vend_fk) values (null, 'Sim', curdate(), curtime(), valor, id_fk);
-        SET msg = "Recebimento realizado com sucesso!";
+        SELECT "A Venda não existe no sistema!", true as SUCESSO;
 	ELSE 
-		SET msg = 'A Venda não existe no sistema!';
+        SELECT "A Venda não existe no sistema!", false as ERRO;
 	END IF;
 ELSE
-	SET msg = 'Todos os campos devem ser preenchidos';
+    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Primeiro Usuário
 DELIMITER $$
-CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100), out msg varchar(100))
+CREATE PROCEDURE InsertPrimeiroUsuario(usuario varchar(100), senha varchar(100))
 BEGIN
 DECLARE verificador_usu INT;
 IF((usuario <> '') AND (senha <> '')) THEN
 	INSERT INTO funcao (id_fun, visivel_fun, nome_fun, nivel_acess_fun) VALUES (null, 'Não', 'Adm', 4);
 	INSERT INTO funcionario (id_func, visivel_func, nome_func, id_fun_fk, nivel_acess_func) VALUES (null, 'Não', 'Adm', 1, 4);
 	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, nivel_acess_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, 4, 1);
-    SET msg = 'Usuário cadastrado com sucesso!';
+    SELECT "Usuário cadastrado com sucesso!", true as SUCESSO;
 ELSE
-    SET msg = 'Todos os campos devem ser preenchidos';
+    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
 
 #Procedimento - Usuário
 DELIMITER $$
-CREATE PROCEDURE InsertUsuario(usuario varchar(100), senha varchar(100), id_fk int, acesso int, out msg varchar(100))
+CREATE PROCEDURE InsertUsuario(usuario varchar(100), senha varchar(100), id_fk int, acesso int)
 BEGIN
 DECLARE verificador_usu INT;
 DECLARE verificador_func INT;
@@ -603,15 +603,15 @@ IF((usuario <> '') AND (senha <> '') AND (id_fk <> '')) THEN
         SELECT count(id_usu) INTO verificador_func FROM usuario WHERE id_func_fk = id_fk;
         IF(verificador_func = 0) THEN
 			INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, id_func_fk, nivel_acess_usu) VALUES (null, 'Sim', usuario, senha, id_fk, acesso);
-			SET msg = 'Usuário cadastrado com sucesso!';
+             SELECT "Usuário cadastrado com sucesso!", true as SUCESSO;
         ELSE
-			SET msg = 'O funcionário informado já possui um login no sistema!';
+            SELECT "O funcionário informado já possui um login no sistema!", false as ERRO;
         END IF;
     ELSE
-        SET msg = 'O usuário informado já existe no sistema!';
+        SELECT "O usuário informado já existe no sistema!", false as ERRO;
     END IF;
 ELSE
-    SET msg = 'Todos os campos devem ser preenchidos';
+    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;
@@ -627,10 +627,10 @@ $$ DELIMITER ;
 
 #Procedimento - Fechamento Caixa
 DELIMITER $$
-CREATE PROCEDURE FechamentoCaixa(id int, valor_final double, out msg varchar(100))
+CREATE PROCEDURE FechamentoCaixa(id int, valor_final double)
 BEGIN
 	UPDATE Caixa SET hora_fechamento_cai = curtime(), valor_final_cai = valor_final, status_cai = "Fechado" WHERE id_cai = id;
-    SET msg = "Caixa fechado com sucesso!";
+	SELECT "Caixa fechado com sucesso!", true as SUCESSO;
 END;
 $$ DELIMITER ;
 

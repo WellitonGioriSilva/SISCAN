@@ -303,12 +303,12 @@ IF ((nome <> '') AND (marca <> '') AND (tipo <> '') AND (valorCom <> '')) THEN
     IF(VerificadorProduto = 0) THEN 
 		SET valorVen = valorCom + ((valorCom * 60) / 100);
 		INSERT INTO Produto VALUES (null, nome, marca, tipo, valorCom, valorVen, 'Sim');
-        SELECT "Produto salvo com sucesso!", true as SUCESSO;
+        SELECT "Produto salvo com sucesso!", true as resultado;
     ELSE
-        SELECT "O produto já existe no sitema!", false as ERRO;
+        SELECT "O produto já existe no sitema!", false as resultado;
 	END IF;
 ELSE
-    SELECT "Todos os campos devem estar preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem estar preenchidos!", false as resultado;
 END IF; 
 END;
 $$ DELIMITER ;
@@ -319,7 +319,7 @@ CREATE PROCEDURE InsertCaixa(valorIni double, id_func int)
 BEGIN
 DECLARE dataAtual date;
 INSERT INTO caixa (id_cai, data_cai, hora_abertura_cai, valor_inicial_cai, visivel_cai, status_cai, id_func_fk) VALUES(null, curdate(), curtime(), valorIni, 'Sim', 'Aberto', id_func);
-SELECT "Caixa salvo com sucesso!", true as SUCESSO;
+SELECT "Caixa salvo com sucesso!", true as resultado;
 END;
 $$ DELIMITER ;
 
@@ -332,12 +332,12 @@ IF((nome <> '') AND (salario <> '') AND (turno <> '') AND (nivel_acess <> '')) T
 	SELECT COUNT(id_fun) INTO VerificadorFuncao FROM Funcao WHERE nome = nome_fun;
     IF(VerificadorFuncao = 0) THEN
 		INSERT INTO Funcao VALUES(null, nome, salario, turno, nivel_acess, 'Sim');
-        SELECT "Função salva com sucesso!", true as SUCESSO;
+        SELECT "Função salva com sucesso!", true as resultado;
     ELSE
-        SELECT "A função já existe no sistema!", false as ERRO;
+        SELECT "A função já existe no sistema!", false as resultado;
     END IF;
 ELSE
-    SELECT "Todos os campos devem estar preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem estar preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -356,11 +356,11 @@ BEGIN
 	ELSE
 		SELECT COUNT(*) INTO telefone_existe FROM Cliente WHERE telefone_cli = telefone_cli;
 		IF telefone_existe > 0 THEN
-            SELECT "Telefone já cadastrado!", false as ERRO;
+            SELECT "Telefone já cadastrado!", false as resultado;
 		ELSE
 			INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, cidade_cli, estado_cli) VALUES (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli,
 			rua_cli, bairro_cli, numero_cli, 'Sim', cidade, estado);
-            SELECT "Cliente cadastrado com sucesso!", true as SUCESSO;
+            SELECT "Cliente cadastrado com sucesso!", true as resultado;
 		END IF;
     END IF;
 END;
@@ -375,15 +375,15 @@ BEGIN
     DECLARE telefone_existe INT;
     SELECT COUNT(*) INTO cnpj_existe FROM Fornecedor WHERE cnpj_forn = cnpj_forn;
     IF cnpj_existe > 0 THEN
-        SELECT "CNPJ já cadastrado!", false as ERRO;
+        SELECT "CNPJ já cadastrado!", false as resultado;
 	ELSE
 		SELECT COUNT(*) INTO telefone_existe FROM Fornecedor WHERE telefone_forn = telefone_forn;
 		IF telefone_existe > 0 THEN
-            SELECT "Telefone já cadastrado!", false as ERRO;
+            SELECT "Telefone já cadastrado!", false as resultado;
 		ELSE
 			INSERT INTO Fornecedor (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn,
 			responsavel_forn, visivel_forn, cidade_forn, estado_forn) VALUES (razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, 'Sim', cidade, estado);
-            SELECT "Fornecedor cadastrado com sucesso!", true as SUCESSO;
+            SELECT "Fornecedor cadastrado com sucesso!", true as resultado;
 		END IF;
     END IF;
 END
@@ -398,9 +398,9 @@ declare cpfteste varchar(50);
 set cpfteste = (select cpf_func from Funcionario where (cpf_func = cpf));
 if(cpfteste = '') or (cpfteste is null) then
 	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, 0,'Sim', cidade, estado, funcao_fk);
-    SELECT "Funcionário cadastrado com sucesso!", true as SUCESSO;
+    SELECT "Funcionário cadastrado com sucesso!", true as resultado;
 else
-    SELECT "O cpf informado já cadastrado!", false as ERRO;
+    SELECT "O cpf informado já cadastrado!", false as resultado;
 end if;
 end;
 $$ delimiter ;
@@ -423,10 +423,10 @@ IF ((valor <> '') AND (id_fk <> '')) THEN
         INSERT INTO Despesa VALUES(null, nomeDespesa, parcelas, valor, valorParcela, curdate(), dataVencimento, statusDespesa, 'Sim', idCompra);
         SELECT "Compra salva com sucesso!", true as SUCESSO;
 	ELSE
-        SELECT "O fornecedor informado não existe no sistema!", false as ERRO;
+        SELECT "O fornecedor informado não existe no sistema!", false as resultado;
 	END IF;
 ELSE
-    SELECT "Todos os campos devem estar preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem estar preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -449,7 +449,7 @@ IF((quantidade <> '') AND (id_fk <> '')) THEN
 	END IF;
     SELECT "0", true as SUCESSO;
 ELSE
-    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem ser preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -468,10 +468,10 @@ IF((valor <> '') AND (id_fk <> '')) THEN
         INSERT INTO Recebimento VALUES(null, curdate(), valor, curtime(), 'Sim', idVenda, idCaixa, idFormaPag);
         SELECT "Venda realizada com sucesso!", true as SUCESSO;
 	ELSE
-        SELECT "O funcionário informado não existe no sistema!", false as ERRO;
+        SELECT "O funcionário informado não existe no sistema!", false as resultado;
 	END IF;
 ELSE
-    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem ser preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -500,7 +500,7 @@ IF((quantidade <> '') AND (id_fk <> '')) THEN
 		INSERT INTO Venda_produto (id_vend_prod, visivel_vend_prod, id_prod_fk, id_vend_fk , quantidade_vend_prod) VALUES (null, 'Sim', id_fk, idVenda, quantidade);
     END IF;
 ELSE
-    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem ser preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -516,10 +516,10 @@ IF((nome <> '') AND (parcelas <> '') AND (valor <> '') AND (statusDesp <> '') AN
 		INSERT INTO Despesa VALUES(null, nome, parcelas, valor, valor_parcela, dataDesp, vencimento, statusDesp, 'Sim', id_fk);
         SELECT "Despesa cadastrada com sucesso!", true as SUCESSO;
 	ELSE
-        SELECT "A data de validade deve ser após hoje!", false as ERRO;
+        SELECT "A data de validade deve ser após hoje!", false as resultado;
 	END IF;
 ELSE
-    SELECT "Todos os campos devem estar preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem estar preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -543,12 +543,12 @@ IF((valor <>'') AND (id_despesa <> '')) THEN
 		ELSE
 			UPDATE Despesa SET parcelas_desp = parcelas_desp - parcela, vencimento_desp = dataNova WHERE id_desp = id_despesa;
 		END IF;
-        SELECT "Pagamento realizado com sucesso!", true as SUCESSO;
+        SELECT "Pagamento realizado com sucesso!", true as resultado;
 	ELSE 
-		SELECT "A despesa informada não existe no sistema!", false as ERRO;
+		SELECT "A despesa informada não existe no sistema!", false as resultado;
 	END IF;
 ELSE
-	SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
+	SELECT "Todos os campos devem ser preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ; 
@@ -567,10 +567,10 @@ IF((valor <>'') AND (id_fk <> '')) THEN
         INSERT INTO Recebimento(id_rec, visivel_rec, hora_rec, valor_rec,  id_vend_fk) values (null, 'Sim', curdate(), curtime(), valor, id_fk);
         SELECT "A Venda não existe no sistema!", true as SUCESSO;
 	ELSE 
-        SELECT "A Venda não existe no sistema!", false as ERRO;
+        SELECT "A Venda não existe no sistema!", false as resultado;
 	END IF;
 ELSE
-    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem ser preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -586,7 +586,7 @@ IF((usuario <> '') AND (senha <> '')) THEN
 	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, nivel_acess_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, 4, 1);
     SELECT "Usuário cadastrado com sucesso!", true as SUCESSO;
 ELSE
-    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem ser preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -605,13 +605,13 @@ IF((usuario <> '') AND (senha <> '') AND (id_fk <> '')) THEN
 			INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, id_func_fk, nivel_acess_usu) VALUES (null, 'Sim', usuario, senha, id_fk, acesso);
              SELECT "Usuário cadastrado com sucesso!", true as SUCESSO;
         ELSE
-            SELECT "O funcionário informado já possui um login no sistema!", false as ERRO;
+            SELECT "O funcionário informado já possui um login no sistema!", false as resultado;
         END IF;
     ELSE
-        SELECT "O usuário informado já existe no sistema!", false as ERRO;
+        SELECT "O usuário informado já existe no sistema!", false as resultado;
     END IF;
 ELSE
-    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
+    SELECT "Todos os campos devem ser preenchidos!", false as resultado;
 END IF;
 END;
 $$ DELIMITER ;
@@ -630,7 +630,7 @@ DELIMITER $$
 CREATE PROCEDURE FechamentoCaixa(id int, valor_final double)
 BEGIN
 	UPDATE Caixa SET hora_fechamento_cai = curtime(), valor_final_cai = valor_final, status_cai = "Fechado" WHERE id_cai = id;
-	SELECT "Caixa fechado com sucesso!", true as SUCESSO;
+	SELECT "Caixa fechado com sucesso!", true as resultado;
 END;
 $$ DELIMITER ;
 

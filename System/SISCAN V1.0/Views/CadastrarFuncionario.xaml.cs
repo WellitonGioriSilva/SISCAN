@@ -64,7 +64,7 @@ namespace SISCAN.Formularios
                     //Inserindo os Dados           
                     FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
                     funcionarioDAO.Insert(funcionario);
-
+                    MessageBox.Show(funcionarioDAO.mensagem);
                     Clear();
                 }
             }

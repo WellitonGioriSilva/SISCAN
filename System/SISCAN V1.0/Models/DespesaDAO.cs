@@ -13,6 +13,8 @@ namespace SISCAN.Models
     internal class DespesaDAO
     {
         private static Conexao conn;
+        public string mensagem;
+        public bool condicao;
 
         public DespesaDAO()
         {
@@ -27,8 +29,7 @@ namespace SISCAN.Models
                 //query.CommandText = $"INSERT INTO Despesa (nome_desp, parcelas_desp, valor_desp, data_desp, status_desp, vencimento_desp, id_comp_fk)" +
                     //$"VALUES (@nome, @parcelas, @valor, @data, @status, @vencimento, @id_comp)";
                 
-                query.CommandText = $"INSERT INTO Despesa (visivel_desp, nome_desp, parcelas_desp, valor_desp, data_desp, status_desp, vencimento_desp)" +
-                    $"VALUES ('Sim',@nome, @parcelas, @valor, @data, @status, @vencimento)";
+                query.CommandText = $"CALL InsertDespesa(@nome, @parcelas, @valor, @data, @vencimento, @status, @idCompra)";
 
                 query.Parameters.AddWithValue("@nome", despesa.Nome);
                 query.Parameters.AddWithValue("@parcelas", despesa.Parcelas);
@@ -36,17 +37,15 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@status", despesa.Status);
                 query.Parameters.AddWithValue("@data", despesa.Data?.ToString("yyyy-MM-dd"));
                 query.Parameters.AddWithValue("@vencimento", despesa.Vencimento?.ToString("yyyy-MM-dd"));
-                //query.Parameters.AddWithValue("@id_comp", despesa.Compra.Id);
+                query.Parameters.AddWithValue("@idCompra", despesa.Compra.Id);
 
                 var result = query.ExecuteNonQuery();
 
-                if (result == 0)
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
                 {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
             }
             catch (Exception ex)

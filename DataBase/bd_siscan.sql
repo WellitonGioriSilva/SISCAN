@@ -344,27 +344,21 @@ $$ DELIMITER ;
 
 #Procedimento - Cliente
 DELIMITER $$ 
-CREATE PROCEDURE InsertCliente(nome_cli varchar(45), cpf_cli varchar(45), email_cli varchar(45), sexo_cli varchar(45), data_nascimento_cli date, rua_cli varchar(45), bairro_cli varchar(45),
-numero_cli int, cidade varchar(100), estado varchar(100), telefone_cli varchar(45))
+CREATE PROCEDURE InsertCliente(nome_cli varchar(45), cpf varchar(45), email_cli varchar(45), sexo_cli varchar(45), data_nascimento_cli date, rua_cli varchar(45), bairro_cli varchar(45),
+numero_cli int, cidade varchar(100), estado varchar(100))
 BEGIN
     DECLARE cpf_existe INT;
-    DECLARE telefone_existe INT;
     
-    SELECT COUNT(*) INTO cpf_existe FROM Cliente WHERE cpf_cli = cpf_cli;
+    SELECT COUNT(*) INTO cpf_existe FROM Cliente WHERE cpf = cpf_cli;
     IF cpf_existe > 0 THEN
         SELECT "CPF já cadastrado!", false as ERRO;
 	ELSE
-		SELECT COUNT(*) INTO telefone_existe FROM Cliente WHERE telefone_cli = telefone_cli;
-		IF telefone_existe > 0 THEN
-            SELECT "Telefone já cadastrado!", false as resultado;
-		ELSE
-			INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, cidade_cli, estado_cli) VALUES (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli,
-			rua_cli, bairro_cli, numero_cli, 'Sim', cidade, estado);
-            SELECT "Cliente cadastrado com sucesso!", true as resultado;
-		END IF;
+		INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, cidade_cli, estado_cli) VALUES (nome_cli, cpf, email_cli, sexo_cli, data_nascimento_cli,
+		rua_cli, bairro_cli, numero_cli, 'Sim', cidade, estado);
+		SELECT "Cliente cadastrado com sucesso!", true as resultado;
     END IF;
 END;
-
+$$ DELIMITER ;
 
 #Procedimento - Fornecedor
 DELIMITER $$
@@ -392,12 +386,12 @@ $$ DELIMITER ;
 #Procedimento - Funcionario
 delimiter $$
 create procedure InsertFuncionario(nome varchar(100), bairro varchar(100), rua varchar(100),
-cpf varchar(50), numero int, sexo varchar(50),cidade varchar(100), estado varchar(100), funcao_fk int)
+cpf varchar(50), numero int, sexo varchar(50), cidade varchar(100), estado varchar(100), funcao_fk int, nivelAcesso int)
 begin
 declare cpfteste varchar(50);
 set cpfteste = (select cpf_func from Funcionario where (cpf_func = cpf));
 if(cpfteste = '') or (cpfteste is null) then
-	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, 0,'Sim', cidade, estado, funcao_fk);
+	insert into Funcionario values(null, nome, bairro, rua, cpf, numero, sexo, nivelAcesso,'Sim', cidade, estado, funcao_fk);
     SELECT "Funcionário cadastrado com sucesso!", true as resultado;
 else
     SELECT "O cpf informado já cadastrado!", false as resultado;
@@ -565,7 +559,7 @@ IF((valor <>'') AND (id_fk <> '')) THEN
 	SELECT COUNT(id_vend) into verificador_fk from Venda where id_vend = id_fk;
 	IF(verificador_fk = 1) THEN 
         INSERT INTO Recebimento(id_rec, visivel_rec, hora_rec, valor_rec,  id_vend_fk) values (null, 'Sim', curdate(), curtime(), valor, id_fk);
-        SELECT "A Venda não existe no sistema!", true as SUCESSO;
+        SELECT "A Venda não existe no sistema!", true as resultado;
 	ELSE 
         SELECT "A Venda não existe no sistema!", false as resultado;
 	END IF;

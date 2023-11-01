@@ -13,7 +13,8 @@ namespace SISCAN.Models
     class FornecedorDAO
     {
         private static Conexao conn;
-
+        public string mensagem;
+        public bool condicao;
         public FornecedorDAO()
         {
             conn = new Conexao();
@@ -26,8 +27,7 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Fornecedor (visivel_forn, razao_social_forn, cnpj_forn, bairro_forn, rua_forn, nome_fantasia_forn, telefone_forn, inscricao_estadual_forn, responsavel_forn, id_cid_fk) " +
-                    $"VALUES ('Sim', @razaoSocial, @cnpj, @bairro, @rua, @nomeFantasia, @telefone, @inscricaoEstadual, @responsavel, @cidade, @estado)";
+                query.CommandText = $"CALL InsertFornecedor(@razaoSocial, @cnpj, @bairro, @rua, @nomeFantasia, @telefone, @inscricaoEstadual, @responsavel, @cidade, @estado)";
 
                 query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
                 query.Parameters.AddWithValue("@cnpj", fornecedor.Cnpj);
@@ -42,13 +42,11 @@ namespace SISCAN.Models
 
                 var result = query.ExecuteNonQuery();
 
-                if (result == 0)
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
                 {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
             }
             catch (Exception ex)

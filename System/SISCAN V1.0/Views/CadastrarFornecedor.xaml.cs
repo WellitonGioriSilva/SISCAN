@@ -59,6 +59,7 @@ namespace SISCAN.Formularios
                     //Inserindo os Dados           
                     FornecedorDAO fornecedorDAO = new FornecedorDAO();
                     fornecedorDAO.Insert(fornecedor);
+                    MessageBox.Show(fornecedorDAO.mensagem);
 
                     Clear();
                 }

@@ -14,6 +14,8 @@ namespace SISCAN.Models
     internal class ProdutoDAO
     {
         private static Conexao conn;
+        public string mensagem;
+        public bool condicao;
         public ProdutoDAO()
         {
             conn = new Conexao();
@@ -73,13 +75,14 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@tipo", produto.Tipo);
                 query.Parameters.AddWithValue("@valor", produto.Valor);
 
-                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
-                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
-
                 query.ExecuteNonQuery();
 
-                string resultado = (string)query.Parameters["@result"].Value;
-                MessageBox.Show(resultado);
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
+                {
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
+                }
             }
             catch (Exception ex)
             {

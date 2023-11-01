@@ -13,7 +13,8 @@ namespace SISCAN.Models
     class FuncaoDAO
     {
         private static Conexao conn;
-
+        public string mensagem;
+        public bool condicao;
         public FuncaoDAO()
         {
             conn = new Conexao();
@@ -24,8 +25,7 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Funcao (visivel_fun, nome_fun, salario_fun, nivel_acess_fun, turno_fun) " +
-                    $"VALUES ('Sim',@nome, @salario, @acesso, @turno)";
+                query.CommandText = $"CALL Funcao(@nome, @salario, @turno, @acesso)";
 
                 query.Parameters.AddWithValue("@nome", funcao.Nome);
                 query.Parameters.AddWithValue("@salario", funcao.Salario);
@@ -34,13 +34,11 @@ namespace SISCAN.Models
 
                 var result = query.ExecuteNonQuery();
 
-                if (result == 0)
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
                 {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
             }
             catch (Exception ex)

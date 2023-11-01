@@ -14,6 +14,8 @@ namespace SISCAN.Models
     {
         private static Conexao conn;
         //public List<Cidade> listCid = new List<Cidade>();
+        public string mensagem;
+        public bool condicao;
 
         public ClienteDAO()
         {
@@ -75,8 +77,7 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Cliente (visivel_cli, nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, id_cid_fk) " +
-                    $"VALUES ('Sim',@nome, @cpf, @email, @sexo, @data_nasc, @rua, @bairro, @numero, @cidade, @estado)";
+                query.CommandText = $"CALL InsertCliente(@nome, @cpf, @email, @sexo, @data_nasc, @rua, @bairro, @numero, @cidade, @estado)";
 
                 query.Parameters.AddWithValue("@nome", cliente.Nome);
                 query.Parameters.AddWithValue("@cpf", cliente.Cpf);
@@ -91,13 +92,11 @@ namespace SISCAN.Models
 
                 var result = query.ExecuteNonQuery();
 
-                if (result == 0)
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
                 {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
             }
             catch (Exception ex)

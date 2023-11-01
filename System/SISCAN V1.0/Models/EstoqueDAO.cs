@@ -14,6 +14,8 @@ namespace SISCAN.Models
     internal class EstoqueDAO
     {
         private static Conexao conn;
+        public string mensagem;
+        public bool condicao;
         public EstoqueDAO()
         {
             conn = new Conexao();
@@ -23,8 +25,7 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"INSERT INTO Estoque (visivel_est, lote_est, quantidade_est, validade_est, id_prod_fk)" +
-                    $"VALUES ('Sim', @lote, @quantidade, @validade, @id_prod)";
+                //query.CommandText = $"CALL InsertEstoque()";
 
                 query.Parameters.AddWithValue("@lote", estoque.Lote);
                 query.Parameters.AddWithValue("@quantidade", estoque.Quantidade);
@@ -33,13 +34,11 @@ namespace SISCAN.Models
 
                 var result = query.ExecuteNonQuery();
 
-                if (result == 0)
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
                 {
-                    MessageBox.Show("Erro ao inserir  os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
             }
             catch (Exception ex)

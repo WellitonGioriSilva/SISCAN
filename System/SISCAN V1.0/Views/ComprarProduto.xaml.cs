@@ -103,6 +103,7 @@ namespace SISCAN.Formularios
             {
                 CompraDAO compraDAO = new CompraDAO();
                 compraDAO.Insert(compra, listCompraProduto, despesa, estoque);
+                MessageBox.Show(compraDAO.mensagem);
                 Clear();
             }
             catch (Exception ex)

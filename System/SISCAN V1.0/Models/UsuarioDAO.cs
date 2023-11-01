@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace SISCAN.Models
         public int count;
         public int acess;
         private static Conexao conn;
+        public string mensagem;
+        public bool condicao;
         public UsuarioDAO()
         {
             conn = new Conexao();
@@ -73,11 +76,11 @@ namespace SISCAN.Models
 
                 if (contador == 0)
                 {
-                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha, @result)";
+                    query.CommandText = $"CALL InsertPrimeiroUsuario(@usuario, @senha)";
                 }
                 else
                 {
-                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func, @acesso, @result)";
+                    query.CommandText = $"CALL InsertUsuario(@usuario, @senha, @id_func, @acesso)";
                 }
 
                 query.Parameters.AddWithValue("@usuario", usuario.UsuarioNome);
@@ -87,13 +90,15 @@ namespace SISCAN.Models
                     query.Parameters.AddWithValue("@acesso", usuario.Acesso);
                 }
                 query.Parameters.AddWithValue("@id_func", usuario.Funcionario.Id);
-                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
-                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
 
                 query.ExecuteNonQuery();
 
-                string resultado = (string)query.Parameters["@result"].Value;
-                MessageBox.Show(resultado);
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
+                {
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
+                }
             }
             catch (Exception ex)
             {

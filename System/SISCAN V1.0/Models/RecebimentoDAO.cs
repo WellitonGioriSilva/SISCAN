@@ -15,49 +15,47 @@ namespace SISCAN.Models
     class RecebimentoDAO
     {
         private static Conexao conn;
-
+        public string mensagem;
+        public bool condicao;
         public RecebimentoDAO()
         {
             conn = new Conexao();
         }
 
-        public void Insert(Recebimento recebimento)
-        {
-            try
-            {
-                //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
+        //public void Insert(Recebimento recebimento)
+        //{
+        //    try
+        //    {
+        //        //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
-                var query = conn.Query();
-                query.CommandText = $"INSERT INTO Recebimento (visivel_rec,data_rec, valor_rec, hora_rec, id_cai_fk, id_form_pag_fk) " +
-                    $"VALUES ('Sim',@data, @valor, @hora, @id_cai, @id_form_pag)";
+        //        var query = conn.Query();
+        //        query.CommandText = $"CALL InsertRecebimento(@valor, @data, @id)";
 
-                query.Parameters.AddWithValue("@data", recebimento.Data?.ToString("yyyy-MM-dd"));
-                query.Parameters.AddWithValue("@valor", recebimento.Valor);
-                query.Parameters.AddWithValue("@hora", recebimento.Hora);
-                query.Parameters.AddWithValue("@id_cai", recebimento.Caixa.id);
-                query.Parameters.AddWithValue("@id_form_pag", recebimento.FormaPagamento.Id);
+        //        query.Parameters.AddWithValue("@data", recebimento.Data?.ToString("yyyy-MM-dd"));
+        //        query.Parameters.AddWithValue("@valor", recebimento.Valor);
+        //        query.Parameters.AddWithValue("@hora", recebimento.Hora);
+        //        query.Parameters.AddWithValue("@id_cai", recebimento.Caixa.id);
+        //        query.Parameters.AddWithValue("@id_form_pag", recebimento.FormaPagamento.Id);
 
-                var result = query.ExecuteNonQuery();
+        //        var result = query.ExecuteNonQuery();
 
-                if (result == 0)
-                {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                MessageBox.Show("Erro 3007 : Contate o suporte!");
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
+        //        MySqlDataReader reader = query.ExecuteReader();
+        //        if (reader.Read())
+        //        {
+        //            mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+        //            condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //        MessageBox.Show("Erro 3007 : Contate o suporte!");
+        //    }
+        //    finally
+        //    {
+        //        conn.Close();
+        //    }
+        //}
 
         public List<Recebimento> List(string busca)
         {

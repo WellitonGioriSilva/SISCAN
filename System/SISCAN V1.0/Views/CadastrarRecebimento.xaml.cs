@@ -55,7 +55,7 @@ namespace SISCAN.Formularios
                 //Inserindo os Dados           
                 RecebimentoDAO recebimentoDAO = new RecebimentoDAO();
                 recebimentoDAO.Insert(recebimento);
-
+                MessageBox.Show(recebimentoDAO.mensagem);
                 Clear();
             }
             catch (Exception ex)

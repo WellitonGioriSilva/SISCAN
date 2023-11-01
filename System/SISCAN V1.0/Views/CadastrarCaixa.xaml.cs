@@ -45,7 +45,7 @@ namespace SISCAN.Formularios
 
                     //Inserindo os Dados           
                     caixaDAO.Insert(caixa);
-                    MessageBox.Show(caixaDAO.result);
+                    MessageBox.Show(caixaDAO.mensagem);
 
                     Clear();
                 }

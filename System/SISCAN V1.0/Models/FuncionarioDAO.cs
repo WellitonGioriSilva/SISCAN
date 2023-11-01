@@ -13,7 +13,8 @@ namespace SISCAN.Models
     class FuncionarioDAO
     {
         private static Conexao conn;
-
+        public string mensagem;
+        public bool condicao;
         public FuncionarioDAO()
         {
             conn = new Conexao();
@@ -76,8 +77,7 @@ namespace SISCAN.Models
 
                 var query = conn.Query();
 
-                query.CommandText = $"INSERT INTO Funcionario (visivel_func,nome_func, bairro_func, rua_func, cpf_func, numero_func, sexo_func, nivel_acess_func, id_cid_fk, id_fun_fk) " +
-                    $"VALUES ('Sim',@nome, @bairro, @rua, @cpf, @numero, @sexo, @acesso, @cidade, @estado, @id_fun)";
+                query.CommandText = $"CALL InsertFuncionario(@nome, @bairro, @rua, @cpf, @numero, @sexo, @cidade, @estado, @id_fun, acesso)";
 
                 query.Parameters.AddWithValue("@nome", funcionario.Nome);
                 query.Parameters.AddWithValue("@bairro", funcionario.Bairro);
@@ -92,13 +92,11 @@ namespace SISCAN.Models
 
                 var result = query.ExecuteNonQuery();
 
-                if (result == 0)
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
                 {
-                    MessageBox.Show("Erro ao inserir os dados, verifique e tente novamente!");
-                }
-                else
-                {
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
             }
             catch (Exception ex)

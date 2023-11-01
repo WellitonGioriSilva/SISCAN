@@ -106,6 +106,7 @@ namespace SISCAN.Formularios
             {
                 VendaDAO vendaDAO = new VendaDAO();
                 vendaDAO.Insert(venda, listVendaProduto, recebimento);
+                MessageBox.Show(vendaDAO.mensagem);
                 Clear();
             }
             catch (Exception ex)

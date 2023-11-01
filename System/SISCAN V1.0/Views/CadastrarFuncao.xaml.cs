@@ -42,7 +42,7 @@ namespace SISCAN.Formularios
                 //Inserindo os Dados           
                 FuncaoDAO funcaoDAO = new FuncaoDAO();
                 funcaoDAO.Insert(funcao);
-
+                MessageBox.Show(funcaoDAO.mensagem);
                 Clear();
             }
             catch (Exception ex)

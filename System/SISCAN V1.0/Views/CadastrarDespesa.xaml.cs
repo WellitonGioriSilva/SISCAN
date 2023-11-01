@@ -44,7 +44,7 @@ namespace SISCAN.Formularios
                 //Inserindo os Dados           
                 DespesaDAO despesaDAO = new DespesaDAO();
                 despesaDAO.Insert(despesa);
-
+                MessageBox.Show(despesaDAO.mensagem);
                 Clear();
             }
             catch (Exception ex)

@@ -37,7 +37,7 @@ namespace SISCAN.Views
             caixa.ValorFinal = valor;
 
             caixaDAO.CaixaFechamento(caixa);
-            MessageBox.Show(caixaDAO.result);
+            MessageBox.Show(caixaDAO.mensagem);
         }
     }
 }

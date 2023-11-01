@@ -13,8 +13,9 @@ namespace SISCAN.Models
     internal class CaixaDAO
     {
         private static Conexao conn;
-        public string result;
         public double valorIni;
+        public string mensagem;
+        public bool condicao;
         public CaixaDAO()
         {
             conn = new Conexao();
@@ -67,16 +68,19 @@ namespace SISCAN.Models
                 //var caixaId = new CaixaDao().Insert(caixa.Caixa);
 
                 var query = conn.Query();
-                query.CommandText = $"CALL InsertCaixa(@valor_inicial, @id_func, @result)";
+                query.CommandText = $"CALL InsertCaixa(@valor_inicial, @id_func)";
 
                 query.Parameters.AddWithValue("@valor_inicial", caixa.ValorIncial);
                 query.Parameters.AddWithValue("@id_func", caixa.funcionario.Id);
-                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
-                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
 
                 query.ExecuteNonQuery();
 
-                result = (string)query.Parameters["@result"].Value;
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
+                {
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
+                }
             }
             catch (Exception ex)
             {
@@ -200,16 +204,19 @@ namespace SISCAN.Models
                 //var caixaId = new CaixaDao().Insert(caixa.Caixa);
 
                 var query = conn.Query();
-                query.CommandText = $"CALL FechamentoCaixa(@id, @valorFinal, @result)";
+                query.CommandText = $"CALL FechamentoCaixa(@id, @valorFinal)";
 
                 query.Parameters.AddWithValue("@valorFinal", caixa.ValorFinal);
                 query.Parameters.AddWithValue("@id", caixa.id);
-                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
-                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
 
                 query.ExecuteNonQuery();
 
-                result = (string)query.Parameters["@result"].Value;
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
+                {
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
+                }
             }
             catch (Exception ex)
             {

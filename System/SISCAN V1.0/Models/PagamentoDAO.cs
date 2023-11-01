@@ -13,7 +13,8 @@ namespace SISCAN.Models
     internal class PagamentoDAO
     {
         private static Conexao conn;
-
+        public string mensagem;
+        public bool condicao;
         public PagamentoDAO()
         {
             conn = new Conexao();
@@ -26,7 +27,7 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"CALL InsertPagamento(@valor, @id_desp, @id_cai, @id_form_pag, @parcela, @dataNova, @result)";
+                query.CommandText = $"CALL InsertPagamento(@valor, @id_desp, @id_cai, @id_form_pag, @parcela, @dataNova)";
 
                 query.Parameters.AddWithValue("@valor", pagamento.Valor);
                 query.Parameters.AddWithValue("@id_cai", pagamento.Caixa.id);
@@ -34,17 +35,19 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@id_desp", pagamento.Despesa.Id);
                 query.Parameters.AddWithValue("@parcela", parcela);
                 query.Parameters.AddWithValue("@dataNova", despesa.Data?.ToString("yyyy-MM-dd"));
-                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
-                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
+
 
                 query.ExecuteNonQuery();
 
-                string resultado = (string)query.Parameters["@result"].Value;
-                MessageBox.Show(resultado);
+                MySqlDataReader reader = query.ExecuteReader();
+                if (reader.Read())
+                {
+                    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
             }
             finally

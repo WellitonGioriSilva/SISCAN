@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
 using MySqlX.XDevAPI;
+using Newtonsoft.Json;
 using SISCAN.Helpers;
 using SISCAN.Models;
 using SISCAN.Views;
@@ -26,11 +28,12 @@ namespace SISCAN.Formularios
     public partial class UpdateCliente : Page
     {
         Cliente user = new Cliente();
+        public string cidade;
+        public string estado;
         public UpdateCliente(Cliente cliente)
         {
             InitializeComponent();
             user = cliente;
-            DadosCb();
             ImportDados();
             MaskCPF mascarador = new MaskCPF(tbCpf);
         }
@@ -47,6 +50,9 @@ namespace SISCAN.Formularios
                     cliente.Nome = tbNome.Text;
                 }
                 else
+                {
+                    cliente.Nome = user.Nome;
+                }
                 if (tbCpf.Text != "")
                 {
                     if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
@@ -59,38 +65,66 @@ namespace SISCAN.Formularios
                     }
                 }
                 else
+                {
+                    cliente.Cpf = user.Cpf;
+                }
                 if (tbEmail.Text != "")
                 {
                     cliente.Email = tbEmail.Text;
                 }
                 else
+                {
+                    cliente.Email = user.Email;
+                }
                 if (cbSexo.Text != "")
                 {
                     cliente.Sexo = cbSexo.SelectionBoxItem.ToString();
                 }
                 else
+                {
+                    cliente.Sexo = user.Sexo;
+                }
                 if (dtpData.Text != "")
                 {
                     cliente.DataNascimento = dtpData.SelectedDate;
                 }
                 else
+                {
+                    cliente.DataNascimento = user.DataNascimento;
+                }
                 if (tbRua.Text != "")
                 {
                     cliente.Rua = tbRua.Text;
                 }
                 else
+                {
+                    cliente.Rua = user.Rua;
+                }
                 if (tbBairro.Text != "")
                 {
                     cliente.Bairro = tbBairro.Text;
                 }
                 else
+                {
+                    cliente.Bairro = user.Bairro;
+                }
                 if (tbNumero.Text != "")
                 {
                     cliente.Numero = Convert.ToInt16(tbNumero.Text);
                 }
                 else
                 {
-
+                    cliente.Numero = user.Numero;
+                }
+                if(tbCep.Text != "")
+                {
+                    cliente.cidade = cidade;
+                    cliente.estado = estado;
+                }
+                else
+                {
+                    cliente.cidade = user.cidade;
+                    cliente.estado = user.estado;
                 }
 
                 //Inserindo os Dados           
@@ -125,14 +159,6 @@ namespace SISCAN.Formularios
             tbBairro.Clear();
             tbNumero.Clear();
             cbSexo.SelectedIndex = -1;
-            cbCidade.SelectedIndex = -1;
-        }
-
-        private void DadosCb()
-        {
-            CidadeDAO cidDAO = new CidadeDAO();
-            cbCidade.ItemsSource = cidDAO.List();
-            cbCidade.DisplayMemberPath = "Nome";
         }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)
@@ -153,5 +179,58 @@ namespace SISCAN.Formularios
             tbNumero.Text = "Numero: " + user.Numero;
         }
 
+        public async void Buscar()
+        {
+            string cep = tbCep.Text;
+            if (!string.IsNullOrEmpty(cep))
+            {
+                string url = $"https://viacep.com.br/ws/{cep}/json/";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    if (cep.Length == 9)
+                    {
+                        try
+                        {
+                            string response = await client.GetStringAsync(url);
+                            var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+
+                            if (endereco != null)
+                            {
+                                tbRua.Text = endereco.Logradouro;
+                                tbBairro.Text = endereco.Bairro;
+                                cidade = endereco.Localidade;
+                                estado = endereco.Uf;
+                            }
+                            else
+                            {
+                                MessageBox.Show("CEP não encontrado.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, insira um CEP válido.");
+            }
+        }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (tbCep.Text != "")
+            {
+                Buscar();
+            }
+        }
+
+        private void tbCep_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Buscar();
+        }
     }
 }

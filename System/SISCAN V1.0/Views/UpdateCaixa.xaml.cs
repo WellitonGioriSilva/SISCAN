@@ -44,24 +44,40 @@ namespace SISCAN.Formularios
                     caixa.ValorIncial = Convert.ToInt32(tbValorInicial.Text);
                 }
                 else
+                {
+                    caixa.ValorIncial = user.ValorIncial;
+                }
                 if (tbValorFinal.Text != "")
                 {
                     caixa.ValorFinal = Convert.ToInt32(tbValorFinal.Text);
                 }
                 else
+                {
+                    caixa.ValorFinal = user.ValorFinal;
+                }
                 if (dtpData.Text != "")
                 {
                     caixa.Data = dtpData.SelectedDate;
                 }
                 else
+                {
+                    caixa.Data = user.Data;
+                }
                 if (tmAbertura.Text != "")
                 {
                     DateTime? aber = tmAbertura.SelectedTime;
                 }
                 else
+                {
+                    caixa.HoraAbertura = user.HoraAbertura;
+                }
                 if (tmFechamento.Text != "")
                 {
                     DateTime? fec = tmFechamento.SelectedTime;
+                }
+                else
+                {
+                    caixa.HoraFechamento = user.HoraFechamento;
                 }
 
                 //Inserindo os Dados           

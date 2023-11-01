@@ -1,9 +1,11 @@
-﻿using SISCAN.Helpers;
+﻿using Newtonsoft.Json;
+using SISCAN.Helpers;
 using SISCAN.Models;
 using SISCAN.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,6 +27,8 @@ namespace SISCAN.Formularios
     public partial class UpdateFuncionario : Page
     {
         Funcionario funcionario = new Funcionario();
+        string cidade;
+        string estado;
         public UpdateFuncionario(Funcionario func)
         {
             InitializeComponent();
@@ -106,6 +110,16 @@ namespace SISCAN.Formularios
                 {
                     func.Sexo = funcionario.Sexo;
                 }
+                if(tbCep.Text != "")
+                {
+                    func.cidade = cidade;
+                    func.estado = estado;
+                }
+                else
+                {
+                    func.cidade = funcionario.cidade; 
+                    func.estado = funcionario.estado;
+                }
 
 
                 //Inserindo os Dados           
@@ -128,17 +142,11 @@ namespace SISCAN.Formularios
             tbBairro.Clear();
             tbNumero.Clear();
             cbSexo.SelectedIndex = -1;
-            cbCidade.SelectedIndex = -1;
             cbFuncao.SelectedIndex = -1;
         }
 
         private void DadosCb()
         {
-            //Setando dados no combobox de cidade
-            CidadeDAO cidDAO = new CidadeDAO();
-            cbCidade.ItemsSource = cidDAO.List();
-            cbCidade.DisplayMemberPath = "Nome";
-
             //Setando dados no combobox de função
             FuncaoDAO funDAO = new FuncaoDAO();
             cbFuncao.ItemsSource = funDAO.List(null);
@@ -171,6 +179,60 @@ namespace SISCAN.Formularios
             lbNumero.Content = "Número: " + funcionario.Numero;
             lbSexo.Content = "Sexo: " + funcionario.Sexo;
             lbFuncao.Content = "Função: " + funcionario.Funcao.Nome;
+        }
+
+        private async void tbCep_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Buscar();
+        }
+
+        public async void Buscar()
+        {
+            string cep = tbCep.Text;
+            if (!string.IsNullOrEmpty(cep))
+            {
+                string url = $"https://viacep.com.br/ws/{cep}/json/";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    if (cep.Length == 9)
+                    {
+                        try
+                        {
+                            string response = await client.GetStringAsync(url);
+                            var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+
+                            if (endereco != null)
+                            {
+                                tbRua.Text = endereco.Logradouro;
+                                tbBairro.Text = endereco.Bairro;
+                                estado = endereco.Uf;
+                                cidade = endereco.Localidade;
+                            }
+                            else
+                            {
+                                MessageBox.Show("CEP não encontrado.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, insira um CEP válido.");
+            }
+        }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (tbCep.Text != "")
+            {
+                Buscar();
+            }
         }
     }
 }

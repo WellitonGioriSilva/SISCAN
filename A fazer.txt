@@ -1,6 +1,5 @@
 Bloquear text box de rua e bairro;
 Selecionar estado e cidade nos selects de cliente, fornecedor e funcionário;
-Arrumar update para passar cidade e bairro de acordo com o cep;
-Arrumar updates pq está com problemas nos if e else;
+Sistema pegando msg/select que está no else;
 Identificar tipo da mensagem;
-Aparecer a tela de recebimento assim que a venda for concluída, e se pagar aí sim inserir os valores na tabela venda, venda-produto e recebimento.
+Retirar tela de recebimento.

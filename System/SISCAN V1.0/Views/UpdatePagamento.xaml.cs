@@ -1,4 +1,5 @@
-﻿using SISCAN.Helpers;
+﻿using Org.BouncyCastle.Crypto;
+using SISCAN.Helpers;
 using SISCAN.Models;
 using System;
 using System.Collections.Generic;
@@ -23,15 +24,22 @@ namespace SISCAN.Views
     public partial class UpdatePagamento : Page
     {
         Pagamento pagamento = new Pagamento();
+        int parcelas = 0;
+        int parcelasSelecionadas = 0;
+        int idCaixa;
         public UpdatePagamento(Pagamento pag)
         {
             InitializeComponent();
 
             DadosCbForm();
-            DadosCbCai();
             DadosCbDesp();
             pagamento = pag;
             ImportDados();
+            CaixaDAO caixa = new CaixaDAO();
+            idCaixa = caixa.GetById();
+
+            dtpData.Visibility = Visibility.Collapsed;
+            borderDtp.Visibility = Visibility.Collapsed;
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -75,16 +83,6 @@ namespace SISCAN.Views
                     pag.FormaPagamento = new FormaPagamento();
                     pag.FormaPagamento.Id = pagamento.FormaPagamento.Id;
                 }
-                if (cbCaixa.SelectedIndex != -1)
-                {
-                    pag.Caixa = new Caixa();
-                    pag.Caixa.id = cbCaixa.SelectedIndex + 1;
-                }
-                else
-                {
-                    pag.Caixa = new Caixa();
-                    pag.Caixa.id = pagamento.Caixa.id;
-                }
                 if (cbDespesa.SelectedIndex != -1)
                 {
                     pag.Despesa = new Despesa();
@@ -95,6 +93,8 @@ namespace SISCAN.Views
                     pag.Despesa = new Despesa();
                     pag.Despesa.Id = pagamento.Despesa.Id;
                 }
+                pag.Caixa = new Caixa();
+                pag.Caixa.id = idCaixa;
 
                 //Inserindo os Dados           
                 PagamentoDAO pagamentoDAO = new PagamentoDAO();
@@ -111,7 +111,6 @@ namespace SISCAN.Views
         private void Clear()
         {
             tbValor.Clear();
-            cbCaixa.SelectedIndex = -1;
             cbFormapag.SelectedIndex = -1;
             cbDespesa.SelectedIndex = -1;
         }
@@ -121,13 +120,6 @@ namespace SISCAN.Views
             FormaPagamentoDAO formaPagamentoDAO = new FormaPagamentoDAO();
             cbFormapag.ItemsSource = formaPagamentoDAO.List();
             cbFormapag.DisplayMemberPath = "Nome";
-        }
-
-        private void DadosCbCai()
-        {
-            CaixaDAO caixaDAO = new CaixaDAO();
-            cbCaixa.ItemsSource = caixaDAO.List(null);
-            cbCaixa.DisplayMemberPath = "Data";
         }
         
         private void DadosCbDesp()
@@ -159,9 +151,36 @@ namespace SISCAN.Views
             lbData.Content = "Data: " + pagamento.Data;
             lbValor.Content = "Valor: " + pagamento.Valor;
             lbHoradopagamento.Content = "Hora de Pagamento: " + pagamento.Hora;
-            lbCaixa.Content = "Caixa: " + pagamento.Caixa.id;
             lbFormadepagamento.Content = "Forma de Pagamento: " + pagamento.FormaPagamento.Nome;
             lbDespesa.Content = "Despesa: " + pagamento.Despesa.Nome;
+        }
+
+        private void cbDespesa_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
+            {
+                parcelas = selectedItemDesp.Parcelas;
+                cbParcela.Items.Clear();
+
+                for (int i = 1; i <= parcelas; i++)
+                {
+                    cbParcela.Items.Add(i);
+                }
+            }
+        }
+
+        private void cbParcela_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
+            {
+                parcelasSelecionadas = Convert.ToInt32(cbParcela.SelectedValue.ToString());
+                tbValor.Text = (selectedItemDesp.ValorParcela * parcelasSelecionadas).ToString("C");
+                if (cbParcela.SelectedValue.ToString() != parcelas.ToString())
+                {
+                    dtpData.Visibility = Visibility.Visible;
+                    borderDtp.Visibility = Visibility.Visible;
+                }
+            }
         }
     }
 }

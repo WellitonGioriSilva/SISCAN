@@ -28,6 +28,8 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class CadastrarCliente : Page
     {
+        public string cidade;
+        public string estado;
         public CadastrarCliente()
         {
             InitializeComponent();
@@ -39,12 +41,13 @@ namespace SISCAN.Formularios
         {
             try
             {
-                if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
+                if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro" && tbRua.Text != "" && tbBairro.Text != "")
                 {
                     MessageBox.Show("Cpf digitado é inválido!");
                 }
                 else
                 {
+                    Buscar();
                     //Setando informações na tabela cliente
                     Cliente cliente = new Cliente();
                     cliente.Nome = tbNome.Text;
@@ -55,6 +58,8 @@ namespace SISCAN.Formularios
                     cliente.Rua = tbRua.Text;
                     cliente.Bairro = tbBairro.Text;
                     cliente.Numero = Convert.ToInt16(tbNumero.Text);
+                    cliente.cidade = cidade;
+                    cliente.estado = estado;
 
                     //Inserindo os Dados           
                     ClienteDAO clienteDAO = new ClienteDAO();
@@ -123,6 +128,8 @@ namespace SISCAN.Formularios
                             {
                                 tbRua.Text = endereco.Logradouro;
                                 tbBairro.Text = endereco.Bairro;
+                                cidade = endereco.Localidade;
+                                estado = endereco.Uf;
                             }
                             else
                             {
@@ -144,7 +151,16 @@ namespace SISCAN.Formularios
 
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(tbCep.Text != "")
+            if (tbCep.Text != "")
+            {
+                Buscar();
+            }
+        }
+
+        private void tbCep_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string textoSemMascara = new string(tbCep.Text.Where(char.IsDigit).ToArray());
+            if (textoSemMascara.Length >= 7)
             {
                 Buscar();
             }

@@ -347,16 +347,14 @@ DELIMITER $$
 CREATE PROCEDURE InsertCliente(nome_cli varchar(45), cpf varchar(45), email_cli varchar(45), sexo_cli varchar(45), data_nascimento_cli date, rua_cli varchar(45), bairro_cli varchar(45),
 numero_cli int, cidade varchar(100), estado varchar(100))
 BEGIN
-    DECLARE cpf_existe INT;
-    
-    SELECT COUNT(*) INTO cpf_existe FROM Cliente WHERE cpf = cpf_cli;
-    IF cpf_existe > 0 THEN
-        SELECT "CPF já cadastrado!", false as ERRO;
-	ELSE
-		INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, cidade_cli, estado_cli) VALUES (nome_cli, cpf, email_cli, sexo_cli, data_nascimento_cli,
-		rua_cli, bairro_cli, numero_cli, 'Sim', cidade, estado);
-		SELECT "Cliente cadastrado com sucesso!", true as resultado;
-    END IF;
+DECLARE cpf_existe INT;
+SELECT COUNT(*) INTO cpf_existe FROM Cliente WHERE cpf_cli = cpf;
+IF (cpf_existe = 0) THEN
+	SELECT "Cliente cadastrado com sucesso!", true as SUCESSO;
+	INSERT INTO Cliente (nome_cli, cpf_cli, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, visivel_cli, cidade_cli, estado_cli) VALUES (nome_cli, cpf, email_cli, sexo_cli, data_nascimento_cli, rua_cli, bairro_cli, numero_cli, 'Sim', cidade, estado);
+ELSE
+	SELECT "CPF já cadastrado!", false as ERRO;
+END IF;
 END;
 $$ DELIMITER ;
 
@@ -580,7 +578,7 @@ IF((usuario <> '') AND (senha <> '')) THEN
 	INSERT INTO usuario (id_usu, visivel_usu, usuario_usu, senha_usu, nivel_acess_usu, id_func_fk) VALUES (null, 'Sim', usuario, senha, 4, 1);
     SELECT "Usuário cadastrado com sucesso!", true as SUCESSO;
 ELSE
-    SELECT "Todos os campos devem ser preenchidos!", false as resultado;
+    SELECT "Todos os campos devem ser preenchidos!", false as ERRO;
 END IF;
 END;
 $$ DELIMITER ;

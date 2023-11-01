@@ -42,36 +42,58 @@ namespace SISCAN.Formularios
                 {
                     despesa.Nome = tbNome.Text;
                 }
-                else 
+                else
+                {
+                    despesa.Nome = user.Nome;
+                }
                 if (tbParcelas.Text != "")
                 {
                     despesa.Parcelas = Convert.ToInt32(tbParcelas.Text);
                 }
                 else
+                {
+                    despesa.Parcelas = user.Parcelas;
+                }
                 if (tbValor.Text != "")
                 {
                     despesa.Valor = Convert.ToInt32(tbValor.Text);
                 }
                 else
+                {
+                    despesa.Valor = user.Valor;
+                }
                 if (cbStatus.Text != "")
                 {
                     despesa.Status = cbStatus.SelectionBoxItem.ToString();
                 }
                 else
+                {
+                    despesa.Status = user.Status;
+                }
                 if (dtpData.Text != "")
                 {
                     despesa.Data = dtpData.SelectedDate;
                 }
                 else
+                {
+                    despesa.Data = user.Data;
+                }
                 if (dtpVencimento.Text != "")
                 {
                     despesa.Vencimento = dtpVencimento.SelectedDate;
                 }
                 else
+                {
+                    despesa.Vencimento = user.Vencimento;
+                }
                 if (cbStatus.SelectedIndex != 1)
                 {
                     despesa.Compra = new Compra();
                     despesa.Compra.Id = cbStatus.SelectedIndex - 1;
+                }
+                else
+                {
+                    despesa.Compra.Id = user.Compra.Id;
                 }
                 //Inserindo os Dados           
                 DespesaDAO despesaDAO = new DespesaDAO();

@@ -27,7 +27,7 @@
         <StackPanel Margin="0,0,0,0" Grid.Column="0">
 
             <Border BorderThickness="1.5" Margin="30 50 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbDespesa" materialDesign:HintAssist.Hint="Despesa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+                <ComboBox x:Name="cbDespesa" materialDesign:HintAssist.Hint="Despesa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top" SelectionChanged="cbDespesa_SelectionChanged"/>
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
@@ -35,7 +35,7 @@
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbCaixa" materialDesign:HintAssist.Hint="Caixa:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+                <ComboBox x:Name="cbParcela" materialDesign:HintAssist.Hint="Parcela:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top" SelectionChanged="cbParcela_SelectionChanged"/>
             </Border>
             
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
@@ -45,11 +45,11 @@
             </Border>
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <DatePicker Margin="8,0,8,0" x:Name="dtpData"
-                    materialDesign:HintAssist.Hint="Data:" BorderBrush="White" FontFamily="Century" Height="34"/>
+                    materialDesign:HintAssist.Hint="Data Validade:" BorderBrush="White" FontFamily="Century" Height="34"/>
 
             </Border>
 
-            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+            <Border x:Name="borderDtp" BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <materialDesign:TimePicker Margin="8,0,8,0" x:Name="tmHora"
                     materialDesign:HintAssist.Hint="Hora do pagamento:" BorderBrush="White" FontFamily="Century" Height="34"/>
 
@@ -67,10 +67,6 @@
 
             <Label x:Name="lbFormadepagamento" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
                 Forma de pagamento:
-            </Label>
-
-            <Label x:Name="lbCaixa" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
-               Caixa:
             </Label>
 
             <Label x:Name="lbValor" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">

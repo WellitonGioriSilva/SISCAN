@@ -26,6 +26,8 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class CadastrarFornecedor : Page
     {
+        public string estado;
+        public string cidade;
         public CadastrarFornecedor()
         {
             InitializeComponent();
@@ -55,6 +57,8 @@ namespace SISCAN.Formularios
                     fornecedor.Telefone = tbTelefone.Text;
                     fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
                     fornecedor.Responsavel = tbResponsavel.Text;
+                    fornecedor.cidade = cidade;
+                    fornecedor.estado = estado;
 
                     //Inserindo os Dados           
                     FornecedorDAO fornecedorDAO = new FornecedorDAO();
@@ -124,6 +128,8 @@ namespace SISCAN.Formularios
                             {
                                 tbRua.Text = endereco.Logradouro;
                                 tbBairro.Text = endereco.Bairro;
+                                cidade = endereco.Localidade;
+                                estado = endereco.Uf;
                             }
                             else
                             {

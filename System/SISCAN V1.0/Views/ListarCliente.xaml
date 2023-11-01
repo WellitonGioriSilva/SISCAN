@@ -56,13 +56,13 @@
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Nome do Funcionário" Binding="{Binding Nome}"/>
                     <DataGridTextColumn Header="Sexo" Binding="{Binding Sexo}"/>
-                    <DataGridTextColumn Header="CPF" Binding="{Binding CPF}"/>
+                    <DataGridTextColumn Header="CPF" Binding="{Binding Cpf}"/>
                     <DataGridTextColumn Header="Data de Nascimento" Binding="{Binding DataNascimento}"/>
                     <DataGridTextColumn Header="E-mail" Binding="{Binding Email}"/>
                     <DataGridTextColumn Header="Rua" Binding="{Binding Rua}"/>
                     <DataGridTextColumn Header="Bairro" Binding="{Binding Bairro}"/>
                     <DataGridTextColumn Header="Número" Binding="{Binding Numero}"/>
-                    <DataGridTextColumn Header="Cidade" Binding="{Binding Cidade.Nome}"/>
+                    <DataGridTextColumn Header="Cidade" Binding="{Binding cidade}"/>
 
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>

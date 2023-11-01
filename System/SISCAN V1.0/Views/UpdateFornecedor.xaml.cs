@@ -16,6 +16,8 @@ using System.Windows.Shapes;
 using SISCAN.Models;
 using SISCAN.Views;
 using SISCAN.Helpers;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace SISCAN.Formularios
 {
@@ -25,11 +27,12 @@ namespace SISCAN.Formularios
     public partial class UpdateFornecedor : Page
     {
         Fornecedor user = new Fornecedor();
+        string cidade;
+        string estado;
         public UpdateFornecedor(Fornecedor fornecedor)
         {
             InitializeComponent();
             user = fornecedor;
-            DadosCb();
             ImportDados();
             MaskCNPJ mascarador = new MaskCNPJ(tbCnpj);
             MaskTelefone mascaradorTel = new MaskTelefone(tbTelefone);
@@ -48,6 +51,9 @@ namespace SISCAN.Formularios
                     fornecedor.RazaoSocial = tbRazaoSocial.Text;
                 }
                 else
+                {
+                    fornecedor.RazaoSocial = user.RazaoSocial;
+                }
                 if (tbCnpj.Text != "")
                 {
                     if (ValidacaoCPFeCNPJ.ValidateCNPJ(tbCnpj.Text) == "Erro")
@@ -60,35 +66,66 @@ namespace SISCAN.Formularios
                     }
                 }
                 else
+                {
+                    fornecedor.Cnpj = user.Cnpj;
+                }
                 if (tbBairro.Text != "")
                 {
                     fornecedor.Bairro = tbBairro.Text;
                 }
                 else
+                {
+                    fornecedor.Bairro = user.Bairro;
+                }
                 if (tbRua.Text != "")
                 {
                     fornecedor.Rua = tbRua.Text;
-
                 }
                 else
+                {
+                    fornecedor.Rua = user.Rua;
+                }
                 if (tbFantasia.Text != "")
                 {
                     fornecedor.NomeFantasia = tbFantasia.Text;
                 }
                 else
+                {
+                    fornecedor.NomeFantasia = user.NomeFantasia;
+                }
                 if (tbTelefone.Text != "")
                 {
                     fornecedor.Telefone = tbTelefone.Text;
                 }
                 else
+                {
+                    fornecedor.Telefone = user.Telefone;
+                }
                 if (tbInscricaoEstadual.Text != "")
                 {
                     fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
                 }
                 else
+                {
+                    fornecedor.InscricaoEstadual = user.InscricaoEstadual;
+                }
                 if (tbResponsavel.Text != "")
                 {
                     fornecedor.Responsavel = tbResponsavel.Text;
+                }
+                else
+                {
+                    fornecedor.Responsavel = user.Responsavel;
+                }
+                if(tbCep.Text != "")
+                {
+                    fornecedor.cidade = cidade;
+                    fornecedor.estado = estado;
+                }
+                else
+                {
+                    fornecedor.cidade = user.cidade;
+                    fornecedor.estado = user.estado;
                 }
 
                 //Inserindo os Dados           
@@ -112,7 +149,6 @@ namespace SISCAN.Formularios
             tbTelefone.Clear();
             tbInscricaoEstadual.Clear();
             tbResponsavel.Clear();
-            cbCidade.SelectedIndex = -1;
         }
 
         private void tbCancelar_Click(object sender, RoutedEventArgs e)
@@ -132,13 +168,6 @@ namespace SISCAN.Formularios
             fmFrame.NavigationService.Navigate(new ListarFornecedor());
         }
 
-        private void DadosCb()
-        {
-            CidadeDAO cidDAO = new CidadeDAO();
-            cbCidade.ItemsSource = cidDAO.List();
-            cbCidade.DisplayMemberPath = "Nome";
-        }
-
         private void ImportDados()
         {
             tbRazaoSocial.Text = "Razão Social: " + user.RazaoSocial;
@@ -149,6 +178,60 @@ namespace SISCAN.Formularios
             tbTelefone.Text = "Telefone: " + user.Telefone;
             tbInscricaoEstadual.Text = "InscriçãoEstadual: " + user.InscricaoEstadual;
             tbResponsavel.Text = "Responsavel: " + user.Responsavel;
+        }
+
+        private async void tbCep_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Buscar();
+        }
+
+        public async void Buscar()
+        {
+            string cep = tbCep.Text;
+            if (!string.IsNullOrEmpty(cep))
+            {
+                string url = $"https://viacep.com.br/ws/{cep}/json/";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    if (cep.Length == 9)
+                    {
+                        try
+                        {
+                            string response = await client.GetStringAsync(url);
+                            var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+
+                            if (endereco != null)
+                            {
+                                tbRua.Text = endereco.Logradouro;
+                                tbBairro.Text = endereco.Bairro;
+                                estado = endereco.Uf;
+                                cidade = endereco.Localidade;
+                            }
+                            else
+                            {
+                                MessageBox.Show("CEP não encontrado.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, insira um CEP válido.");
+            }
+        }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (tbCep.Text != "")
+            {
+                Buscar();
+            }
         }
     }
 }

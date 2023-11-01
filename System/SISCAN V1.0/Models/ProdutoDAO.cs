@@ -68,7 +68,7 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"CALL InsertProduto(@nome, @marca, @tipo, @valor, @result)";
+                query.CommandText = $"CALL InsertProduto(@nome, @marca, @tipo, @valor);";
 
                 query.Parameters.AddWithValue("@nome", produto.Nome);
                 query.Parameters.AddWithValue("@marca", produto.Marca);
@@ -86,6 +86,7 @@ namespace SISCAN.Models
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
             }
             finally

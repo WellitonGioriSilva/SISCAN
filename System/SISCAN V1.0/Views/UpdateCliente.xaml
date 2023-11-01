@@ -13,7 +13,7 @@
       TextOptions.TextRenderingMode="Auto"
       FontFamily="{DynamicResource MaterialDesignFont}"
       d:DesignHeight="536" d:DesignWidth="900"
-      Title="CadastrarCliente">
+      Title="CadastrarCliente" MouseDown="Page_MouseDown">
     <Page.Background>
         <ImageBrush ImageSource="/Resources/Base Laranja.png"/>
     </Page.Background>
@@ -59,9 +59,10 @@
 
             </Border>
 
-
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbCidade" materialDesign:HintAssist.Hint="Cidade:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+                <TextBox
+     x:Name="tbCep"
+     materialDesign:HintAssist.Hint="Cep:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" LostFocus="tbCep_LostFocus"/>
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
@@ -86,41 +87,41 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,20,0">
-           
-                <Button x:Name="btCancelar"
+
+            <Button x:Name="btCancelar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
     ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="250,380,0,0" Click="btCancelar_Click">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFFF3D00"/>
-                            <GradientStop Color="#FFEDAB00" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <TextBlock
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
       Text="Cancelar" FontFamily="Century" FontSize="20" />
-                </Button>
-                <Button x:Name="btSalvar"
+            </Button>
+            <Button x:Name="btSalvar"
     Height="48"
     materialDesign:ButtonAssist.CornerRadius="25"
     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
     Style="{StaticResource MaterialDesignRaisedDarkButton}"
     ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Width="170" BorderBrush="White" Margin="250,15,0,0" Click="btSalvar_Click">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFFF3D00"/>
-                            <GradientStop Color="#FFEDAB00" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <TextBlock
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFF3D00"/>
+                        <GradientStop Color="#FFEDAB00" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <TextBlock
       Text="Salvar" FontFamily="Century" FontSize="20" />
-                </Button>
-            </StackPanel>
+            </Button>
+        </StackPanel>
 
 
-        <StackPanel Grid.Column="2" Margin="0,60,50,0">
+        <StackPanel Grid.Column="1" Margin="0,27,50,0">
             <Label FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0 0 0 0">
                 Dados Atuais
             </Label>
@@ -145,11 +146,6 @@
 
             <Label x:Name="lbData" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
                 Data de Nascimento
-            </Label>
-
-
-            <Label x:Name="lbcidade" FontFamily="Century" FontSize="16" HorizontalAlignment="Center" Margin="0,10,0,0">
-                Cidade
             </Label>
 
 

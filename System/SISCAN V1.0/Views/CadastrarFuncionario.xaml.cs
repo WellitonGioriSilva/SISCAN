@@ -55,6 +55,8 @@ namespace SISCAN.Formularios
                     funcionario.Sexo = cbSexo.SelectionBoxItem.ToString();
                     funcionario.Numero = Convert.ToInt16(tbNumero.Text);
                     funcionario.Rua = tbRua.Text;
+                    funcionario.cidade = cidade;
+                    funcionario.estado = estado;
                     funcionario.Funcao = new Funcao();
                     if (cbFuncao.SelectedItem is Funcao selectedItem)
                     {

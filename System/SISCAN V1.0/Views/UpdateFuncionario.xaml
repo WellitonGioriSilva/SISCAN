@@ -13,7 +13,7 @@
       TextOptions.TextRenderingMode="Auto"
       FontFamily="{DynamicResource MaterialDesignFont}"
       d:DesignHeight="536" d:DesignWidth="900"
-      Title="CadastrarFuncionario">
+      Title="CadastrarFuncionario" MouseDown="Page_MouseDown">
     <Page.Background>
         <ImageBrush ImageSource="/Resources/Base Laranja.png"/>
     </Page.Background>
@@ -52,7 +52,9 @@
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbCidade" materialDesign:HintAssist.Hint="Cidade:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+                <TextBox
+                    x:Name="tbCep"
+                    materialDesign:HintAssist.Hint="Cep:" BorderBrush="{x:Null}" SelectionTextBrush="#FF161515" Foreground="White" Height="22" Margin="8,4,8,4" CaretBrush="#FF161515" FontFamily="Century" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" LostFocus="tbCep_LostFocus"/>
             </Border>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">

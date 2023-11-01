@@ -73,8 +73,6 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@valor_inicial", caixa.ValorIncial);
                 query.Parameters.AddWithValue("@id_func", caixa.funcionario.Id);
 
-                query.ExecuteNonQuery();
-
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
                 {
@@ -208,8 +206,6 @@ namespace SISCAN.Models
 
                 query.Parameters.AddWithValue("@valorFinal", caixa.ValorFinal);
                 query.Parameters.AddWithValue("@id", caixa.id);
-
-                query.ExecuteNonQuery();
 
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())

@@ -16,6 +16,8 @@ using MySqlX.XDevAPI;
 using SISCAN.Models;
 using SISCAN.Views;
 using SISCAN.Helpers;
+using MessagePack;
+using Google.Protobuf.Reflection;
 
 namespace SISCAN.Formularios
 {

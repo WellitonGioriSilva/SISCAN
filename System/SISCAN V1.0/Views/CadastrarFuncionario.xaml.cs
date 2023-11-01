@@ -34,41 +34,50 @@ namespace SISCAN.Formularios
             DadosCb();
             MaskCPF mascarador = new MaskCPF(tbCpf);
             MaskCEP mascaradorCep = new MaskCEP(tbCep);
+            tbRua.IsEnabled = false;
+            tbBairro.IsEnabled = false;
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
+                if (tbRua.Text != "" && tbBairro.Text != "")
                 {
-                    MessageBox.Show("Cpf digitado é inválido!");
+                    if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
+                    {
+                        MessageBox.Show("Cpf digitado é inválido!");
+                    }
+                    else
+                    {
+                        Buscar();
+                        //Setando informações na tabela funcionário
+                        Funcionario funcionario = new Funcionario();
+                        funcionario.Nome = tbNome.Text;
+                        funcionario.Cpf = tbCpf.Text;
+                        funcionario.Bairro = tbBairro.Text;
+                        funcionario.Sexo = cbSexo.SelectionBoxItem.ToString();
+                        funcionario.Numero = Convert.ToInt16(tbNumero.Text);
+                        funcionario.Rua = tbRua.Text;
+                        funcionario.cidade = cidade;
+                        funcionario.estado = estado;
+                        funcionario.Funcao = new Funcao();
+                        if (cbFuncao.SelectedItem is Funcao selectedItem)
+                        {
+                            funcionario.Funcao.Id = selectedItem.Id;
+                            funcionario.Acesso = selectedItem.Acesso;
+                        }
+                        //Inserindo os Dados           
+                        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+                        funcionarioDAO.Insert(funcionario);
+                        MessageBox.Show(funcionarioDAO.mensagem);
+                        Clear();
+                    }
                 }
                 else
                 {
-                    Buscar();
-                    //Setando informações na tabela funcionário
-                    Funcionario funcionario = new Funcionario();
-                    funcionario.Nome = tbNome.Text;
-                    funcionario.Cpf = tbCpf.Text;
-                    funcionario.Bairro = tbBairro.Text;
-                    funcionario.Sexo = cbSexo.SelectionBoxItem.ToString();
-                    funcionario.Numero = Convert.ToInt16(tbNumero.Text);
-                    funcionario.Rua = tbRua.Text;
-                    funcionario.cidade = cidade;
-                    funcionario.estado = estado;
-                    funcionario.Funcao = new Funcao();
-                    if (cbFuncao.SelectedItem is Funcao selectedItem)
-                    {
-                        funcionario.Funcao.Id = selectedItem.Id;
-                        funcionario.Acesso = selectedItem.Acesso;
-                    }
-                    //Inserindo os Dados           
-                    FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-                    funcionarioDAO.Insert(funcionario);
-                    MessageBox.Show(funcionarioDAO.mensagem);
-                    Clear();
-                }
+                    MessageBox.Show("Aguarde à consulta ao cep!");
+                }               
             }
             catch (Exception ex)
             {
@@ -163,6 +172,15 @@ namespace SISCAN.Formularios
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if(tbCep.Text != "")
+            {
+                Buscar();
+            }
+        }
+
+        private void tbCep_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string textoSemMascara = new string(tbCep.Text.Where(char.IsDigit).ToArray());
+            if (textoSemMascara.Length >= 7)
             {
                 Buscar();
             }

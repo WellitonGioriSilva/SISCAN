@@ -32,8 +32,6 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@dataVencimento", despesa.Data);
                 query.Parameters.AddWithValue("@statusDespesa", despesa.Status);
                 query.Parameters.AddWithValue("@parcelas", despesa.Parcelas);
-                
-                query.ExecuteNonQuery();
 
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
@@ -51,8 +49,6 @@ namespace SISCAN.Models
                     query.Parameters.AddWithValue("@id_fk_prod", compraProd.Produto.Id);
                     query.Parameters.AddWithValue("@lote", estoque.Lote);
                     query.Parameters.AddWithValue("@validade", estoque.Validade);
-
-                    query.ExecuteNonQuery();
 
                     MySqlDataReader reader1 = query.ExecuteReader();
                     if (reader.Read())

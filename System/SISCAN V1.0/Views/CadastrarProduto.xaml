@@ -61,6 +61,8 @@
                 <ComboBox x:Name="cbTipo" materialDesign:HintAssist.Hint="Tipo:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top">
                     <ComboBoxItem
                      Content="Bebida" />
+                    <ComboBoxItem
+                     Content="Comida" />
                 </ComboBox>
             </Border>
 

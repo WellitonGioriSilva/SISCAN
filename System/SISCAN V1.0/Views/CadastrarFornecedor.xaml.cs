@@ -35,38 +35,47 @@ namespace SISCAN.Formularios
             MaskCNPJ mascarador = new MaskCNPJ(tbCnpj);
             MaskTelefone mascaradorTel = new MaskTelefone(tbTelefone);
             MaskCEP mascaradorCEP = new MaskCEP(tbCep);
+            tbBairro.IsEnabled = false;
+            tbRua.IsEnabled = false;
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ValidacaoCPFeCNPJ.ValidateCNPJ(tbCnpj.Text) == "Erro")
+                if (tbRua.Text != "" && tbBairro.Text != "")
                 {
-                    MessageBox.Show("Cpf digitado é inválido!");
+                    if (ValidacaoCPFeCNPJ.ValidateCNPJ(tbCnpj.Text) == "Erro")
+                    {
+                        MessageBox.Show("Cpf digitado é inválido!");
+                    }
+                    else
+                    {
+                        //Setando informações na tabela fornecedor
+                        Fornecedor fornecedor = new Fornecedor();
+                        fornecedor.RazaoSocial = tbRazaoSocial.Text;
+                        fornecedor.Cnpj = tbCnpj.Text;
+                        fornecedor.Bairro = tbBairro.Text;
+                        fornecedor.Rua = tbRua.Text;
+                        fornecedor.NomeFantasia = tbFantasia.Text;
+                        fornecedor.Telefone = tbTelefone.Text;
+                        fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
+                        fornecedor.Responsavel = tbResponsavel.Text;
+                        fornecedor.cidade = cidade;
+                        fornecedor.estado = estado;
+
+                        //Inserindo os Dados           
+                        FornecedorDAO fornecedorDAO = new FornecedorDAO();
+                        fornecedorDAO.Insert(fornecedor);
+                        MessageBox.Show(fornecedorDAO.mensagem);
+
+                        Clear();
+                    }
                 }
                 else
                 {
-                    //Setando informações na tabela fornecedor
-                    Fornecedor fornecedor = new Fornecedor();
-                    fornecedor.RazaoSocial = tbRazaoSocial.Text;
-                    fornecedor.Cnpj = tbCnpj.Text;
-                    fornecedor.Bairro = tbBairro.Text;
-                    fornecedor.Rua = tbRua.Text;
-                    fornecedor.NomeFantasia = tbFantasia.Text;
-                    fornecedor.Telefone = tbTelefone.Text;
-                    fornecedor.InscricaoEstadual = tbInscricaoEstadual.Text;
-                    fornecedor.Responsavel = tbResponsavel.Text;
-                    fornecedor.cidade = cidade;
-                    fornecedor.estado = estado;
-
-                    //Inserindo os Dados           
-                    FornecedorDAO fornecedorDAO = new FornecedorDAO();
-                    fornecedorDAO.Insert(fornecedor);
-                    MessageBox.Show(fornecedorDAO.mensagem);
-
-                    Clear();
-                }
+                    MessageBox.Show("Aguarde à consulta ao cep!");
+                }              
             }
             catch (Exception ex)
             {
@@ -154,6 +163,15 @@ namespace SISCAN.Formularios
             if(tbCep.Text != "")
             {
                 Buscar() ;
+            }
+        }
+
+        private void tbCep_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string textoSemMascara = new string(tbCep.Text.Where(char.IsDigit).ToArray());
+            if (textoSemMascara.Length >= 7)
+            {
+                Buscar();
             }
         }
     }

@@ -62,7 +62,7 @@
                     <DataGridTextColumn Header="Telefone" Binding="{Binding Telefone}"/>
                     <DataGridTextColumn Header="Inscrição Estadual" Binding="{Binding InscricaoEstadual }"/>
                     <DataGridTextColumn Header="Responsável" Binding="{Binding Responsavel}"/>
-                    <DataGridTextColumn Header="Cidade" Binding="{Binding Cidade.Nome}"/>
+                    <DataGridTextColumn Header="Cidade" Binding="{Binding cidade}"/>
 
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>

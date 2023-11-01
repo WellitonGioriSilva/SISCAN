@@ -91,8 +91,6 @@ namespace SISCAN.Models
                 }
                 query.Parameters.AddWithValue("@id_func", usuario.Funcionario.Id);
 
-                query.ExecuteNonQuery();
-
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
                 {

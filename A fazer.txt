@@ -1,5 +1,1 @@
-Bloquear text box de rua e bairro;
-Selecionar estado e cidade nos selects de cliente, fornecedor e funcionário;
-Sistema pegando msg/select que está no else;
 Identificar tipo da mensagem;
-Retirar tela de recebimento.

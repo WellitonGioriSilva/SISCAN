@@ -75,8 +75,6 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@tipo", produto.Tipo);
                 query.Parameters.AddWithValue("@valor", produto.Valor);
 
-                query.ExecuteNonQuery();
-
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
                 {

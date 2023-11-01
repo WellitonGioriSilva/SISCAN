@@ -146,14 +146,14 @@ namespace SISCAN.Formularios
             btCaixa.Visibility = Visibility.Collapsed;
             btVenda.Visibility = Visibility.Collapsed;
             btCliente.Visibility = Visibility.Collapsed;
-            btRecebimento.Visibility = Visibility.Collapsed;
+            //btRecebimento.Visibility = Visibility.Collapsed;
 
             if (usuario.Acesso == 1)
             {
                 btCaixa.Visibility = Visibility.Visible;
                 btVenda.Visibility = Visibility.Visible;
                 btCliente.Visibility = Visibility.Visible;
-                btRecebimento.Visibility = Visibility.Visible;
+                //btRecebimento.Visibility = Visibility.Visible;
             }
             
             if (usuario.Acesso == 2)
@@ -189,7 +189,7 @@ namespace SISCAN.Formularios
                 btCaixa.Visibility = Visibility.Visible;
                 btVenda.Visibility = Visibility.Visible;
                 btCliente.Visibility = Visibility.Visible;
-                btRecebimento.Visibility = Visibility.Visible;
+                //btRecebimento.Visibility = Visibility.Visible;
             }
         }
 

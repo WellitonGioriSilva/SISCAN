@@ -32,8 +32,6 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@acesso", funcao.Acesso);
                 query.Parameters.AddWithValue("@turno", funcao.Turno);
 
-                var result = query.ExecuteNonQuery();
-
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
                 {

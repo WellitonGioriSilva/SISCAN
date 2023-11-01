@@ -40,8 +40,6 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@cidade", fornecedor.cidade);
                 query.Parameters.AddWithValue("@estado", fornecedor.estado);
 
-                var result = query.ExecuteNonQuery();
-
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
                 {

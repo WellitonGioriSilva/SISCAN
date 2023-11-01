@@ -35,37 +35,46 @@ namespace SISCAN.Formularios
             InitializeComponent();
             MaskCPF mascarador = new MaskCPF(tbCpf);
             MaskCEP mascaradorCEP = new MaskCEP(tbCep);
+            tbRua.IsEnabled = false;
+            tbBairro.IsEnabled = false;
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro" && tbRua.Text != "" && tbBairro.Text != "")
+                if (tbRua.Text != "" && tbBairro.Text != "")
                 {
-                    MessageBox.Show("Cpf digitado é inválido!");
+                    if (ValidacaoCPFeCNPJ.ValidateCPF(tbCpf.Text) == "Erro")
+                    {
+                        MessageBox.Show("Cpf digitado é inválido!");
+                    }
+                    else
+                    {
+                        Buscar();
+                        //Setando informações na tabela cliente
+                        Cliente cliente = new Cliente();
+                        cliente.Nome = tbNome.Text;
+                        cliente.Cpf = tbCpf.Text;
+                        cliente.Email = tbEmail.Text;
+                        cliente.Sexo = cbSexo.SelectionBoxItem.ToString();
+                        cliente.DataNascimento = dtpData.SelectedDate;
+                        cliente.Rua = tbRua.Text;
+                        cliente.Bairro = tbBairro.Text;
+                        cliente.Numero = Convert.ToInt16(tbNumero.Text);
+                        cliente.cidade = cidade;
+                        cliente.estado = estado;
+
+                        //Inserindo os Dados           
+                        ClienteDAO clienteDAO = new ClienteDAO();
+                        clienteDAO.Insert(cliente);
+                        MessageBox.Show(clienteDAO.mensagem);
+                        Clear();
+                    }
                 }
                 else
                 {
-                    Buscar();
-                    //Setando informações na tabela cliente
-                    Cliente cliente = new Cliente();
-                    cliente.Nome = tbNome.Text;
-                    cliente.Cpf = tbCpf.Text;
-                    cliente.Email = tbEmail.Text;
-                    cliente.Sexo = cbSexo.SelectionBoxItem.ToString();
-                    cliente.DataNascimento = dtpData.SelectedDate;
-                    cliente.Rua = tbRua.Text;
-                    cliente.Bairro = tbBairro.Text;
-                    cliente.Numero = Convert.ToInt16(tbNumero.Text);
-                    cliente.cidade = cidade;
-                    cliente.estado = estado;
-
-                    //Inserindo os Dados           
-                    ClienteDAO clienteDAO = new ClienteDAO();
-                    clienteDAO.Insert(cliente);
-                    MessageBox.Show(clienteDAO.mensagem);
-                    Clear();
+                    MessageBox.Show("Aguarde à consulta ao cep!");
                 }
             }
             catch (Exception ex)

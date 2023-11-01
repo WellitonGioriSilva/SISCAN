@@ -63,7 +63,7 @@
                     <DataGridTextColumn Header="Bairro" Binding="{Binding Bairro}"/>
                     <DataGridTextColumn Header="Acesso" Binding="{Binding Acesso}"/>
                     <DataGridTextColumn Header="Função" Binding="{Binding Funcao.Nome}"/>
-                    <DataGridTextColumn Header="Cidade" Binding="{Binding Cidade.Nome}"/>
+                    <DataGridTextColumn Header="Cidade" Binding="{Binding cidade}"/>
 
                     <DataGridTemplateColumn Header="Ações">
                         <DataGridTemplateColumn.CellTemplate>

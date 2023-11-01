@@ -32,8 +32,6 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@validade", estoque.Validade);
                 query.Parameters.AddWithValue("@id_prod", estoque.Produto.Id);
 
-                var result = query.ExecuteNonQuery();
-
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
                 {

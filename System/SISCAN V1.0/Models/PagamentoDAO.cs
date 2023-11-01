@@ -36,9 +36,6 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@parcela", parcela);
                 query.Parameters.AddWithValue("@dataNova", despesa.Data?.ToString("yyyy-MM-dd"));
 
-
-                query.ExecuteNonQuery();
-
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
                 {

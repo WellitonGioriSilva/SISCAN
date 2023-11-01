@@ -83,7 +83,6 @@
                     <Button x:Name="btCaixa" Width="228" Height="24" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btCaixa_Click">Caixa</Button>
                     <Button x:Name="btFechar" Width="228" Height="24" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Cursor="Hand" Click="btFechar_Click"> Fechar Caixa</Button>
                     <Button x:Name="btDespesa" Width="228" Height="24" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btDespesa_Click">Despesa</Button>
-                    <Button x:Name="btRecebimento" Width="228" Height="24" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btRecebimento_Click">Recebimento</Button>
                     <Button x:Name="btPagamento" Width="228" Height="24" FontSize="11" Background="White" BorderBrush="#FF872000" Foreground="#FF872000" FontFamily="Century" Margin="0,0,0,-10" Click="btPagamento_Click">Pagamento</Button>
                 </TreeViewItem>
             </TreeView>

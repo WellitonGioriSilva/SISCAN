@@ -39,8 +39,6 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@vencimento", despesa.Vencimento?.ToString("yyyy-MM-dd"));
                 query.Parameters.AddWithValue("@idCompra", despesa.Compra.Id);
 
-                var result = query.ExecuteNonQuery();
-
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
                 {

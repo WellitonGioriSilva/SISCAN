@@ -54,7 +54,7 @@
             <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <TextBox
                 x:Name="tbCep"
-                materialDesign:HintAssist.Hint="Cep:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12" LostFocus="tbCep_LostFocus">
+                materialDesign:HintAssist.Hint="Cep:" BorderBrush="{x:Null}" SelectionTextBrush="White" Foreground="White" Height="30.64" Margin="8,0,8,0" CaretBrush="White" FontFamily="Century" FontSize="12" LostFocus="tbCep_LostFocus" TextChanged="tbCep_TextChanged">
                     <TextBox.Text>
                         <Binding
                         Path="Name"

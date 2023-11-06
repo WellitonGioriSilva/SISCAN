@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace SISCAN.Database
     {
         private static string host = "localhost";
 
-        private static string port = "3306";
+        private static string port = "3360";
 
         private static string user = "root";
 

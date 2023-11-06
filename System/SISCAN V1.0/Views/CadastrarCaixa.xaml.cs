@@ -26,7 +26,7 @@ namespace SISCAN.Formularios
     /// </summary>
     public partial class CadastrarCaixa : Page
     {
-        Funcionario funcionario;
+        public Funcionario funcionario = new Funcionario();
         public CadastrarCaixa(Funcionario func)
         {
             InitializeComponent();
@@ -46,7 +46,7 @@ namespace SISCAN.Formularios
                     caixa.ValorIncial = Convert.ToInt32(tbValorInicial.Text);
 
                     //Inserindo os Dados           
-                    caixaDAO.Insert(caixa);
+                    caixaDAO.Insert(caixa, funcionario.Id);
                     MessageBox.Show(caixaDAO.mensagem);
 
                     Clear();

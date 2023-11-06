@@ -39,5 +39,11 @@ namespace SISCAN.Views
             caixaDAO.CaixaFechamento(caixa);
             MessageBox.Show(caixaDAO.mensagem);
         }
+
+        private void btBuscar_Click(object sender, RoutedEventArgs e)
+        {
+            fmFrame.Visibility = Visibility.Visible;
+            fmFrame.NavigationService.Navigate(new ListarCaixa());
+        }
     }
 }

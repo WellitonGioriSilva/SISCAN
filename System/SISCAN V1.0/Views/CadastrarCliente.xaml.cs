@@ -119,42 +119,45 @@ namespace SISCAN.Formularios
 
         public async void Buscar()
         {
-            string cep = tbCep.Text;
-            if (!string.IsNullOrEmpty(cep))
+            if (tbBairro.Text == "" && tbRua.Text != "")
             {
-                string url = $"https://viacep.com.br/ws/{cep}/json/";
-
-                using (HttpClient client = new HttpClient())
+                string cep = tbCep.Text;
+                if (!string.IsNullOrEmpty(cep))
                 {
-                    if (cep.Length == 9)
-                    {
-                        try
-                        {
-                            string response = await client.GetStringAsync(url);
-                            var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+                    string url = $"https://viacep.com.br/ws/{cep}/json/";
 
-                            if (endereco != null)
-                            {
-                                tbRua.Text = endereco.Logradouro;
-                                tbBairro.Text = endereco.Bairro;
-                                cidade = endereco.Localidade;
-                                estado = endereco.Uf;
-                            }
-                            else
-                            {
-                                MessageBox.Show("CEP não encontrado.");
-                            }
-                        }
-                        catch (Exception ex)
+                    using (HttpClient client = new HttpClient())
+                    {
+                        if (cep.Length == 9)
                         {
-                            MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
+                            try
+                            {
+                                string response = await client.GetStringAsync(url);
+                                var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+
+                                if (endereco != null)
+                                {
+                                    tbRua.Text = endereco.Logradouro;
+                                    tbBairro.Text = endereco.Bairro;
+                                    cidade = endereco.Localidade;
+                                    estado = endereco.Uf;
+                                }
+                                else
+                                {
+                                    MessageBox.Show("CEP não encontrado.");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                MessageBox.Show("Por favor, insira um CEP válido.");
+                else
+                {
+                    MessageBox.Show("Por favor, insira um CEP válido.");
+                }
             }
         }
 

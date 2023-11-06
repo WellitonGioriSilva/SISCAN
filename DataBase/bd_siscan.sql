@@ -125,7 +125,9 @@ visivel_vend varchar(10),
 id_func_fk int,
 foreign key (id_func_fk) references Funcionario (id_func),
 id_cli_fk int,
-foreign key (id_cli_fk) references Cliente (id_cli) 
+foreign key (id_cli_fk) references Cliente (id_cli),
+id_cai_fk int,
+foreign key (id_cai_fk) references Caixa (id_cai) 
 );
 
 create table Venda_produto
@@ -455,7 +457,7 @@ DECLARE idVenda INT;
 IF((valor <> '') AND (id_fk <> '')) THEN
 	SELECT COUNT(id_func) into verificador_fk from funcionario where id_func = id_fk;
 	IF(Verificador_fk = 1) THEN
-		INSERT INTO Venda (id_vend, visivel_vend, data_vend, hora_vend, valor_vend, id_func_fk, id_cli_fk) VALUES (null, 'Sim', curdate(), curtime(), valor, id_fk, idCliente);
+		INSERT INTO Venda (id_vend, visivel_vend, data_vend, hora_vend, valor_vend, id_func_fk, id_cli_fk, id_cai_fk) VALUES (null, 'Sim', curdate(), curtime(), valor, id_fk, idCliente, idCaixa);
         SET idVenda = (SELECT max(id_vend) FROM venda);
         INSERT INTO Recebimento VALUES(null, curdate(), valor, curtime(), 'Sim', idVenda, idCaixa, idFormaPag);
         SELECT "Venda realizada com sucesso!", true as SUCESSO;
@@ -642,4 +644,29 @@ BEGIN
 END;
 $$ DELIMITER ;
 
-#Checks
+#Checks	
+SELECT * FROM funcionario;
+SELECT * FROM caixa;
+
+#Extrato
+DELIMITER $$
+CREATE PROCEDURE Extrato(id int)
+BEGIN
+	SELECT
+    Caixa.id_cai as 'Número do Caixa',
+    Caixa.data_cai as 'Data',
+    Caixa.hora_abertura_cai as 'Hora de Abertura',
+    Caixa.hora_fechamento_cai as 'Hora de Fechamento',
+    Caixa.valor_inicial_cai as 'Valor Inicial',
+    Caixa.valor_final_cai as 'Valor Final',
+    Caixa.id_func_fk as 'Funcionário Responsável',
+    Venda.id_vend as 'Venda'
+    FROM Caixa, Venda
+    WHERE 
+    ((Caixa.id_cai = id) AND (Caixa.visivel_cai = 'Sim')) AND (Venda.id_cai_fk = Caixa.id_cai)
+    GROUP BY Caixa.id_cai
+    ORDER BY Caixa.id_cai;
+END;
+$$ DELIMITER ;
+
+CALL Extrato(1);

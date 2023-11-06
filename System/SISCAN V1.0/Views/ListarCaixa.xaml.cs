@@ -60,5 +60,14 @@ namespace SISCAN.Views
                 CarregarLista();
             }
         }
+
+        private void btExtrato_Click(object sender, RoutedEventArgs e)
+        {
+            if(tbNum.Text != "")
+            {
+               CaixaDAO caixaDAO = new CaixaDAO();
+               caixaDAO.Extrato(Convert.ToInt32(tbNum.Text));
+            }
+        }
     }
 }

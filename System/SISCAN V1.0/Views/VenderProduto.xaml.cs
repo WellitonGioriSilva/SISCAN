@@ -27,12 +27,17 @@ namespace SISCAN.Formularios
     {
         int quantidade;
         double valorTotal;
+        
         Venda venda = new Venda();
-        Recebimento recebimento = new Recebimento();
-        VendaProduto vendaProduto = new VendaProduto();
+        
         List<VendaProduto> listVendaProduto = new List<VendaProduto>();
+
+        Recebimento recebimento = new Recebimento();
+
         Funcionario funcionario;
+        
         int idCaixa;
+       
         public VenderProduto(Funcionario func, int idCaix)
         {
             InitializeComponent();
@@ -50,14 +55,15 @@ namespace SISCAN.Formularios
                 recebimento = new Recebimento();
                 recebimento.FormaPagamento = new FormaPagamento();
                 recebimento.Caixa = new Caixa();
-                vendaProduto = new VendaProduto();
-                vendaProduto.Produto = new Produto();
-                vendaProduto.Venda = new Venda();
-                recebimento.Caixa = new Caixa();
-                vendaProduto.Venda.Funcionario = new Funcionario();
-                venda.Funcionario = new Funcionario();
 
-                if(idCaixa > 0)
+                //vendaProduto = new VendaProduto();
+                //vendaProduto.Produto = new Produto();
+                //vendaProduto.Venda = new Venda();
+                //recebimento.Caixa = new Caixa();
+                //vendaProduto.Venda.Funcionario = new Funcionario();
+                //venda.Funcionario = new Funcionario();
+
+                if (idCaixa > 0)
                 {
                     if (cbFormaPag.SelectedItem is FormaPagamento selectedItemPag)
                     {
@@ -66,24 +72,29 @@ namespace SISCAN.Formularios
                         {
                             if (cbCliente.SelectedItem is Cliente selectedItemCli)
                             {
-                                //Atribuindo valores aos objetos
-                                vendaProduto.Produto.Id = selectedItemProd.Id;
-                                vendaProduto.Produto.Nome = selectedItemProd.Nome;
+
                                 recebimento.Caixa.id = idCaixa;
                                 recebimento.FormaPagamento.Id = selectedItemPag.Id;
 
+                                VendaProduto vendaProduto = new VendaProduto();
+
+                                //Atribuindo valores aos objetos
+                                vendaProduto.Produto = selectedItemProd;
                                 vendaProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
 
                                 vendaProduto.Produto.ValorVen = selectedItemProd.ValorVen;
-                                vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
-                                valorTotal += vendaProduto.Venda.Valor;
+                                //vendaProduto.Venda.Valor = vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
+                                valorTotal += vendaProduto.Produto.ValorVen * Convert.ToDouble(tbQuantidade.Text);
+
                                 lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
 
                                 //Atribuindo aos lists e objtos os respectivos valores
-                                vendaProduto.Venda.Funcionario.Nome = funcionario.Nome;
-                                venda.Funcionario.Id = funcionario.Id;
+                                //vendaProduto.Venda.Funcionario.Nome = funcionario.Nome;
+                               
+                                venda.Funcionario = funcionario;
                                 venda.Valor = valorTotal;
-                                venda.Cliente.Id = selectedItemCli.Id;
+                                venda.Cliente = selectedItemCli;
+                                venda.Items.Add(vendaProduto);
 
                                 dgvList.Items.Add(vendaProduto);
                                 listVendaProduto.Add(vendaProduto);
@@ -131,16 +142,17 @@ namespace SISCAN.Formularios
             listVendaProduto.RemoveAt(selectedIndex);
             dgvList.Items.RemoveAt(selectedIndex);
             valorTotal = 0;
+           
             foreach (var item in dgvList.Items)
             {
-                if (item is VendaProduto)
-                {
-                    var rowData = (VendaProduto)item;
+                //if (item is VendaProduto)
+                //{
+                //    var rowData = (VendaProduto)item;
 
-                    var valor = rowData.Venda.Valor;
+                //    var valor = rowData.Valor;
 
-                    valorTotal += valor;
-                }
+                //    valorTotal += valor;
+                //}
             }
             lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
         }

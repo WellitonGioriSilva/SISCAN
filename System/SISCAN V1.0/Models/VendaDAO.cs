@@ -20,7 +20,7 @@ namespace SISCAN.Models
             conn = new Conexao();
 
         }
-        public void Insert(Venda venda, List<VendaProduto> vendaProduto, Recebimento recebimento)
+        public void Insert(Venda venda, List<VendaProduto> vendaProdutos, Recebimento recebimento)
         {
             try
             {
@@ -32,10 +32,10 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@idCliente", venda.Cliente.Id);
                 query.Parameters.AddWithValue("@idCaixa", recebimento.Caixa.id);
                 query.Parameters.AddWithValue("@idFormPag", recebimento.FormaPagamento.Id);
-                query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
-                query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
+                //query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
+                //query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
 
-                query.ExecuteNonQuery();
+                //query.ExecuteNonQuery();
 
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
@@ -44,22 +44,32 @@ namespace SISCAN.Models
                     condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
 
-                query.CommandText = $"CALL InsertVendaProduto(@quantidade, @id_fk_prod, @result1)";
+                reader.Close();
 
-                foreach (VendaProduto vendaProd in vendaProduto)
+                
+
+                
+
+                foreach (VendaProduto vendaProd in venda.Items)
                 {
-                    query.Parameters.Clear();
+                   
+                    MessageBox.Show(vendaProd.Quantidade.ToString());
+
+                    query = conn.Query();
+                    query.CommandText = $"CALL InsertVendaProduto(@quantidade, @id_fk_prod)";
+
                     query.Parameters.AddWithValue("@quantidade", vendaProd.Quantidade);
                     query.Parameters.AddWithValue("@id_fk_prod", vendaProd.Produto.Id);
 
-                    query.ExecuteNonQuery();
+                    reader = query.ExecuteReader();
 
-                    MySqlDataReader reader1 = query.ExecuteReader();
-                    if (reader1.Read())
-                    {
-                        mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
-                        condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
-                    }
+                    //if (reader.Read())
+                    //{
+                    //    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                    //    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
+                    //}
+
+                    reader.Close();
 
                 }
             }
@@ -67,10 +77,6 @@ namespace SISCAN.Models
             {
                 MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
-            }
-            finally
-            {
-                conn.Close();
             }
         }
     }

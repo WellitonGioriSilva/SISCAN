@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="Correios.CEP.Net" Version="1.1.6" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="Json.NET.Web" Version="1.0.49" />
     <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
     <PackageReference Include="MessagePack" Version="2.5.129" />

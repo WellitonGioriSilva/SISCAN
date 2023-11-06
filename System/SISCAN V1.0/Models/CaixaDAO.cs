@@ -1,12 +1,18 @@
-﻿using MySql.Data.MySqlClient;
+﻿using iTextSharp.text.pdf;
+using iTextSharp.text;
+using MySql.Data.MySqlClient;
 using SISCAN.Database;
 using SISCAN.Helpers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Reflection.PortableExecutable;
+using Microsoft.Win32;
 
 namespace SISCAN.Models
 {
@@ -61,17 +67,18 @@ namespace SISCAN.Models
             }
         }
 
-        public void Insert(Caixa caixa)
+        public void Insert(Caixa caixa, int IdFunc)
         {
             try
             {
+                conn = new Conexao();
                 //var caixaId = new CaixaDao().Insert(caixa.Caixa);
 
                 var query = conn.Query();
                 query.CommandText = $"CALL InsertCaixa(@valor_inicial, @id_func)";
 
                 query.Parameters.AddWithValue("@valor_inicial", caixa.ValorIncial);
-                query.Parameters.AddWithValue("@id_func", caixa.funcionario.Id);
+                query.Parameters.AddWithValue("@id_func", IdFunc);
 
                 MySqlDataReader reader = query.ExecuteReader();
                 if (reader.Read())
@@ -223,6 +230,56 @@ namespace SISCAN.Models
             {
                 conn.Close();
             }
+        }
+
+        public void Extrato(int busca)
+        {
+            try
+            {
+                var query = conn.Query();
+                query.CommandText = $"SELECT * FROM Caixa WHERE (id_cai LIKE '%{busca}%') AND (visivel_cai = 'Sim');";
+                MySqlDataReader reader = query.ExecuteReader();
+                // Crie um diálogo de salvamento de arquivo
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Arquivo PDF|*.pdf";
+                saveFileDialog.FileName = "extrato.pdf";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    // Crie um novo documento PDF
+                    Document doc = new Document();
+                    PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(saveFileDialog.FileName, FileMode.Create));
+
+                    doc.Open();
+
+                    // Crie uma tabela no PDF para armazenar os dados
+                    PdfPTable table = new PdfPTable(reader.FieldCount);
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        table.AddCell(new PdfPCell(new Phrase(reader.GetName(i))));
+                    }
+
+                    while (reader.Read())
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            table.AddCell(new PdfPCell(new Phrase(reader[i].ToString())));
+                        }
+                    }
+
+                    doc.Add(table);
+
+                    doc.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro 3007 : Contate o suporte!");
+            }
+            finally
+            {
+                conn.Close();
+            }          
         }
     }
 }

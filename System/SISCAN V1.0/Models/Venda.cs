@@ -14,5 +14,6 @@ namespace SISCAN.Models
         public double Valor { get; set; }
         public Funcionario Funcionario { get; set; }
         public Cliente Cliente { get; set; }
+        public List<VendaProduto> Items { get; set; } = new List<VendaProduto>();
     }
 }

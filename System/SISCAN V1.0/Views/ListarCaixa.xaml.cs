@@ -68,6 +68,10 @@ namespace SISCAN.Views
                CaixaDAO caixaDAO = new CaixaDAO();
                caixaDAO.Extrato(Convert.ToInt32(tbNum.Text));
             }
+            else
+            {
+                MessageBox.Show("Digite o número do caixa!");
+            }
         }
     }
 }

@@ -237,7 +237,8 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"SELECT * FROM Caixa WHERE (id_cai LIKE '%{busca}%') AND (visivel_cai = 'Sim');";
+                query.CommandText = $"CALL Extrato(@id)";
+                query.Parameters.AddWithValue("@id", busca);
                 MySqlDataReader reader = query.ExecuteReader();
                 // Crie um diálogo de salvamento de arquivo
                 SaveFileDialog saveFileDialog = new SaveFileDialog();

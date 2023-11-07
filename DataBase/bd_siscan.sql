@@ -645,7 +645,8 @@ END;
 $$ DELIMITER ;
 
 #Checks	
-SELECT * FROM funcionario;
+SELECT * FROM venda;
+SELECT * FROM venda_produto;
 SELECT * FROM caixa;
 
 #Extrato
@@ -659,11 +660,11 @@ BEGIN
     Caixa.hora_fechamento_cai as 'Hora de Fechamento',
     Caixa.valor_inicial_cai as 'Valor Inicial',
     Caixa.valor_final_cai as 'Valor Final',
-    Caixa.id_func_fk as 'Funcionário Responsável',
+    Funcionario.nome_func as 'Funcionário Responsável',
     Venda.id_vend as 'Venda'
-    FROM Caixa, Venda
+    FROM Caixa, Venda, Funcionario
     WHERE 
-    ((Caixa.id_cai = id) AND (Caixa.visivel_cai = 'Sim')) AND (Venda.id_cai_fk = Caixa.id_cai)
+    ((Caixa.id_cai = id) AND (Caixa.visivel_cai = 'Sim')) AND ((Venda.id_cai_fk = Caixa.id_cai) AND (Venda.id_func_fk = Funcionario.id_func))
     GROUP BY Caixa.id_cai
     ORDER BY Caixa.id_cai;
 END;

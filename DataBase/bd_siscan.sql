@@ -441,7 +441,6 @@ IF((quantidade <> '') AND (id_fk <> '')) THEN
 	ELSE
 		UPDATE Estoque SET quantidade_est = quantidade_est + quantidade, validade_est = validade, visivel_est = "Sim";
 	END IF;
-    SELECT "0", true as SUCESSO;
 ELSE
     SELECT "Todos os campos devem ser preenchidos!", false as resultado;
 END IF;
@@ -651,7 +650,7 @@ SELECT * FROM caixa;
 
 #Extrato
 DELIMITER $$
-CREATE PROCEDURE Extrato(id int)
+CREATE PROCEDURE ExtratoCaixa(id int)
 BEGIN
 	SELECT
     Caixa.id_cai as 'Número do Caixa',
@@ -660,14 +659,47 @@ BEGIN
     Caixa.hora_fechamento_cai as 'Hora de Fechamento',
     Caixa.valor_inicial_cai as 'Valor Inicial',
     Caixa.valor_final_cai as 'Valor Final',
-    Funcionario.nome_func as 'Funcionário Responsável',
-    Venda.id_vend as 'Venda'
-    FROM Caixa, Venda, Funcionario
+    Funcionario.nome_func as 'Funcionário Responsável'
+    FROM Caixa, Funcionario, Venda
     WHERE 
-    ((Caixa.id_cai = id) AND (Caixa.visivel_cai = 'Sim')) AND ((Venda.id_cai_fk = Caixa.id_cai) AND (Venda.id_func_fk = Funcionario.id_func))
-    GROUP BY Caixa.id_cai
+    ((Caixa.id_cai = id) AND (Caixa.visivel_cai = 'Sim')) AND (Venda.id_cai_fk = id) AND ((Venda.id_func_fk = Funcionario.id_func))
+    GROUP BY 
+    Caixa.id_cai,
+	Caixa.data_cai,
+	Caixa.hora_abertura_cai,
+	Caixa.hora_fechamento_cai,
+	Caixa.valor_inicial_cai,
+	Caixa.valor_final_cai,
+	Funcionario.nome_func
     ORDER BY Caixa.id_cai;
 END;
 $$ DELIMITER ;
 
-CALL Extrato(1);
+DELIMITER $$
+CREATE PROCEDURE ExtratoVendas(id int)
+BEGIN
+	SELECT
+    Venda.id_vend as 'Número da Venda',
+    Venda.data_vend as 'Data',
+    Venda.hora_vend as 'Hora da venda',
+    Produto.nome_prod as 'Produtos',
+    Venda_produto.quantidade_vend_prod as 'Quantidade de Produtos',
+    Venda.valor_vend as 'Valor da venda'
+    FROM Venda, Produto, Venda_produto
+    WHERE 
+    ((Venda_produto.id_vend_fk = Venda.id_vend) AND (Produto.id_prod = Venda_produto.id_prod_fk)) AND (Venda.id_cai_fk = id)
+    GROUP BY 
+    Venda.id_vend,
+    Venda.data_vend,
+    Venda.hora_vend,
+    Produto.nome_prod,
+	Venda_produto.quantidade_vend_prod,
+    Venda.valor_vend
+    ORDER BY Venda.id_vend;
+END;
+$$ DELIMITER ;
+
+CALL ExtratoVendas(1);
+
+select * from fornecedor;
+select * from compra_produto;

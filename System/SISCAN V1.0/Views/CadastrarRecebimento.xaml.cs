@@ -56,7 +56,10 @@ namespace SISCAN.Formularios
                 RecebimentoDAO recebimentoDAO = new RecebimentoDAO();
                 //recebimentoDAO.Insert(recebimento);
                 MessageBox.Show(recebimentoDAO.mensagem);
-                Clear();
+                if (recebimentoDAO.condicao == true)
+                {
+                    Clear();
+                }
             }
             catch (Exception ex)
             {

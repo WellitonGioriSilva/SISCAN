@@ -58,7 +58,10 @@ namespace SISCAN.Views
                     UsuarioDAO usuarioDAO = new UsuarioDAO();
                     usuarioDAO.Insert(usuario, contador);
                     MessageBox.Show(usuarioDAO.mensagem);
-                    Clear();
+                    if (usuarioDAO.condicao == true)
+                    {
+                        Clear();
+                    }
                 }
                 catch (Exception ex)
                 {

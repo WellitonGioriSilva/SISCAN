@@ -48,10 +48,10 @@ namespace SISCAN.Formularios
                 if (cbFornecedor.SelectedItem is Fornecedor selectedItemForn)
                 {
                     //Instanciando Objetos
-                    compraProduto = new CompraProduto();
-                    compraProduto.Produto = new Produto();
-                    compraProduto.Compra = new Compra();
-                    compraProduto.Compra.Fornecedor = new Fornecedor();
+                    //compraProduto = new CompraProduto();
+                    //compraProduto.Produto = new Produto();
+                    //compraProduto.Compra = new Compra();
+                    //compraProduto.Compra.Fornecedor = new Fornecedor();
                     compra.Fornecedor = new Fornecedor();
                     despesa = new Despesa();
                     estoque = new Estoque();
@@ -59,17 +59,23 @@ namespace SISCAN.Formularios
                     //Atribuindo a o cb o objeto Produto
                     if (cbProduto.SelectedItem is Produto selectedItemProd)
                     {
+                        compraProduto = new CompraProduto();
+
                         //Atribuindo valores aos objetos
                         compra.Fornecedor.Id = selectedItemForn.Id;
-
-                        compraProduto.Produto.Id = selectedItemProd.Id;
-                        compraProduto.Produto.Nome = selectedItemProd.Nome;
-
+                        compraProduto.Produto = selectedItemProd;
                         compraProduto.Quantidade = Convert.ToInt32(tbQuantidade.Text);
+                        compraProduto.Produto.Valor = selectedItemProd.Valor;
+
+                        //compraProduto.Produto.Id = selectedItemProd.Id;
+                        //compraProduto.Produto.Nome = selectedItemProd.Nome;
+
 
                         compraProduto.Produto.Valor = selectedItemProd.Valor;
-                        compraProduto.Compra.Valor = compraProduto.Produto.Valor * Convert.ToDouble(tbQuantidade.Text);
-                        valorTotal += compraProduto.Compra.Valor;
+                        //compraProduto.Compra.Valor = compraProduto.Produto.Valor * Convert.ToDouble(tbQuantidade.Text);
+                        //valorTotal += compraProduto.Produto.Valor;
+
+                        valorTotal += compraProduto.Produto.Valor * Convert.ToDouble(tbQuantidade.Text);
                         lbValorTotal.Content = $"Valor Total: {valorTotal.ToString("C")}";
 
                         //Atribuindo aos lists e objtos os respectivos valores
@@ -104,7 +110,10 @@ namespace SISCAN.Formularios
                 CompraDAO compraDAO = new CompraDAO();
                 compraDAO.Insert(compra, listCompraProduto, despesa, estoque);
                 MessageBox.Show(compraDAO.mensagem);
-                Clear();
+                if(compraDAO.condicao == true)
+                {
+                    Clear();
+                }
             }
             catch (Exception ex)
             {
@@ -134,7 +143,7 @@ namespace SISCAN.Formularios
                 {
                     var rowData = (CompraProduto)item;
 
-                    var valor = rowData.Compra.Valor;
+                    var valor = rowData.Produto.Valor;
 
                     valorTotal += valor;
                 }

@@ -49,7 +49,10 @@ namespace SISCAN.Formularios
                     caixaDAO.Insert(caixa, funcionario.Id);
                     MessageBox.Show(caixaDAO.mensagem);
 
-                    Clear();
+                    if (caixaDAO.condicao == true)
+                    {
+                        Clear();
+                    }
                 }
                 else
                 {

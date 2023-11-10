@@ -45,9 +45,11 @@ namespace SISCAN.Formularios
             {
                 if (tbRua.Text != "" && tbBairro.Text != "")
                 {
-                    if (ValidacaoCPFeCNPJ.ValidateCNPJ(tbCnpj.Text) == "Erro")
+                    //string verf = ValidacaoCPFeCNPJ.ValidateCNPJ(tbCnpj.Text);
+                    string verf = "Sucesso";
+                    if (verf == "Erro")
                     {
-                        MessageBox.Show("Cpf digitado é inválido!");
+                        MessageBox.Show("Cnpj digitado é inválido!");
                     }
                     else
                     {
@@ -69,16 +71,21 @@ namespace SISCAN.Formularios
                         fornecedorDAO.Insert(fornecedor);
                         MessageBox.Show(fornecedorDAO.mensagem);
 
-                        Clear();
+                        if (fornecedorDAO.condicao == true)
+                        {
+                            Clear();
+                        }
                     }
                 }
                 else
                 {
                     MessageBox.Show("Aguarde à consulta ao cep!");
+                    Buscar();
                 }              
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3008 : Contate o suporte");
             }
         }

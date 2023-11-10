@@ -34,27 +34,30 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@parcelas", despesa.Parcelas);
 
                 MySqlDataReader reader = query.ExecuteReader();
+
                 if (reader.Read())
                 {
                     mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
                     condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
 
-                query.CommandText = $"CALL InsertCompraProduto(@lote, @quantidade, @id_fk_prod, @validade)";
+                reader.Close();
 
                 foreach (CompraProduto compraProd in compraProduto)
                 {
-                    query.Parameters.Clear();
+                    query = conn.Query();
+                    query.CommandText = $"CALL InsertCompraProduto(@lote, @quantidade, @id_fk_prod, @validade)";
+                    
                     query.Parameters.AddWithValue("@quantidade", compraProd.Quantidade);
                     query.Parameters.AddWithValue("@id_fk_prod", compraProd.Produto.Id);
                     query.Parameters.AddWithValue("@lote", estoque.Lote);
                     query.Parameters.AddWithValue("@validade", estoque.Validade);
 
-                    MySqlDataReader reader1 = query.ExecuteReader();
+                    reader = query.ExecuteReader();
                     if (reader.Read())
                     {
-                        mensagem = reader1.GetString(0); // Pega o primeiro campo, que é a string
-                        condicao = reader1.GetBoolean(1); // Pega o segundo campo, que é o boolean
+                        mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                        condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                     }
                 }
             }

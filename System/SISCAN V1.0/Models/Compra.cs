@@ -12,5 +12,7 @@ namespace SISCAN.Models
         public double Valor { get; set; }
         public DateTime? Data { get; set; }
         public Fornecedor Fornecedor { get; set; }
+        public List<CompraProduto> Items { get; set; } = new List<CompraProduto>();
+
     }
 }

@@ -26,28 +26,28 @@
         </Grid.RowDefinitions>
 
         <StackPanel Margin="0 0 0 0">
-            <Border BorderThickness="1.5" Margin="30 40 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
-                <ComboBox x:Name="cbProduto" materialDesign:HintAssist.Hint="Produto:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
-            </Border>
-            
-            <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+            <Border BorderThickness="1.5" Margin="30 30 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <ComboBox x:Name="cbCliente" materialDesign:HintAssist.Hint="Cliente:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
             </Border>
-            
+
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <ComboBox x:Name="cbFormaPag" materialDesign:HintAssist.Hint="Forma de Pagamento:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
             </Border>
-
-            <StackPanel Margin="-20 -210 0 0" Width="120" Height="36">
-                <Button x:Name="btQuant" Margin="0,1,80,0" FontSize="20" Width="43" Click="btQuant_Click">+</Button>
-                <TextBox x:Name="tbQuantidade" Width="58" Margin="0,-33,-40,0" Height="24" FontFamily="Century" TextAlignment="Center" TextChanged="tbQuantidade_TextChanged"/>
-            </StackPanel>
 
             <Border BorderThickness="1.5" Margin="30 10 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
                 <Label x:Name="lbValorTotal" FontFamily="Century" Margin="4,4,0,0">Valor Total:</Label>
             </Border>
 
-            <StackPanel Grid.Row="0" Margin="0,-120,50,0" Width="164" HorizontalAlignment="Right" Height="72">
+            <StackPanel Margin="-20 25 0 0" Width="120" Height="36">
+                <Button x:Name="btQuant" Margin="0,1,80,0" FontSize="20" Width="43" Click="btQuant_Click">+</Button>
+                <TextBox x:Name="tbQuantidade" Width="58" Margin="0,-33,-40,0" Height="24" FontFamily="Century" TextAlignment="Center" TextChanged="tbQuantidade_TextChanged"/>
+            </StackPanel>
+
+            <Border BorderThickness="1.5" Margin="30 -35 0 0" HorizontalAlignment="Left" BorderBrush="White" CornerRadius="20" Height="34" Width="320" Background="#1FFFFFFF">
+                <ComboBox x:Name="cbProduto" materialDesign:HintAssist.Hint="Produto:" Margin="8,4,8,0" BorderBrush="White" FontFamily="Century" Height="29" VerticalAlignment="Top"/>
+            </Border>
+
+            <StackPanel Grid.Row="0" Margin="0,-60,50,0" Width="164" HorizontalAlignment="Right" Height="72">
                 <StackPanel Width="175" Height="78" Margin="0,0,0,0" >
                     <Button x:Name="btAdd"
     Height="40"

@@ -236,10 +236,6 @@ namespace SISCAN.Models
         {
             try
             {
-                var query = conn.Query();
-                query.CommandText = $"CALL Extrato(@id)";
-                query.Parameters.AddWithValue("@id", busca);
-                MySqlDataReader reader = query.ExecuteReader();
                 // Crie um diálogo de salvamento de arquivo
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "Arquivo PDF|*.pdf";
@@ -253,34 +249,89 @@ namespace SISCAN.Models
 
                     doc.Open();
 
-                    // Crie uma tabela no PDF para armazenar os dados
-                    PdfPTable table = new PdfPTable(reader.FieldCount);
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        table.AddCell(new PdfPCell(new Phrase(reader.GetName(i))));
-                    }
+                    // Adicione a primeira seção com título
+                    AddCaixa(doc, "Caixa", busca);
 
-                    while (reader.Read())
-                    {
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            table.AddCell(new PdfPCell(new Phrase(reader[i].ToString())));
-                        }
-                    }
-
-                    doc.Add(table);
+                    // Adicione a segunda seção com título
+                    AddVendas(doc, "Vendas", busca);
 
                     doc.Close();
                 }
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
             }
             finally
             {
                 conn.Close();
-            }          
+            }
+        }
+
+        private void AddCaixa(Document doc, string sectionTitle, int busca)
+        {
+            // Adicione o título da seção
+            doc.Add(new Paragraph(sectionTitle, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)));
+
+            var query = conn.Query();
+            query.CommandText = $"CALL ExtratoCaixa(@id)";
+            query.Parameters.AddWithValue("@id", busca);
+            MySqlDataReader reader = query.ExecuteReader();
+
+            // Crie uma tabela no PDF para armazenar os dados
+            PdfPTable table = new PdfPTable(reader.FieldCount);
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                table.AddCell(new PdfPCell(new Phrase(reader.GetName(i))));
+            }
+
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    table.AddCell(new PdfPCell(new Phrase(reader[i].ToString())));
+                }
+            }
+
+            doc.Add(table);
+
+            // Adicione uma quebra de página entre as seções
+            doc.NewPage();
+
+            reader.Close();
+        }
+        private void AddVendas(Document doc, string sectionTitle, int busca)
+        {
+            // Adicione o título da seção
+            doc.Add(new Paragraph(sectionTitle, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)));
+
+            var query = conn.Query();
+            query.CommandText = $"CALL ExtratoVendas(@id)";
+            query.Parameters.AddWithValue("@id", busca);
+            MySqlDataReader reader = query.ExecuteReader();
+
+            // Crie uma tabela no PDF para armazenar os dados
+            PdfPTable table = new PdfPTable(reader.FieldCount);
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                table.AddCell(new PdfPCell(new Phrase(reader.GetName(i))));
+            }
+
+            while (reader.Read())
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    table.AddCell(new PdfPCell(new Phrase(reader[i].ToString())));
+                }
+            }
+
+            doc.Add(table);
+
+            // Adicione uma quebra de página entre as seções
+            doc.NewPage();
+
+            reader.Close();
         }
     }
 }

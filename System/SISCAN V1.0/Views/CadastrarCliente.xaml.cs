@@ -51,7 +51,6 @@ namespace SISCAN.Formularios
                     }
                     else
                     {
-                        Buscar();
                         //Setando informações na tabela cliente
                         Cliente cliente = new Cliente();
                         cliente.Nome = tbNome.Text;
@@ -69,12 +68,16 @@ namespace SISCAN.Formularios
                         ClienteDAO clienteDAO = new ClienteDAO();
                         clienteDAO.Insert(cliente);
                         MessageBox.Show(clienteDAO.mensagem);
-                        Clear();
+                        if (clienteDAO.condicao == true)
+                        {
+                            Clear();
+                        }
                     }
                 }
                 else
                 {
                     MessageBox.Show("Aguarde à consulta ao cep!");
+                    Buscar();
                 }
             }
             catch (Exception ex)
@@ -119,45 +122,42 @@ namespace SISCAN.Formularios
 
         public async void Buscar()
         {
-            if (tbBairro.Text == "" && tbRua.Text != "")
+            string cep = tbCep.Text;
+            if (!string.IsNullOrEmpty(cep))
             {
-                string cep = tbCep.Text;
-                if (!string.IsNullOrEmpty(cep))
+                string url = $"https://viacep.com.br/ws/{cep}/json/";
+
+                using (HttpClient client = new HttpClient())
                 {
-                    string url = $"https://viacep.com.br/ws/{cep}/json/";
-
-                    using (HttpClient client = new HttpClient())
+                    if (cep.Length == 9)
                     {
-                        if (cep.Length == 9)
+                        try
                         {
-                            try
-                            {
-                                string response = await client.GetStringAsync(url);
-                                var endereco = JsonConvert.DeserializeObject<Endereco>(response);
+                            string response = await client.GetStringAsync(url);
+                            var endereco = JsonConvert.DeserializeObject<Endereco>(response);
 
-                                if (endereco != null)
-                                {
-                                    tbRua.Text = endereco.Logradouro;
-                                    tbBairro.Text = endereco.Bairro;
-                                    cidade = endereco.Localidade;
-                                    estado = endereco.Uf;
-                                }
-                                else
-                                {
-                                    MessageBox.Show("CEP não encontrado.");
-                                }
-                            }
-                            catch (Exception ex)
+                            if (endereco != null)
                             {
-                                MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
+                                tbRua.Text = endereco.Logradouro;
+                                tbBairro.Text = endereco.Bairro;
+                                cidade = endereco.Localidade;
+                                estado = endereco.Uf;
                             }
+                            else
+                            {
+                                MessageBox.Show("CEP não encontrado.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao buscar CEP: " + ex.Message);
                         }
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Por favor, insira um CEP válido.");
-                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, insira um CEP válido.");
             }
         }
 

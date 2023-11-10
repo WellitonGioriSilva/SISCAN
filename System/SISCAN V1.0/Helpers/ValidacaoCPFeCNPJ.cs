@@ -1,4 +1,7 @@
-﻿using System;
+﻿using iTextSharp.text;
+using MaterialDesignColors;
+using SISCAN.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,17 +90,22 @@ namespace SISCAN.Helpers
                 int.Parse(cnpjNumeros[13].ToString()) == digitoVerificador2)
             {
                 // Formata e retorna o CNPJ com máscara
-                return string.Format("{0}.{1}.{2}/{3}-{4}",
-                    cnpjNumeros.Substring(0, 2),
-                    cnpjNumeros.Substring(2, 3),
-                    cnpjNumeros.Substring(5, 3),
-                    cnpjNumeros.Substring(8, 4),
-                    cnpjNumeros.Substring(12, 2));
+                return FormatCNPJ(cnpjNumeros);
             }
             else
             {
                 return "Erro";
             }
+        }
+
+        private static string FormatCNPJ(string cnpjNumeros)
+        {
+            return string.Format("{0}.{1}.{2}/{3}-{4}",
+                cnpjNumeros.Substring(0, 2),
+                cnpjNumeros.Substring(2, 3),
+                cnpjNumeros.Substring(5, 3),
+                cnpjNumeros.Substring(8, 4),
+                cnpjNumeros.Substring(12, 2));
         }
     }
 }

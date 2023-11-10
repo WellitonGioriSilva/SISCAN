@@ -43,7 +43,10 @@ namespace SISCAN.Formularios
                 ProdutoDAO produtoDAO = new ProdutoDAO();
                 produtoDAO.Insert(produto);
                 MessageBox.Show(produtoDAO.mensagem);
-                Clear();
+                if (produtoDAO.condicao == true)
+                {
+                    Clear();
+                }
             }
             catch (Exception ex)
             {
@@ -55,6 +58,7 @@ namespace SISCAN.Formularios
         {
             tbNome.Clear();
             tbMarca.Clear();
+            tbValor.Clear();
             cbTipo.SelectedIndex = -1;
         }
 

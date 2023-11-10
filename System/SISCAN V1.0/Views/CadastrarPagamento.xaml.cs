@@ -67,7 +67,10 @@ namespace SISCAN.Views
                     PagamentoDAO pagamentoDAO = new PagamentoDAO();
                     pagamentoDAO.Insert(pagamento, despesa, parcelas);
                     MessageBox.Show(pagamentoDAO.mensagem);
-                    Clear();
+                    if (pagamentoDAO.condicao == true)
+                    {
+                        Clear();
+                    }
                 }
             }
             catch (Exception ex)

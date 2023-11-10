@@ -32,29 +32,19 @@ namespace SISCAN.Models
                 query.Parameters.AddWithValue("@idCliente", venda.Cliente.Id);
                 query.Parameters.AddWithValue("@idCaixa", recebimento.Caixa.id);
                 query.Parameters.AddWithValue("@idFormPag", recebimento.FormaPagamento.Id);
-                //query.Parameters.Add(new MySqlParameter("@result", MySqlDbType.VarChar));
-                //query.Parameters["@result"].Direction = System.Data.ParameterDirection.Output;
-
-                //query.ExecuteNonQuery();
 
                 MySqlDataReader reader = query.ExecuteReader();
+
                 if (reader.Read())
                 {
                     mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
                     condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
                 }
 
-                reader.Close();
-
-                
-
-                
+                reader.Close();           
 
                 foreach (VendaProduto vendaProd in venda.Items)
-                {
-                   
-                    MessageBox.Show(vendaProd.Quantidade.ToString());
-
+                {                
                     query = conn.Query();
                     query.CommandText = $"CALL InsertVendaProduto(@quantidade, @id_fk_prod)";
 
@@ -63,11 +53,11 @@ namespace SISCAN.Models
 
                     reader = query.ExecuteReader();
 
-                    //if (reader.Read())
-                    //{
-                    //    mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
-                    //    condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
-                    //}
+                    if (reader.Read())
+                    {
+                        mensagem = reader.GetString(0); // Pega o primeiro campo, que é a string
+                        condicao = reader.GetBoolean(1); // Pega o segundo campo, que é o boolean
+                    }
 
                     reader.Close();
 

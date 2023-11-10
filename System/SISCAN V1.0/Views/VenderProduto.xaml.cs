@@ -118,7 +118,10 @@ namespace SISCAN.Formularios
                 VendaDAO vendaDAO = new VendaDAO();
                 vendaDAO.Insert(venda, listVendaProduto, recebimento);
                 MessageBox.Show(vendaDAO.mensagem);
-                Clear();
+                if (vendaDAO.condicao == true)
+                {
+                    Clear();
+                }
             }
             catch (Exception ex)
             {
@@ -166,8 +169,6 @@ namespace SISCAN.Formularios
         private void ClearAdd()
         {
             cbProduto.SelectedIndex = -1;
-            cbCliente.SelectedIndex = -1;
-            cbFormaPag.SelectedIndex = -1;
             tbQuantidade.Text = "0";
         }
         

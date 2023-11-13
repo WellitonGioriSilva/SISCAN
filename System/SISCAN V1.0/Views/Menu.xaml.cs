@@ -35,5 +35,14 @@ namespace SISCAN.Formularios
 
             lbProduto.Content = produto.Nome;
         }
+
+        public void CarregarLembrete()
+        {
+            Despesa despesa = new Despesa();
+            DespesaDAO despesaDAO = new DespesaDAO();
+            despesa = despesaDAO.Lembrete();
+
+            lbLembrete.Text = despesa.Nome;
+        }
     }
 }

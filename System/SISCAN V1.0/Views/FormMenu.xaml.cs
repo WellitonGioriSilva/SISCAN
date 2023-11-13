@@ -50,12 +50,6 @@ namespace SISCAN.Formularios
             Frame.NavigationService.Navigate(new CadastrarDespesa());
         }
 
-        private void btRecebimento_Click(object sender, RoutedEventArgs e)
-        {
-            lbTitulo.Content = "Receber Recebimento";
-            Frame.NavigationService.Navigate(new CadastrarRecebimento());
-        }
-
         private void btFuncao_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Cadastrar Função";
@@ -146,14 +140,14 @@ namespace SISCAN.Formularios
             btCaixa.Visibility = Visibility.Collapsed;
             btVenda.Visibility = Visibility.Collapsed;
             btCliente.Visibility = Visibility.Collapsed;
-            //btRecebimento.Visibility = Visibility.Collapsed;
+            btRecebimento.Visibility = Visibility.Collapsed;
 
             if (usuario.Acesso == 1)
             {
                 btCaixa.Visibility = Visibility.Visible;
                 btVenda.Visibility = Visibility.Visible;
                 btCliente.Visibility = Visibility.Visible;
-                //btRecebimento.Visibility = Visibility.Visible;
+                btRecebimento.Visibility = Visibility.Visible;
             }
             
             if (usuario.Acesso == 2)
@@ -189,7 +183,7 @@ namespace SISCAN.Formularios
                 btCaixa.Visibility = Visibility.Visible;
                 btVenda.Visibility = Visibility.Visible;
                 btCliente.Visibility = Visibility.Visible;
-                //btRecebimento.Visibility = Visibility.Visible;
+                btRecebimento.Visibility = Visibility.Visible;
             }
         }
 
@@ -210,6 +204,12 @@ namespace SISCAN.Formularios
         {
             lbTitulo.Content = "Fechar Caixa";
             Frame.NavigationService.Navigate(new FechamentoCaixa());
+        }
+
+        private void btRecebimento_Click(object sender, RoutedEventArgs e)
+        {
+            lbTitulo.Content = "Recebimentos";
+            Frame.NavigationService.Navigate(new ListarRecebimento());
         }
     }
 }

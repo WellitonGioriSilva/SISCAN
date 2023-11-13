@@ -52,8 +52,7 @@
                         </LinearGradientBrush>
                     </Border.Background>
                     <StackPanel>
-                        <TextBlock TextWrapping="Wrap" Text="-Pagamento de Insumos para a produção." Foreground="White" FontFamily="Century" FontSize="20" Margin="5,10,0,0"/>
-                        <TextBlock TextWrapping="Wrap" Text="-Pagamento da conta de energia." FontSize="20" FontFamily="Century" Foreground="White" Margin="5,10,0,0"/>
+                        <TextBlock x:Name="lbLembrete" TextWrapping="Wrap" Text="" Foreground="White" FontFamily="Century" FontSize="20" Margin="5,10,0,0"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

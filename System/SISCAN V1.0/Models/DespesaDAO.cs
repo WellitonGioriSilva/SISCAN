@@ -179,5 +179,30 @@ namespace SISCAN.Models
             }
         }
 
+        public Despesa Lembrete()
+        {
+            try
+            {
+                Despesa list = new Despesa();
+
+                var query = conn.Query();
+
+                query.CommandText = "CALL Lembrete";
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Nome = DAOHelper.GetString(reader, "nome_desp");
+                }
+
+                return list;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
     }
 }

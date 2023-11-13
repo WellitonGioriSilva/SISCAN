@@ -699,6 +699,15 @@ BEGIN
 END;
 $$ DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE Lembrete()
+BEGIN
+DECLARE maxVencimento date;
+SELECT max(vencimento_desp) INTO maxVencimento FROM Despesa WHERE (visivel_desp = "Sim");
+SELECT * FROM Despesa WHERE vencimento_desp = maxVencimento;
+END;
+$$ DELIMITER ;
+
 CALL ExtratoVendas(1);
 
 select * from fornecedor;

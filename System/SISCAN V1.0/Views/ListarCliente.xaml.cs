@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SISCAN.Views
     public partial class ListarCliente : Page
     {
         public string textBusca;
+        Cliente selectedItem;
         public ListarCliente()
         {
             InitializeComponent();
@@ -58,6 +60,20 @@ namespace SISCAN.Views
                 clienteDAO.Delete(selectedItem);
 
                 CarregarLista();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                selectedItem = (Cliente)this.dgvList.SelectedItem;
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new UpdateCliente(selectedItem));
+            }
+            else
+            {
+                MessageBox.Show("Selecione uma função antes de atualizar!");
             }
         }
     }

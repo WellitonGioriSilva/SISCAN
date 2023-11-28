@@ -25,7 +25,7 @@ namespace SISCAN.Models
             try
             {
                 var query = conn.Query();
-                query.CommandText = $"CALL Funcao(@nome, @salario, @turno, @acesso)";
+                query.CommandText = $"CALL InsertFuncao(@nome, @salario, @turno, @acesso)";
 
                 query.Parameters.AddWithValue("@nome", funcao.Nome);
                 query.Parameters.AddWithValue("@salario", funcao.Salario);
@@ -41,6 +41,7 @@ namespace SISCAN.Models
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
             }
             finally

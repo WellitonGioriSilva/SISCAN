@@ -46,8 +46,8 @@ namespace SISCAN.Formularios
 
         private void btDespesa_Click(object sender, RoutedEventArgs e)
         {
-            lbTitulo.Content = "Cadastrar Despesa";
-            Frame.NavigationService.Navigate(new CadastrarDespesa());
+            lbTitulo.Content = "Buscar Despesa";
+            Frame.NavigationService.Navigate(new ListarDespesa());
         }
 
         private void btFuncao_Click(object sender, RoutedEventArgs e)
@@ -103,21 +103,15 @@ namespace SISCAN.Formularios
 
         private void btEstoque_Click(object sender, RoutedEventArgs e)
         {
-            lbTitulo.Content = "Cadastrar Estoque";
-            Frame.NavigationService.Navigate(new CadastrarEstoque());
+            lbTitulo.Content = "Buscar Estoque";
+            Frame.NavigationService.Navigate(new ListarEstoque());
         }
 
         private void btPagamento_Click(object sender, RoutedEventArgs e)
         {
             lbTitulo.Content = "Pagar Despesa";
-            if(caixaDAO.GetById() != null)
-            {
-                Frame.NavigationService.Navigate(new CadastrarPagamento(caixaDAO.GetById()));
-            }
-            else
-            {
-                Frame.NavigationService.Navigate(new CadastrarPagamento(0));
-            }
+            caixaDAO = new CaixaDAO();
+            Frame.NavigationService.Navigate(new CadastrarPagamento(caixaDAO.GetById()));
         }
 
         private void btUser_Click(object sender, RoutedEventArgs e)

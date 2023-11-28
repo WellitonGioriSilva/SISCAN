@@ -20,11 +20,11 @@ namespace SISCAN.Views
     /// <summary>
     /// Interação lógica para ListarCaixa.xam
     /// </summary>
-    public partial class ListarCaixa : Page
+    public partial class ListarCaixaFec : Page
     {
         public string textBusca;
         Caixa selectedItem;
-        public ListarCaixa()
+        public ListarCaixaFec()
         {
             InitializeComponent();
             CarregarLista();
@@ -34,7 +34,7 @@ namespace SISCAN.Views
         {
             CaixaDAO caixaDAO = new CaixaDAO();
 
-            dgvList.ItemsSource = caixaDAO.List(textBusca);
+            dgvList.ItemsSource = caixaDAO.ListFec(textBusca);
         }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)
@@ -86,7 +86,7 @@ namespace SISCAN.Views
             }
             else
             {
-                MessageBox.Show("Selecione uma função antes de atualizar!");
+                MessageBox.Show("Selecione uma caixa antes de atualizar!");
             }
         }
     }

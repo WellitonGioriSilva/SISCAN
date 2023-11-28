@@ -61,7 +61,7 @@ namespace SISCAN.Models
 
                 if (busca == null)
                 {
-                    query.CommandText = "SELECT * FROM Estoque LEFT JOIN Produto ON Estoque.id_prod_fk = Produto.id_prod WHERE visivel_cai = 'Sim';";
+                    query.CommandText = "SELECT * FROM Estoque LEFT JOIN Produto ON Estoque.id_prod_fk = Produto.id_prod WHERE visivel_est = 'Sim';";
                 }
                 else
                 {

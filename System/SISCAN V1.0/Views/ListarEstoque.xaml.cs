@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SISCAN.Views
     public partial class ListarEstoque : Page
     {
         public string textBusca;
+        Estoque selectedItem;
         public ListarEstoque()
         {
             InitializeComponent();
@@ -59,6 +61,11 @@ namespace SISCAN.Views
 
                 CarregarLista();
             }
+        }
+
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

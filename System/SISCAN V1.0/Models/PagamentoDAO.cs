@@ -27,7 +27,7 @@ namespace SISCAN.Models
                 //var cidadeId = new CidadeDAO().Insert(cliente.Cidade);
 
                 var query = conn.Query();
-                query.CommandText = $"CALL InsertPagamento(@valor, @id_desp, @id_cai, @id_form_pag, @parcela, @dataNova)";
+                query.CommandText = $"CALL InsertPagamento(@valor, @id_cai, @id_desp, @id_form_pag, @parcela, @dataNova)";
 
                 query.Parameters.AddWithValue("@valor", pagamento.Valor);
                 query.Parameters.AddWithValue("@id_cai", pagamento.Caixa.id);
@@ -45,6 +45,7 @@ namespace SISCAN.Models
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
             }
             finally

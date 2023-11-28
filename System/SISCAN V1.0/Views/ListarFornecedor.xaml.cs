@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace SISCAN.Views
     public partial class ListarFornecedor : Page
     {
         public string textBusca;
-
+        Fornecedor selectedItem;
         public ListarFornecedor()
         {
             InitializeComponent();
@@ -59,6 +60,20 @@ namespace SISCAN.Views
                 fornecedorDAO.Delete(selectedItem);
 
                 CarregarLista();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                selectedItem = (Fornecedor)this.dgvList.SelectedItem;
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new UpdateFornecedor(selectedItem));
+            }
+            else
+            {
+                MessageBox.Show("Selecione uma função antes de atualizar!");
             }
         }
     }

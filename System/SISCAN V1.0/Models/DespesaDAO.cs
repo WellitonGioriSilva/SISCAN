@@ -204,5 +204,45 @@ namespace SISCAN.Models
             }
         }
 
+        public List<Despesa> ListPag()
+        {
+            try
+            {
+                List<Despesa> list = new List<Despesa>();
+
+                var query = conn.Query();
+
+                query.CommandText = "SELECT * FROM Despesa LEFT JOIN Compra ON Despesa.id_com_fk = Compra.id_com WHERE visivel_desp = 'Sim' AND status_desp = 'Aberta';";
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new Despesa()
+                    {
+                        Id = reader.GetInt32("id_desp"),
+                        Nome = DAOHelper.GetString(reader, "nome_desp"),
+                        Parcelas = reader.GetInt32("parcelas_desp"),
+                        Valor = DAOHelper.GetDouble(reader, "valor_desp"),
+                        Status = DAOHelper.GetString(reader, "status_desp"),
+                        Data = DAOHelper.GetDateTime(reader, "data_desp"),
+                        Vencimento = DAOHelper.GetDateTime(reader, "vencimento_desp"),
+                        ValorParcela = DAOHelper.GetDouble(reader, "valor_parcela_desp"),
+                        //Estado = DAOHelper.IsNull(reader, "id_est_fk") ? null : new Estado() { Id = reader.GetInt32("id_est"), Nome = reader.GetString("nome_est") }
+                    });
+                }
+
+                return list;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
     }
 }

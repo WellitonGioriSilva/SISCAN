@@ -25,6 +25,7 @@ namespace SISCAN.Formularios
         {
             InitializeComponent();
             CarregarProduto();
+            CarregarLembrete();
         }
 
         public void CarregarProduto()
@@ -33,7 +34,7 @@ namespace SISCAN.Formularios
             ProdutoDAO produtoDAO = new ProdutoDAO();
             produto = produtoDAO.ListLucro();
 
-            lbProduto.Content = produto.Nome;
+            lbProduto.Text = produto.Nome;
         }
 
         public void CarregarLembrete()

@@ -519,32 +519,33 @@ $$ DELIMITER ;
 
 #Procedimento - Pagamento
 DELIMITER $$
-CREATE PROCEDURE InsertPagamento(valor double, id_caixa int, id_despesa int, id_form int, parcela int, dataNova date)
+CREATE PROCEDURE InsertPagamento(valor DOUBLE, id_caixa INT, id_despesa INT, id_form INT, parcela INT, dataNova DATE)
 BEGIN
-DECLARE verificador_fk int;
-DECLARE data_pag date;
-DECLARE hora_pag time;
-DECLARE verificacaoParcelas int;
+    DECLARE verificador_fk INT;
+    DECLARE verificacaoParcelas INT;
 
-IF((valor <>'') AND (id_despesa <> '')) THEN 
-	SELECT COUNT(id_desp) into verificador_fk from Despesa where id_desp = id_despesa;
-	IF(verificador_fk = 1) THEN 
-        INSERT INTO Pagamento(id_pag, data_pag, visivel_pag, hora_pag, valor_pag, id_desp_fk, id_cai_fk, id_form_pag_fk) values (null, curdate(), 'Sim', curtime(), valor, id_despesa, id_caixa, id_form);
-        SELECT (parcelas_desp - parcela) INTO verificacaoParcelas FROM Despesa;
-        IF(verificacaoParcelas = 0) THEN
-			UPDATE Despesa SET parcelas_desp = parcelas_desp - parcela, vencimento_desp = dataNova, status_desp = 'Fechada' WHERE id_desp = id_despesa;
-		ELSE
-			UPDATE Despesa SET parcelas_desp = parcelas_desp - parcela, vencimento_desp = dataNova WHERE id_desp = id_despesa;
-		END IF;
-        SELECT "Pagamento realizado com sucesso!", true as resultado;
-	ELSE 
-		SELECT "A despesa informada não existe no sistema!", false as resultado;
-	END IF;
-ELSE
-	SELECT "Todos os campos devem ser preenchidos!", false as resultado;
-END IF;
+    IF (valor IS NOT NULL AND id_despesa IS NOT NULL) THEN 
+        SELECT COUNT(id_desp) INTO verificador_fk FROM Despesa WHERE id_desp = id_despesa;
+        IF (verificador_fk = 1) THEN 
+            INSERT INTO Pagamento(id_pag, data_pag, visivel_pag, hora_pag, valor_pag, id_desp_fk, id_cai_fk, id_form_pag_fk)
+            VALUES (NULL, CURRENT_DATE(), 'Sim', CURRENT_TIME(), valor, id_despesa, id_caixa, id_form);
+            
+            SELECT (parcelas_desp - parcela) INTO verificacaoParcelas FROM Despesa WHERE id_desp = id_despesa;
+            IF (verificacaoParcelas = 0) THEN
+                UPDATE Despesa SET parcelas_desp = parcelas_desp - parcela, vencimento_desp = dataNova, status_desp = 'Fechada' WHERE id_desp = id_despesa;
+            ELSE
+                UPDATE Despesa SET parcelas_desp = parcelas_desp - parcela, vencimento_desp = dataNova WHERE id_desp = id_despesa;
+            END IF;
+            
+            SELECT "Pagamento realizado com sucesso!" AS mensagem, TRUE AS resultado;
+        ELSE 
+            SELECT "A despesa informada não existe no sistema!" AS mensagem, FALSE AS resultado;
+        END IF;
+    ELSE
+        SELECT "Todos os campos devem ser preenchidos!" AS mensagem, FALSE AS resultado;
+    END IF;
 END;
-$$ DELIMITER ; 
+$$ DELIMITER ;
 
 #Procedimento - Recebimento
 DELIMITER $$
@@ -632,6 +633,7 @@ DELIMITER $$
 CREATE PROCEDURE ValorTotalPagamento(id int, out valor_final double)
 BEGIN
 	SELECT SUM(valor_pag) INTO valor_final FROM Pagamento WHERE (id_cai_fk = id);
+	SELECT SUM(valor_pag) FROM Pagamento WHERE (id_cai_fk = id);
 END;
 $$ DELIMITER ;
 
@@ -640,6 +642,7 @@ DELIMITER $$
 CREATE PROCEDURE ValorTotalRecebimento(id int, out valor_final double)
 BEGIN
 	SELECT SUM(valor_rec) INTO valor_final FROM Recebimento WHERE (id_cai_fk = id);
+    SELECT SUM(valor_rec) FROM Recebimento WHERE (id_cai_fk = id); 
 END;
 $$ DELIMITER ;
 
@@ -703,12 +706,50 @@ DELIMITER $$
 CREATE PROCEDURE Lembrete()
 BEGIN
 DECLARE maxVencimento date;
-SELECT max(vencimento_desp) INTO maxVencimento FROM Despesa WHERE (visivel_desp = "Sim");
+SELECT max(vencimento_desp) INTO maxVencimento FROM Despesa WHERE (visivel_desp = "Sim") AND (status_desp = "Aberta");
 SELECT * FROM Despesa WHERE vencimento_desp = maxVencimento;
 END;
 $$ DELIMITER ;
 
-CALL ExtratoVendas(1);
+CALL InsertProduto('Hamburguer', 'MarcaA', 'Lanche', 5.00);
+CALL InsertProduto('Batata Frita', 'MarcaB', 'Acompanhamento', 3.50);
+CALL InsertProduto('Refrigerante', 'MarcaC', 'Bebida', 2.00);
 
-select * from fornecedor;
-select * from compra_produto;
+CALL InsertCliente('João Silva', '123.456.789-01', 'joao@gmail.com', 'M', '1990-05-15', 'Rua A', 'Centro', 123, 'CidadeA', 'EstadoA');
+CALL InsertCliente('Maria Oliveira', '987.654.321-01', 'maria@gmail.com', 'F', '1985-10-20', 'Rua B', 'BairroB', 456, 'CidadeB', 'EstadoB');
+
+CALL InsertCliente('João Silva', '123.456.789-01', 'joao@gmail.com', 'M', '1990-05-15', 'Rua A', 'Centro', 123, 'CidadeA', 'EstadoA');
+CALL InsertCliente('Maria Oliveira', '987.654.321-01', 'maria@gmail.com', 'F', '1985-10-20', 'Rua B', 'BairroB', 456, 'CidadeB', 'EstadoB');
+
+CALL InsertFornecedor('FornecedorA', '123.456.789/0001-01', 'BairroA', 'Rua A', 'FantasiaA', '987654321', '123456', 'ResponsavelA', 'CidadeA', 'EstadoA');
+CALL InsertFornecedor('FornecedorB', '987.654.321/0001-01', 'BairroB', 'Rua B', 'FantasiaB', '123456789', '654321', 'ResponsavelB', 'CidadeB', 'EstadoB');
+
+CALL InsertFuncionario('Carlos Santos', 'BairroC', 'Rua C', '987.654.321-02', 789, 'M', 'CidadeC', 'EstadoC', 1, 2);
+CALL InsertFuncionario('Ana Oliveira', 'BairroD', 'Rua D', '123.456.789-02', 456, 'F', 'CidadeD', 'EstadoD', 2, 1);
+
+CALL InsertCaixa(100.00, 1);
+
+CALL InsertFuncao('Atendente', 1500.00, 'Manhã', 'Nível 1');
+CALL InsertFuncao('Cozinheiro', 2000.00, 'Tarde', 'Nível 2');
+CALL InsertFuncao('Gerente', 3000.00, 'Manhã', 'Nível 3');
+
+CALL InsertPrimeiroUsuario('admin', 'admin123');
+
+CALL InsertUsuario('usuario1', 'senha123', 2, 3);
+CALL InsertUsuario('usuario2', 'senha456', 3, 2);
+
+CALL InsertCompraProduto('LoteA', 50, 1, '2024-01-01');
+CALL InsertCompraProduto('LoteB', 30, 2, '2023-12-15');
+
+CALL InsertCompra(300.00, 1, '2023-12-01', 'Aberta', 2);
+CALL InsertCompra(150.00, 2, '2023-12-02', 'Aberta', 1);
+
+CALL InsertVenda(50.00, 1, 1, 1, 1);
+CALL InsertVenda(25.00, 2, 1, 1, 2);
+
+CALL InsertVendaProduto(2, 1);
+CALL InsertVendaProduto(1, 2);
+
+CALL InsertPagamento(500.00, 1, 1, 1, 1, '2023-12-05');
+CALL InsertPagamento(100.00, 1, 2, 1, 1, '2023-12-08');
+

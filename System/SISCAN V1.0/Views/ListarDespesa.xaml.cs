@@ -1,4 +1,5 @@
-﻿using SISCAN.Models;
+﻿using SISCAN.Formularios;
+using SISCAN.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace SISCAN.Views
     public partial class ListarDespesa : Page
     {
         public string textBusca;
+        Despesa selectedItem;
         public ListarDespesa()
         {
             InitializeComponent();
@@ -58,6 +60,20 @@ namespace SISCAN.Views
                 despesaDAO.Delete(selectedItem);
 
                 CarregarLista();
+            }
+        }
+
+        private void btAtualizar_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgvList.SelectedItem != null)
+            {
+                selectedItem = (Despesa)this.dgvList.SelectedItem;
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new UpdateDespesa(selectedItem));
+            }
+            else
+            {
+                MessageBox.Show("Selecione uma função antes de atualizar!");
             }
         }
     }

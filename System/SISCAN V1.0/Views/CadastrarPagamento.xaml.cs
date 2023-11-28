@@ -42,39 +42,52 @@ namespace SISCAN.Views
         {
             try
             {
-                if(cbDespesa.SelectedItem is Despesa selectedItemDespesa)
+                if (idCaixa != 0)
                 {
-                    //Setando informações na tabela cliente
-                    Pagamento pagamento = new Pagamento();
-                    Despesa despesa = new Despesa();
+                    if (cbDespesa.SelectedItem is Despesa selectedItemDespesa)
+                    {
+                        //Setando informações na tabela cliente
+                        Pagamento pagamento = new Pagamento();
+                        Despesa despesa = new Despesa();
 
-                    //          
-                    pagamento.Caixa = new Caixa();
-                    pagamento.Caixa.id = idCaixa;
-                    pagamento.FormaPagamento = new FormaPagamento();
-                    if (cbFormapag.SelectedItem is FormaPagamento selectedItemForm)
-                    {
-                        pagamento.FormaPagamento.Id = selectedItemForm.Id;
+                        //          
+                        pagamento.Caixa = new Caixa();
+                        pagamento.Caixa.id = idCaixa;
+                        pagamento.FormaPagamento = new FormaPagamento();
+                        if (cbFormapag.SelectedItem is FormaPagamento selectedItemForm)
+                        {
+                            pagamento.FormaPagamento.Id = selectedItemForm.Id;
+                        }
+                        pagamento.Despesa = new Despesa();
+                        if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
+                        {
+                            pagamento.Despesa.Id = selectedItemDesp.Id;
+                            string valorTexto = tbValor.Text.Replace("R$", "").Replace(" ", "");
+
+                            pagamento.Valor = Convert.ToDouble(valorTexto);
+
+                            //MessageBox.Show(pagamento.Despesa.Id.ToString());
+                            despesa.Data = dtpData.SelectedDate;
+                        }
+
+                        //Inserindo os Dados           
+                        PagamentoDAO pagamentoDAO = new PagamentoDAO();
+                        pagamentoDAO.Insert(pagamento, despesa, parcelas);
+                        MessageBox.Show(pagamentoDAO.mensagem);
+                        if (pagamentoDAO.condicao == true)
+                        {
+                            Clear();
+                        }
                     }
-                    pagamento.Despesa = new Despesa();
-                    if (cbDespesa.SelectedItem is Despesa selectedItemDesp)
-                    {
-                        pagamento.Despesa.Id = selectedItemDesp.Id;
-                        pagamento.Valor = Convert.ToDouble(tbValor.Text);
-                        despesa.Data = dtpData.SelectedDate;
-                    }
-                    //Inserindo os Dados           
-                    PagamentoDAO pagamentoDAO = new PagamentoDAO();
-                    pagamentoDAO.Insert(pagamento, despesa, parcelas);
-                    MessageBox.Show(pagamentoDAO.mensagem);
-                    if (pagamentoDAO.condicao == true)
-                    {
-                        Clear();
-                    }
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum caixa aberto no sistema!");
                 }
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3008 : Contate o suporte");
             }
         }
@@ -96,7 +109,7 @@ namespace SISCAN.Views
         private void DadosCbDesp()
         {
             DespesaDAO despesaDAO = new DespesaDAO();
-            cbDespesa.ItemsSource = despesaDAO.List(null);
+            cbDespesa.ItemsSource = despesaDAO.ListPag();
             cbDespesa.DisplayMemberPath = "Nome";
         }
 

@@ -77,7 +77,7 @@ namespace SISCAN.Models
 
                 var query = conn.Query();
 
-                query.CommandText = $"CALL InsertFuncionario(@nome, @bairro, @rua, @cpf, @numero, @sexo, @cidade, @estado, @id_fun, acesso)";
+                query.CommandText = $"CALL InsertFuncionario(@nome, @bairro, @rua, @cpf, @numero, @sexo, @cidade, @estado, @id_fun, @acesso)";
 
                 query.Parameters.AddWithValue("@nome", funcionario.Nome);
                 query.Parameters.AddWithValue("@bairro", funcionario.Bairro);

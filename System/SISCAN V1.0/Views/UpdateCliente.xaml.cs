@@ -34,8 +34,8 @@ namespace SISCAN.Formularios
         {
             InitializeComponent();
             user = cliente;
-            ImportDados();
             MaskCPF mascarador = new MaskCPF(tbCpf);
+            ImportDados();          
         }
 
         private void btSalvar_Click(object sender, RoutedEventArgs e)
@@ -169,14 +169,14 @@ namespace SISCAN.Formularios
 
         private void ImportDados()
         {
-            tbNome.Text = "Nome: " + user.Nome;
-            tbCpf.Text = "Cpf: " + user.Cpf;
-            tbEmail.Text = "Email: " + user.Email;
-            cbSexo.Text = "Sexo: " + user.Sexo;
-            dtpData.Text = "Data: " + user.DataNascimento;
-            tbRua.Text = "Rua: " + user.Rua;
-            tbBairro.Text = "Bairro: " + user.Bairro;
-            tbNumero.Text = "Numero: " + user.Numero;
+            lbNome.Content = "Nome: " + user.Nome;
+            lbCpf.Content = "Cpf: " + user.Cpf;
+            lbemail.Content = "Email: " + user.Email;
+            lbSexo.Content = "Sexo: " + user.Sexo;
+            lbData.Content = "Data: " + user.DataNascimento;
+            lbrua.Content = "Rua: " + user.Rua;
+            lbBairro.Content = "Bairro: " + user.Bairro;
+            lbnumero.Content = "Numero: " + user.Numero;
         }
 
         public async void Buscar()

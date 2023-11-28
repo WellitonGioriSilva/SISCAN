@@ -26,6 +26,7 @@ namespace SISCAN.Models
         {
             conn = new Conexao();
         }
+
         public List<Caixa> List(string busca)
         {
             try
@@ -61,9 +62,44 @@ namespace SISCAN.Models
             {
                 throw e;
             }
-            finally
+        }
+
+        public List<Caixa> ListFec(string busca)
+        {
+            try
             {
-                conn.Close();
+                List<Caixa> list = new List<Caixa>();
+
+                var query = conn.Query();
+                if (busca == null)
+                {
+                    query.CommandText = "SELECT * FROM Caixa WHERE visivel_cai = 'Sim';";
+                }
+                else
+                {
+                    query.CommandText = $"SELECT * FROM Caixa WHERE (id_cai LIKE '%{busca}%') AND (visivel_cai = 'Sim');";
+                }
+
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new Caixa()
+                    {
+                        id = reader.GetInt32("id_cai"),
+                        Data = DAOHelper.GetDateTime(reader, "data_cai"),
+                        HoraAbertura = reader.GetTimeSpan("hora_abertura_cai"),
+                        ValorIncial = DAOHelper.GetDouble(reader, "valor_inicial_cai"),
+                        HoraFechamento = reader.GetTimeSpan("hora_fechamento_cai"),
+                        ValorFinal = DAOHelper.GetDouble(reader, "valor_final_cai")
+                    });
+                }
+
+                return list;
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 
@@ -91,10 +127,6 @@ namespace SISCAN.Models
             {
                 MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
-            }
-            finally
-            {
-                conn.Close();
             }
         }
 
@@ -129,10 +161,6 @@ namespace SISCAN.Models
             {
                 MessageBox.Show("Erro 3008 : Contate o suporte!");
             }
-            finally
-            {
-                conn.Close();
-            }
         }
         public void Delete(Caixa caixa)
         {
@@ -164,10 +192,6 @@ namespace SISCAN.Models
                     MessageBox.Show(ex.Message);
                     MessageBox.Show("Erro 3007 : Contate o suporte!");
                 }
-                finally
-                {
-                    conn.Close();
-                }
             }
         }
 
@@ -196,18 +220,13 @@ namespace SISCAN.Models
                 MessageBox.Show(ex.Message);
                 return 0;
             }
-            finally
-            {
-                conn.Close();
-            }
         }
 
         public void CaixaFechamento(Caixa caixa)
         {
             try
             {
-                //var caixaId = new CaixaDao().Insert(caixa.Caixa);
-
+                conn = new Conexao();
                 var query = conn.Query();
                 query.CommandText = $"CALL FechamentoCaixa(@id, @valorFinal)";
 
@@ -225,10 +244,6 @@ namespace SISCAN.Models
             {
                 MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
-            }
-            finally
-            {
-                conn.Close();
             }
         }
 
@@ -262,10 +277,6 @@ namespace SISCAN.Models
             {
                 MessageBox.Show(ex.Message);
                 MessageBox.Show("Erro 3007 : Contate o suporte!");
-            }
-            finally
-            {
-                conn.Close();
             }
         }
 

@@ -21,29 +21,46 @@ namespace SISCAN.Views
     /// </summary>
     public partial class FechamentoCaixa : Page
     {
+        CaixaDAO caixaD = new CaixaDAO();
+        RecebimentoDAO recebimentoDAO = new RecebimentoDAO();
+        PagamentoDAO pagamentoDAO = new PagamentoDAO();
+        int id;
+        double valor;
         public FechamentoCaixa()
         {
             InitializeComponent();
+            id = caixaD.GetById();
+            //caixaD.GetById();
+            double valorPag = pagamentoDAO.ValorTotal(id);
+            double valorRec = recebimentoDAO.ValorTotal(id);
+            double valorInic = caixaD.valorIni;
+            valor = (valorInic + valorRec) - valorPag;
         }
 
         private void btFechar_Click(object sender, RoutedEventArgs e)
         {
             CaixaDAO caixaDAO = new CaixaDAO();
             Caixa caixa = new Caixa();
-            RecebimentoDAO recebimentoDAO = new RecebimentoDAO();
-            PagamentoDAO pagamentoDAO = new PagamentoDAO();
+
             caixa.id = caixaDAO.GetById();
-            double valor = (caixaDAO.valorIni + recebimentoDAO.ValorTotal(caixa.id)) - pagamentoDAO.ValorTotal(caixa.id);
             caixa.ValorFinal = valor;
 
             caixaDAO.CaixaFechamento(caixa);
             MessageBox.Show(caixaDAO.mensagem);
+            id = caixaD.GetById();
         }
 
         private void btBuscar_Click(object sender, RoutedEventArgs e)
         {
-            fmFrame.Visibility = Visibility.Visible;
-            fmFrame.NavigationService.Navigate(new ListarCaixa());
+            if (id == 0)
+            {
+                fmFrame.Visibility = Visibility.Visible;
+                fmFrame.NavigationService.Navigate(new ListarCaixaFec());
+            }
+            else
+            {
+                MessageBox.Show("Feche o caixa antes de consultá-lo!");   
+            }
         }
     }
 }
